@@ -9,6 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <!-- Script chứa Base64 Avatar người dùng offline 100% -->
   <script src="avatar_data.js"></script>
+  <script>
+    // Fallback Vector SVG cao cấp đảm bảo avatar luôn hiển thị kể cả khi thiếu file ảnh
+    const DEFAULT_AVATAR_FALLBACK = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%233b82f6'/><stop offset='100%25' stop-color='%231d4ed8'/></linearGradient></defs><circle cx='50' cy='50' r='50' fill='url(%23grad)'/><circle cx='50' cy='38' r='18' fill='%23ffffff'/><path d='M20 84c0-16.568 13.432-30 30-30s30 13.432 30 30' fill='%23ffffff'/></svg>";
+    function handleAvatarError(img) {
+      img.onerror = null;
+      if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64) {
+        img.src = USER_AVATAR_BASE64;
+      } else {
+        img.src = DEFAULT_AVATAR_FALLBACK;
+      }
+    }
+  </script>
   <!-- Thư viện xuất file PDF chuyên nghiệp -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
@@ -2411,18 +2423,27 @@ function initApp() {
 
 function loadUserAvatar() {
   const imgEl = document.getElementById('avatar-img-elem');
+  if (!imgEl) return;
   // 1. Thử nạp từ biến USER_AVATAR_BASE64 nhúng từ file avatar_data.js
   if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64) {
     imgEl.src = USER_AVATAR_BASE64;
   } else {
-    // 2. Fallback relative file
-    imgEl.src = 'avatar.png';
+    // 2. Thử load avatar.png, nếu thất bại tự fallback sang DEFAULT_AVATAR_FALLBACK
+    const testImg = new Image();
+    testImg.onload = () => { imgEl.src = 'avatar.png'; };
+    testImg.onerror = () => { 
+      imgEl.src = (typeof DEFAULT_AVATAR_FALLBACK !== 'undefined') ? DEFAULT_AVATAR_FALLBACK : 'avatar.png'; 
+    };
+    testImg.src = 'avatar.png';
   }
 }
 
 function handleAvatarError(img) {
-  if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64 && img.src !== USER_AVATAR_BASE64) {
+  img.onerror = null;
+  if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64) {
     img.src = USER_AVATAR_BASE64;
+  } else if (typeof DEFAULT_AVATAR_FALLBACK !== 'undefined') {
+    img.src = DEFAULT_AVATAR_FALLBACK;
   }
 }
 
