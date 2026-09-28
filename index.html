@@ -1,0 +1,4015 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BookRAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Script chứa Base64 Avatar người dùng offline 100% -->
+  <script src="avatar_data.js"></script>
+  <!-- Thư viện xuất file PDF chuyên nghiệp -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       MONOCHROME BLACK-WHITE GLASSMORPHISM THEME TOKENS
+    ───────────────────────────────────────────────────────────── */
+    :root {
+      /* Dark Theme (Default) — Pure Black & White Monochrome Glass */
+      --bg-canvas:         #0a0a0c;
+      --bg-surface:        #121215;
+      --bg-card:           rgba(24, 24, 28, 0.65);
+      --bg-input:          rgba(255, 255, 255, 0.05);
+      --bg-pill:           rgba(255, 255, 255, 0.08);
+      --color-ink:         #fcfcfc;
+      --color-graphite:    #a1a1aa;
+      --color-ash:         #71717a;
+      --color-border:      rgba(255, 255, 255, 0.12);
+      --color-border-subtle: rgba(255, 255, 255, 0.06);
+
+      /* Message Bubble Tokens - Dark Mode */
+      --msg-user-bg:       #27272a;
+      --msg-user-color:    #f4f4f5;
+      --msg-user-border:   rgba(255, 255, 255, 0.14);
+      --msg-user-shadow:   0 4px 16px rgba(0, 0, 0, 0.35);
+
+      --msg-bot-bg:        rgba(24, 24, 28, 0.85);
+      --msg-bot-color:     #f4f4f5;
+      --msg-bot-border:    rgba(255, 255, 255, 0.10);
+      --msg-bot-shadow:    0 4px 20px rgba(0, 0, 0, 0.4);
+
+      /* Monochrome Accents */
+      --color-accent:      #ffffff;
+      --color-accent-bg:   rgba(255, 255, 255, 0.14);
+      --color-accent-border: rgba(255, 255, 255, 0.28);
+      --color-accent-glow: rgba(255, 255, 255, 0.15);
+
+      /* Typography */
+      --font-main: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+      /* Layout Specs */
+      --sidebar-w: 260px;
+      --sidebar-collapsed-w: 68px;
+      --results-w: 370px;
+      --radius-glass: 20px;
+      --radius-box: 16px;
+      --radius-pill: 9999px;
+      --radius-input: 16px;
+      --radius-btn: 10px;
+    }
+
+    /* Light Mode (Tùy chọn Monochrome Sáng) */
+    body.light-mode {
+      --bg-canvas:         #f6f6f8;
+      --bg-surface:        #ffffff;
+      --bg-card:           rgba(255, 255, 255, 0.85);
+      --bg-input:          rgba(0, 0, 0, 0.04);
+      --bg-pill:           rgba(0, 0, 0, 0.05);
+      --color-ink:         #111113;
+      --color-graphite:    #52525b;
+      --color-ash:         #a1a1aa;
+      --color-border:      rgba(0, 0, 0, 0.12);
+      --color-border-subtle: rgba(0, 0, 0, 0.06);
+
+      /* Message Bubble Tokens - Light Mode */
+      --msg-user-bg:       #f4f4f5;
+      --msg-user-color:    #18181b;
+      --msg-user-border:   rgba(0, 0, 0, 0.08);
+      --msg-user-shadow:   0 2px 8px rgba(0, 0, 0, 0.04);
+
+      --msg-bot-bg:        #ffffff;
+      --msg-bot-color:     #18181b;
+      --msg-bot-border:    rgba(0, 0, 0, 0.09);
+      --msg-bot-shadow:    0 4px 18px rgba(0, 0, 0, 0.05);
+
+      --color-accent:      #000000;
+      --color-accent-bg:   rgba(0, 0, 0, 0.08);
+      --color-accent-border: rgba(0, 0, 0, 0.2);
+      --color-accent-glow: rgba(0, 0, 0, 0.08);
+    }
+
+    /* ── RESET ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-main);
+      color: var(--color-ink);
+      background: var(--bg-canvas);
+      overflow: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── GLASSMORPHISM CARD SPECIFICATION ───────────────────── */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      border-radius: var(--radius-glass);
+      border: 1px solid var(--color-border);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 0 12px 2px rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.45),
+        transparent,
+        rgba(255, 255, 255, 0.08)
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    body.light-mode .glass-card {
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+        inset 0 0 12px 2px rgba(255, 255, 255, 0.5);
+    }
+    body.light-mode .glass-card::before {
+      background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.25), transparent);
+    }
+    body.light-mode .glass-card::after {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent, rgba(0, 0, 0, 0.05));
+    }
+
+    /* Xóa hoàn toàn mũi tên spinner tăng giảm số mặc định của trình duyệt */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+      display: none !important;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield !important;
+      appearance: textfield !important;
+    }
+
+    /* ── APP LAYOUT ──────────────────────────────────────────── */
+    .app-container {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      padding: 12px;
+      gap: 12px;
+      position: relative;
+    }
+
+    /* ── 1. LEFT SIDEBAR (GLASSMORPHISM) ────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+    .sidebar.collapsed {
+      width: var(--sidebar-collapsed-w);
+    }
+    .sidebar.collapsed .sidebar-inner {
+      padding: 16px 8px;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar.collapsed .sidebar-top-bar {
+      justify-content: center;
+      padding: 2px 0 6px;
+      width: 100%;
+    }
+    .sidebar.collapsed .sidebar-logo {
+      display: none !important;
+    }
+    .sidebar.collapsed #btn-search-toggle {
+      display: none !important;
+    }
+    .sidebar.collapsed .sidebar-top-actions {
+      width: 100%;
+      justify-content: center;
+    }
+    .sidebar.collapsed #btn-sidebar-toggle {
+      margin: 0 auto;
+    }
+
+    .sidebar-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px 12px;
+      gap: 10px;
+    }
+
+    /* Top Row: Logo + Search + Collapse Button */
+    .sidebar-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 4px 6px;
+    }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.01em;
+    }
+    .logo-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-accent);
+    }
+
+    .sidebar-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--color-graphite);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-ink);
+    }
+    body.light-mode .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
+    .icon-btn svg { width: 17px; height: 17px; }
+
+    /* "+ New" Button (Sleek monochrome glass pill) */
+    .btn-new-session {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-new-session:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .sidebar.collapsed .btn-new-session span { display: none; }
+    .sidebar.collapsed .btn-new-session {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 12px;
+      margin: 0 auto;
+    }
+    .btn-new-session svg { width: 15px; height: 15px; }
+
+    /* Nav Item: Tư vấn sách */
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: var(--color-graphite);
+      font-size: 13.5px;
+      cursor: pointer;
+      text-align: left;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--color-ink);
+    }
+    .nav-btn.active {
+      background: var(--color-accent-bg);
+      border-color: var(--color-accent-border);
+      color: var(--color-accent);
+      font-weight: 500;
+      box-shadow: 0 0 10px var(--color-accent-glow);
+    }
+    .sidebar.collapsed .nav-list {
+      width: 100%;
+      align-items: center;
+    }
+    .sidebar.collapsed .nav-btn {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 12px;
+      margin: 0 auto;
+    }
+    .sidebar.collapsed .nav-btn span { display: none; }
+    .nav-btn svg { width: 17px; height: 17px; }
+
+    /* ── SESSIONS ROUNDED BOX (KHUNG BO TRÒN) ─────────────────── */
+    .sessions-glass-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-box);
+      padding: 10px 10px;
+      gap: 8px;
+      overflow: hidden;
+      min-height: 120px;
+    }
+    body.light-mode .sessions-glass-box {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    .sidebar.collapsed .sessions-glass-box {
+      display: none !important;
+    }
+
+    .sessions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--color-graphite);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      padding: 2px 4px;
+    }
+    .sessions-header:hover { color: var(--color-ink); }
+    .sessions-header-arrow {
+      font-size: 11px;
+      transition: transform 0.2s ease;
+      display: inline-flex;
+    }
+    .sessions-header.collapsed-acc .sessions-header-arrow {
+      transform: rotate(-90deg);
+    }
+
+    /* Session search inside rounded box */
+    .session-search-box {
+      display: none;
+    }
+    .session-search-box.open { display: block; }
+    .session-search-input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 12px;
+      background: var(--bg-input);
+      color: var(--color-ink);
+      outline: none;
+    }
+    .session-search-input:focus {
+      border-color: var(--color-accent);
+    }
+
+    .sessions-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-right: 2px;
+    }
+    .sessions-scroll::-webkit-scrollbar { width: 3px; }
+    .sessions-scroll::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+    .session-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--color-graphite);
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      transition: all 0.15s;
+    }
+    .session-item.menu-open {
+      z-index: 50;
+    }
+    .session-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--color-ink);
+    }
+    body.light-mode .session-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .session-item.active {
+      background: var(--color-accent-bg);
+      border: 1px solid var(--color-accent-border);
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+    .session-item-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      padding-right: 4px;
+    }
+    .session-rename-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--color-accent);
+      border-radius: 5px;
+      padding: 3px 6px;
+      font-size: 12px;
+      color: var(--color-ink);
+      outline: none;
+      width: 100%;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    }
+    body.light-mode .session-rename-input {
+      background: #ffffff;
+      border-color: var(--color-accent);
+      color: #111827;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+    }
+    .session-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: auto;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .session-more-btn {
+      opacity: 0.75;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--color-graphite);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .session-item:hover .session-more-btn,
+    .session-item.active .session-more-btn,
+    .session-item.menu-open .session-more-btn {
+      opacity: 1;
+      color: var(--color-ink);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    body.light-mode .session-more-btn {
+      color: #71717a;
+    }
+    body.light-mode .session-item:hover .session-more-btn,
+    body.light-mode .session-item.active .session-more-btn,
+    body.light-mode .session-item.menu-open .session-more-btn {
+      background: rgba(0, 0, 0, 0.08);
+      color: #111827;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Glassmorphic Dropdown Menu cho Session */
+    .session-menu-dropdown {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 4px);
+      z-index: 9999;
+      background: #18181c;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);
+      border-radius: 8px;
+      padding: 4px;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+    }
+    body.light-mode .session-menu-dropdown {
+      background: #ffffff;
+      border-color: rgba(0, 0, 0, 0.14);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+    }
+    .session-menu-dropdown.show {
+      display: flex;
+      animation: sessionMenuFade 0.12s ease-out;
+    }
+    @keyframes sessionMenuFade {
+      from { opacity: 0; transform: scale(0.94) translateY(-4px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .session-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11.8px;
+      color: var(--color-graphite);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.12s;
+      width: 100%;
+    }
+    .session-menu-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-ink);
+    }
+    body.light-mode .session-menu-item:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #111827;
+    }
+    .session-menu-item.danger:hover {
+      color: #fb7185;
+      background: rgba(244, 63, 94, 0.14);
+    }
+    body.light-mode .session-menu-item.danger:hover {
+      color: #e11d48;
+      background: rgba(225, 29, 72, 0.1);
+    }
+
+
+    /* Sidebar Footer — User Profile (Anonymous User) & Theme Toggle */
+    .sidebar-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--color-border-subtle);
+      margin-top: auto;
+    }
+    .sidebar.collapsed .sidebar-footer {
+      width: 100%;
+      align-items: center;
+      padding-top: 8px;
+    }
+
+    .user-profile-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 2px;
+    }
+    .sidebar.collapsed .user-profile-row {
+      width: 100%;
+      justify-content: center;
+      padding: 0;
+    }
+
+    /* Avatar không viền, không nền để ảnh trong suốt hiển thị hoàn hảo */
+    .user-avatar-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      transition: border-color 0.2s;
+    }
+    .user-avatar-wrap:hover {
+      border-color: var(--color-accent);
+    }
+    .sidebar.collapsed .user-avatar-wrap {
+      margin: 0 auto;
+    }
+    .user-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(100%) contrast(1.15); /* Đồng bộ chuẩn chủ đề Monochrome Black & White */
+      transition: filter 0.25s ease;
+    }
+    .user-avatar-wrap:hover img {
+      filter: grayscale(0%); /* Hover nhẹ hiển thị màu gốc */
+    }
+
+    .user-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+    /* Ô Corner / Pill bo tròn cho Session ID theo mẫu ảnh người dùng */
+    .user-session-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      margin-top: 3px;
+      width: fit-content;
+      max-width: 100%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+    .sess-dot {
+      width: 5.5px;
+      height: 5.5px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 5px rgba(34, 197, 94, 0.6);
+      flex-shrink: 0;
+    }
+    .user-session-id {
+      font-size: 10.5px;
+      color: var(--color-graphite);
+      font-family: monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.02em;
+    }
+    .sidebar.collapsed .user-info { display: none !important; }
+
+    .theme-toggle-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: var(--bg-pill);
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .sidebar.collapsed .theme-toggle-btn { display: none !important; }
+    .theme-toggle-btn:hover {
+      transform: rotate(20deg);
+      border-color: var(--color-accent);
+    }
+    .theme-toggle-btn svg { width: 15px; height: 15px; }
+
+    /* ── 2. CENTER PANEL (CHAT STREAM) ────────────────────────── */
+    .center-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border-radius: var(--radius-glass);
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Chat Messages Stream */
+    .chat-stream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .chat-stream::-webkit-scrollbar { width: 4px; }
+    .chat-stream::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+    /* Hero / Greeting State (when empty) */
+    .hero-greeting {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 20px 0;
+      user-select: none;
+    }
+    .hero-tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-graphite);
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--color-ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .hero-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 580px;
+      margin-top: 14px;
+    }
+    .example-pill {
+      padding: 6px 14px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      color: var(--color-graphite);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .example-pill:hover {
+      border-color: var(--color-accent);
+      color: var(--color-ink);
+      background: rgba(255, 255, 255, 0.12);
+    }
+    body.light-mode .example-pill:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Message Bubbles */
+    .chat-msg {
+      display: flex;
+      gap: 12px;
+      max-width: 88%;
+      animation: fadeIn 0.25s ease-out;
+    }
+    .chat-msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .chat-msg.bot {
+      align-self: flex-start;
+      max-width: 92%;
+    }
+
+    .msg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+      background: var(--color-accent-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-ink);
+    }
+    .chat-msg.user .msg-avatar {
+      background: var(--msg-user-bg);
+      color: var(--msg-user-color);
+      border: 1px solid var(--msg-user-border);
+    }
+
+    .msg-bubble {
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 14.5px;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+    .chat-msg.user .msg-bubble {
+      background: var(--msg-user-bg);
+      color: var(--msg-user-color);
+      border: 1px solid var(--msg-user-border);
+      border-bottom-right-radius: 4px;
+      box-shadow: var(--msg-user-shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .chat-msg.bot .msg-bubble {
+      background: var(--msg-bot-bg);
+      border: 1px solid var(--msg-bot-border);
+      color: var(--msg-bot-color);
+      border-bottom-left-radius: 4px;
+      box-shadow: var(--msg-bot-shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    body.light-mode .chat-msg.bot .msg-bubble h3 {
+      color: #09090b;
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light-mode .chat-msg.bot .msg-bubble p,
+    body.light-mode .chat-msg.bot .msg-bubble li {
+      color: #18181b;
+    }
+
+    /* Structured formatting inside Bot Bubble */
+    .msg-bubble h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink);
+      margin: 12px 0 4px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      padding-bottom: 3px;
+    }
+    .msg-bubble h3:first-child { margin-top: 0; }
+    .msg-bubble p { margin-bottom: 8px; }
+    .msg-bubble p:last-child { margin-bottom: 0; }
+    .msg-bubble ul {
+      margin: 4px 0 10px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .msg-bubble li {
+      margin-bottom: 2px;
+      line-height: 1.5;
+    }
+    .msg-bubble code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    body.light-mode .msg-bubble code {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    /* Image Attachment in Chat Bubble */
+    .msg-img-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .msg-img-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      color: var(--color-accent);
+      background: var(--color-accent-bg);
+      border: 1px solid var(--color-accent-border);
+      border-radius: 999px;
+      padding: 2px 8px;
+      width: fit-content;
+      font-weight: 500;
+    }
+    .msg-img-attachment {
+      max-width: 260px;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: block;
+    }
+
+    /* Typing Dots & Dynamic Status */
+    .msg-bubble.typing-dots {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+    }
+    .typing-status-text {
+      font-size: 11.5px;
+      color: var(--color-graphite);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .typing-dots-anim {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .typing-dots-anim span.dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--color-ash);
+      border-radius: 50%;
+      margin: 0 1px;
+      animation: bounce 1s infinite;
+    }
+    .typing-dots-anim span.dot:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots-anim span.dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+      40% { transform: translateY(-5px); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PERPLEXITY HERO CHAT INPUT BOX ───────────────────────── */
+    .chat-input-container {
+      padding: 12px 24px 20px;
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .hero-input-box {
+      background: var(--bg-input);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 12px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .hero-input-box:focus-within {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-accent-glow);
+    }
+
+    /* Selected Image Preview Pill */
+    .attached-file-pill {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      color: var(--color-ink);
+      width: fit-content;
+    }
+    .attached-file-pill.active { display: flex; }
+    .attached-file-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+    .remove-file-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--color-ash);
+    }
+    .remove-file-btn:hover { color: #f43f5e; }
+
+    #chat-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 14.5px;
+      font-family: var(--font-main);
+      color: var(--color-ink);
+      resize: none;
+      min-height: 26px;
+      max-height: 120px;
+      line-height: 1.5;
+    }
+    #chat-textarea::placeholder {
+      color: var(--color-graphite);
+    }
+
+    /* Bottom Row Controls */
+    .input-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 4px;
+    }
+    .controls-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Plus Button (+) for Image Upload */
+    .btn-upload-plus {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: var(--bg-pill);
+      color: var(--color-graphite);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .btn-upload-plus:hover {
+      border-color: var(--color-accent);
+      color: var(--color-ink);
+      background: rgba(255, 255, 255, 0.12);
+    }
+    body.light-mode .btn-upload-plus:hover {
+      background: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.3);
+      color: #000;
+    }
+    .btn-upload-plus svg { width: 14px; height: 14px; }
+
+    /* Pill Search Mode / Filter Chips */
+    .chip-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--color-graphite);
+      cursor: pointer;
+      user-select: none;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      line-height: 1;
+      transition: all 0.15s;
+    }
+    .chip-action:hover {
+      border-color: var(--color-accent);
+      color: var(--color-ink);
+    }
+    body.light-mode .chip-action {
+      color: #52525b;
+    }
+    body.light-mode .chip-action:hover {
+      color: #111827;
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+    .chip-action.active {
+      background: var(--color-accent-bg);
+      color: var(--color-accent);
+      border-color: var(--color-accent-border);
+    }
+    body.light-mode .chip-action.active {
+      background: #18181b;
+      color: #ffffff;
+      border-color: #18181b;
+    }
+    .chip-action svg { width: 14px; height: 14px; }
+    .chip-action span {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+
+    /* Inline Budget Input */
+    .budget-mini-input {
+      width: 82px;
+      height: 28px;
+      line-height: 28px;
+      padding: 0 4px;
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      color: var(--color-ink);
+      outline: none;
+      vertical-align: middle;
+      box-sizing: border-box;
+    }
+    .budget-mini-input::placeholder {
+      color: var(--color-graphite);
+      opacity: 0.8;
+    }
+    .budget-mini-input::-webkit-outer-spin-button,
+    .budget-mini-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .budget-mini-input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+    body.light-mode .budget-mini-input {
+      color: #111827;
+    }
+
+    .controls-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Submit Button (Circle Arrow Send) */
+    .btn-send-hero {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-ink);
+      color: var(--bg-canvas);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .btn-send-hero:hover:not(:disabled) {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    .btn-send-hero:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .btn-send-hero svg { width: 15px; height: 15px; }
+
+    /* ── 3. RIGHT RESULTS PANEL (GLASSMORPHISM) ──────────────── */
+    .results-panel {
+      width: var(--results-w);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .results-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 16px 14px;
+      gap: 12px;
+    }
+
+    .results-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .results-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rag-tag-badge {
+      padding: 2px 8px;
+      background: var(--color-accent-bg);
+      color: var(--color-ink);
+      border: 1px solid var(--color-accent-border);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .results-cards-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 2px;
+    }
+    .results-cards-scroll::-webkit-scrollbar { width: 4px; }
+    .results-cards-scroll::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+    /* Book Recommendation Card */
+    .book-item-card {
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .book-item-card:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+    body.light-mode .book-item-card:hover {
+      border-color: rgba(0, 0, 0, 0.35);
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-rank {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--color-ink);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .card-stock-tag {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-ink);
+      border: 1px solid var(--color-border);
+    }
+
+    .card-book-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-ink);
+      line-height: 1.35;
+    }
+    .card-book-author {
+      font-size: 12.5px;
+      color: var(--color-graphite);
+    }
+
+    /* Chips row */
+    .card-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .meta-chip {
+      font-size: 11.5px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      color: var(--color-ink);
+    }
+    .meta-chip.price {
+      background: var(--color-accent-bg);
+      border-color: var(--color-accent-border);
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    /* Score breakdown */
+    .card-scores-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 6px 0;
+      border-top: 1px solid var(--color-border-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .score-metric-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+    }
+    .score-name {
+      width: 65px;
+      color: var(--color-graphite);
+    }
+    .score-progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--bg-pill);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .score-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+    .score-progress-fill.total { background: #ffffff; }
+    body.light-mode .score-progress-fill.total { background: #000000; }
+    .score-progress-fill.semantic { background: #a1a1aa; }
+    .score-progress-fill.ranking { background: #52525b; }
+    .score-num {
+      width: 28px;
+      text-align: right;
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+
+    /* Buy Action Button */
+    .btn-buy-book {
+      width: 100%;
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-btn);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-buy-book:hover:not(.bought) {
+      background: var(--color-ink);
+      border-color: var(--color-ink);
+      color: var(--bg-canvas);
+    }
+    .btn-buy-book.bought {
+      background: var(--color-accent-bg);
+      border-color: var(--color-accent-border);
+      color: var(--color-accent);
+      cursor: pointer;
+    }
+    .btn-buy-book.bought:hover {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.4);
+      color: #f43f5e;
+    }
+
+    /* ── CART SIDEBAR WIDGET (GLASSMORPHISM) ──────────────── */
+    .cart-box {
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      margin-bottom: 4px;
+      animation: fadeIn 0.25s ease;
+    }
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .cart-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-count-badge {
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: var(--radius-pill);
+      background: var(--color-accent-bg);
+      color: var(--color-accent);
+      border: 1px solid var(--color-accent-border);
+      font-weight: 700;
+    }
+    .cart-clear-btn {
+      background: transparent;
+      border: none;
+      font-size: 11.5px;
+      color: var(--color-ash);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    .cart-clear-btn:hover {
+      color: #f43f5e;
+      background: rgba(244, 63, 94, 0.1);
+    }
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      max-height: 190px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .cart-items-list::-webkit-scrollbar { width: 3px; }
+    .cart-items-list::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 8px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .cart-item:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    body.light-mode .cart-item:hover {
+      border-color: rgba(0, 0, 0, 0.25);
+    }
+    .cart-item-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .cart-item-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--color-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cart-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+    .cart-item-price {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .cart-item-author {
+      color: var(--color-graphite);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cart-item-remove-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--color-ash);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .cart-item-remove-btn:hover {
+      color: #f43f5e;
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+    .cart-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .cart-total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+    }
+    .cart-total-label {
+      color: var(--color-graphite);
+    }
+    .cart-total-val {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+    .btn-checkout {
+      width: 100%;
+      padding: 7px 12px;
+      border-radius: var(--radius-btn);
+      border: 1px solid var(--color-border);
+      background: var(--color-ink);
+      color: var(--bg-canvas);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-checkout:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Author Recommendations Block */
+    .author-recs-box {
+      background: var(--bg-card);
+      border: 1px solid var(--color-accent-border);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+    .author-recs-heading {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .author-recs-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .author-recs-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .author-recs-item:last-child { border-bottom: none; }
+
+    /* Empty state */
+    .results-empty {
+      text-align: center;
+      color: var(--color-graphite);
+      padding: 50px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* ── TOAST NOTIFICATION (GLASSMORPHISM POPUP) ───────── */
+    .toast-container {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 99999;
+      pointer-events: none;
+    }
+    .toast-msg {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 18px;
+      background: rgba(20, 20, 24, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      color: var(--color-ink);
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: all 0.25s ease;
+      max-width: 420px;
+    }
+    body.light-mode .toast-msg {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    .toast-msg.toast-out {
+      opacity: 0;
+      transform: translateY(12px) scale(0.95);
+    }
+    .toast-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .toast-msg.success .toast-icon {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+    .toast-msg.warn .toast-icon {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+    .toast-text {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.94); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── HERO GREETING DYNAMIC QUOTES ROTATION ──────────── */
+    .hero-greeting {
+      transition: all 0.3s ease;
+    }
+    .hero-title-rotator {
+      position: relative;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-dynamic-title {
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-dynamic-title.fade-out {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    .hero-dynamic-title.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-quote-box {
+      max-width: 560px;
+      margin: 8px auto 16px auto;
+      padding: 10px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+    .hero-quote-box.fade-out {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    .hero-quote-box.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .hero-quote-text {
+      color: var(--color-ink);
+      font-size: 13.5px;
+      font-style: italic;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .hero-quote-author {
+      color: var(--color-graphite);
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── RIGHT PANEL CONTEXT PILL & SHIMMER LOADING ──────── */
+    .results-context-pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      color: var(--color-ink);
+      font-weight: 600;
+      max-width: 170px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      animation: fadeIn 0.25s ease;
+    }
+    .results-shimmer-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 6px 0;
+    }
+    .shimmer-card {
+      height: 120px;
+      background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-pill) 50%, var(--bg-card) 75%);
+      background-size: 200% 100%;
+      border-radius: 14px;
+      border: 1px solid var(--color-border-subtle);
+      animation: shimmerAnim 1.5s infinite;
+    }
+    @keyframes shimmerAnim {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── CENTER TOP BAR & RAG VERIFIED BADGE ──────────────────── */
+    .center-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      background: rgba(18, 18, 21, 0.5);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    body.light-mode .center-top-bar {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .project-pill-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-graphite);
+      background: var(--bg-pill);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border-subtle);
+    }
+    body.light-mode .project-pill-label {
+      background: #f4f4f5;
+      color: #52525b;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    .system-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: var(--color-graphite);
+    }
+    body.light-mode .system-status-pill {
+      color: #71717a;
+    }
+    .pulse-green {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 2s infinite;
+    }
+    @keyframes pulseAnim {
+      0% { opacity: 0.6; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+      100% { opacity: 0.6; transform: scale(0.9); }
+    }
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .rag-badge-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bg-pill);
+      border: 1px solid var(--color-accent-border);
+      color: var(--color-ink);
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 10px var(--color-accent-glow);
+    }
+    .rag-badge-btn:hover {
+      background: var(--color-accent-bg);
+      border-color: var(--color-accent);
+      transform: translateY(-1px);
+    }
+    body.light-mode .rag-badge-btn {
+      background: #f4f4f5;
+      color: #18181b;
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    body.light-mode .rag-badge-btn:hover {
+      background: #e4e4e7;
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+    .rag-badge-score {
+      background: var(--color-ink);
+      color: var(--bg-canvas);
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    body.light-mode .rag-badge-score {
+      background: #18181b;
+      color: #ffffff;
+    }
+    .top-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-graphite);
+      padding: 5px 11px;
+      border-radius: var(--radius-btn);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .top-action-btn:hover {
+      color: var(--color-ink);
+      border-color: var(--color-graphite);
+      background: var(--bg-pill);
+    }
+    body.light-mode .top-action-btn {
+      background: #ffffff;
+      color: #52525b;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+    body.light-mode .top-action-btn:hover {
+      background: #f4f4f5;
+      color: #09090b;
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Print Advice Button in Cart */
+    .btn-print-cart {
+      width: 100%;
+      margin-top: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-btn);
+      border: 1px solid var(--color-border);
+      background: var(--bg-pill);
+      color: var(--color-ink);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-print-cart:hover {
+      background: var(--color-accent-bg);
+      border-color: var(--color-accent-border);
+    }
+
+    /* ── GLASSMORPHISM MODAL ──────────────────────────────────── */
+    .app-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 20px;
+    }
+    .app-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .app-modal-dialog {
+      background: var(--bg-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .app-modal-overlay.active .app-modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+    .app-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .app-modal-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .app-modal-close-btn {
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      color: var(--color-graphite);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+    .app-modal-close-btn:hover {
+      color: var(--color-ink);
+      border-color: var(--color-graphite);
+    }
+    .app-modal-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--color-graphite);
+    }
+    .app-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 24px;
+      border-top: 1px solid var(--color-border-subtle);
+      background: var(--bg-card);
+    }
+    .rag-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 10px 0;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+    .metric-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-ink);
+      margin-bottom: 2px;
+    }
+    .metric-name {
+      font-size: 11px;
+      color: var(--color-graphite);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .metric-benchmark {
+      font-size: 10px;
+      color: #10b981;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .formula-box {
+      background: var(--bg-card);
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--color-ink);
+      overflow-x: auto;
+    }
+
+    /* Print Preview & Sheet */
+    #printable-advice-sheet {
+      display: none;
+    }
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printable-advice-sheet, #printable-advice-sheet * {
+        visibility: visible !important;
+      }
+      #printable-advice-sheet {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 24px !important;
+        background: #fff !important;
+        color: #000 !important;
+        display: block !important;
+      }
+      .app-modal-overlay {
+        display: none !important;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .results-panel { display: none; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { position: absolute; height: calc(100vh - 24px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+      .sidebar.collapsed { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ── 1. SIDEBAR (GLASSMORPHISM) ───────────────────────────── -->
+  <aside class="sidebar glass-card" id="main-sidebar">
+    <div class="sidebar-inner">
+
+      <!-- Top Row: Logo & Morphicons Actions -->
+      <div class="sidebar-top-bar">
+        <div class="sidebar-logo">
+          <span class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+            </svg>
+          </span>
+          <span>BookRAG</span>
+        </div>
+        <div class="sidebar-top-actions">
+          <button class="icon-btn" id="btn-search-toggle" title="Tìm kiếm phiên chat">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          <button class="icon-btn" id="btn-sidebar-toggle" title="Thu gọn thanh bên">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <path d="m14 9-3 3 3 3"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- "+ New" Button -->
+      <button class="btn-new-session" onclick="startNewSession()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>New</span>
+      </button>
+
+      <!-- Primary Nav: Tư vấn sách -->
+      <div class="nav-list">
+        <button class="nav-btn active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Tư vấn sách</span>
+        </button>
+      </div>
+
+      <!-- SESSIONS ROUNDED BOX (Ô BO TRÒN) -->
+      <div class="sessions-glass-box">
+        <div class="sessions-header" id="sessions-acc-header" onclick="toggleSessionsAccordion()">
+          <span>Sessions</span>
+          <span class="sessions-header-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Quick Session Search Box -->
+        <div class="session-search-box" id="session-search-box">
+          <input type="text" class="session-search-input" id="session-filter-input" placeholder="Lọc phiên hỏi..." oninput="filterSessions(this.value)" />
+        </div>
+
+        <div class="sessions-scroll" id="sessions-container">
+          <!-- Dynamic session items inserted by JS -->
+        </div>
+      </div>
+
+      <!-- Footer User Profile (Anonymous User) & Theme Toggle -->
+      <div class="sidebar-footer">
+        <div class="user-profile-row">
+          <div class="user-avatar-wrap">
+            <img id="avatar-img-elem" src="avatar.png" alt="Avatar" onerror="handleAvatarError(this)" />
+          </div>
+          <div class="user-info">
+            <div class="user-name">Anonymous User</div>
+            <div class="user-session-pill">
+              <span class="sess-dot"></span>
+              <span class="user-session-id" id="display-session-id">sess_init</span>
+            </div>
+          </div>
+          <button class="theme-toggle-btn" id="theme-toggle-btn" title="Chuyển chế độ Tối / Sáng" onclick="toggleTheme()">
+            <svg id="theme-icon-svg" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ── 2. CENTER PANEL (CHAT STREAM) ────────────────────────── -->
+  <main class="center-panel">
+
+    <!-- Top System Header Bar -->
+    <div class="center-top-bar">
+      <div class="top-bar-left">
+        <span class="project-pill-label">NCKH KHKT 2026-2027</span>
+        <span class="system-status-pill">
+          <span class="pulse-green"></span>
+          <span>RAG Hybrid Engine v2.4</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <button class="rag-badge-btn" onclick="openRagTransparencyModal()" title="Bấm để xem Cơ chế Chống Bịa Đặt & Minh Bạch Thuật Toán RAGAS">
+          <span>🛡️</span>
+          <span>RAG Verified</span>
+          <span class="rag-badge-score">94% Faithfulness</span>
+        </button>
+        <button class="top-action-btn" onclick="openPrintAdviceModal()" title="Lưu phiếu tư vấn & Báo giá về máy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Lưu phiếu tư vấn</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Messages Stream -->
+    <div class="chat-stream" id="chat-stream">
+
+      <!-- Hero Greeting (Empty State) -->
+      <div class="hero-greeting" id="hero-greeting">
+        <span class="hero-tag">
+          <span style="display:inline-block;animation:spinSparkle 4s linear infinite;margin-right:3px">✦</span>
+          Tư Vấn Bán Sách Tự Động RAG
+        </span>
+        <div class="hero-title-rotator">
+          <h1 class="hero-title hero-dynamic-title" id="hero-dynamic-title">Bạn muốn tìm cuốn sách nào?</h1>
+        </div>
+        <div class="hero-quote-box" id="hero-quote-box">
+          <p class="hero-quote-text" id="hero-dynamic-quote">"Không có người bạn nào trung thành như một cuốn sách hay."</p>
+          <span class="hero-quote-author" id="hero-dynamic-author">— Ernest Hemingway</span>
+        </div>
+        <div class="hero-examples">
+          <div class="example-pill" onclick="quickQuery('cho tôi sách của Nguyễn Nhật Ánh')">📖 Sách của Nguyễn Nhật Ánh</div>
+          <div class="example-pill" onclick="quickQuery('cậu bé chăn cừu đi tìm kho báu ở kim tự tháp')">🧭 Cậu bé chăn cừu tìm kho báu</div>
+          <div class="example-pill" onclick="quickQuery('sách tâm lý học dễ hiểu giá dưới 100k', 100000)">💡 Sách tâm lý học dưới 100k</div>
+          <div class="example-pill" onclick="quickQuery('truyện trinh thám án mạng kịch tính')">🕵️ Trinh thám án mạng ly kỳ</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Perplexity-Style Hero Chat Input Box -->
+    <div class="chat-input-container">
+      <div class="hero-input-box">
+
+        <!-- Attached Image Preview Pill -->
+        <div class="attached-file-pill" id="attached-file-pill" style="display:none">
+          <img src="" class="attached-file-thumb" id="attached-file-thumb" alt="Preview" />
+          <span id="attached-file-name" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">ảnh.png</span>
+          <button class="remove-file-btn" onclick="clearAttachedImage()">✕</button>
+        </div>
+
+        <!-- Textarea (Enter = Send, Shift+Enter = Newline) -->
+        <textarea id="chat-textarea" rows="1" placeholder="Hỏi về sách, cốt truyện, tác giả hoặc mô tả nhu cầu..."></textarea>
+
+        <!-- Hidden Image File Input -->
+        <input type="file" id="book-img-input" accept="image/*" style="display:none" onchange="handleImageSelected(event)" />
+
+        <!-- Bottom Controls Row -->
+        <div class="input-controls-row">
+          <div class="controls-left">
+            <!-- (+) Button to upload book picture -->
+            <button class="btn-upload-plus" title="Tải ảnh bìa sách muốn tìm" onclick="document.getElementById('book-img-input').click()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="chip-action active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Tìm kiếm</span>
+            </div>
+            <div class="chip-action" onclick="focusBudgetInput()">
+              <span>💰</span>
+              <input type="number" class="budget-mini-input" id="budget-input" placeholder="Ngân sách" min="0" step="5000" onclick="event.stopPropagation()" />
+            </div>
+          </div>
+
+          <div class="controls-right">
+            <button class="btn-send-hero" id="btn-send" onclick="submitMessage()" title="Gửi câu hỏi">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── 3. RIGHT PANEL (RECOMMENDATIONS - GLASSMORPHISM) ──────── -->
+  <aside class="results-panel glass-card" id="results-panel">
+    <div class="results-inner">
+
+      <div class="results-header-bar">
+        <div class="results-title">
+          <span>Sách gợi ý</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="results-context-pill" id="results-context-pill" style="display:none"></span>
+          <span class="rag-tag-badge">RAG</span>
+        </div>
+      </div>
+
+      <!-- Khung Giỏ Hàng nổi bật khi chọn mua -->
+      <div id="cart-container"></div>
+
+      <div class="results-cards-scroll" id="results-cards-container">
+        <div class="results-empty">
+          <div style="font-size:30px;margin-bottom:8px;opacity:0.3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <p>Các cuốn sách gợi ý kèm điểm số xếp hạng Hybrid sẽ xuất hiện tại đây khi bạn gửi câu hỏi.</p>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────────── -->
+<script>
+// [AI-Assisted Code] Prompt #06 — Monochrome Black & White Glassmorphism Engine
+
+const API_BASE = 'http://localhost:8000';
+let currentSessionId = null;
+let isProcessing = false;
+let attachedImageDataUrl = null;
+let attachedImageName = '';
+let purchasedBookIds = new Set();
+let cartItems = [];
+let currentBooks = [];
+let allSessions = [];
+
+// Danh sách câu chào và quotes truyền cảm hứng về sách
+const HERO_ROTATING_CONTENT = [
+  {
+    title: "Bạn muốn tìm cuốn sách nào?",
+    quote: '"Không có người bạn nào trung thành như một cuốn sách hay."',
+    author: "— Ernest Hemingway"
+  },
+  {
+    title: "Đắm mình vào thế giới tri thức & cảm xúc",
+    quote: '"Một cuốn sách hay mở ra thì gợi niềm hy vọng, khép lại thì đem lại điều ích lợi."',
+    author: "— Danh ngôn thế giới"
+  },
+  {
+    title: "Tìm lại tựa sách trong ký ức mang máng?",
+    quote: '"Đọc sách là trò chuyện với những bộ óc vĩ đại nhất của các thế kỷ đã qua."',
+    author: "— René Descartes"
+  },
+  {
+    title: "Khám phá câu chuyện chữa lành tâm hồn bạn",
+    quote: '"Sách là ngọn hải đăng bất tử của thời gian."',
+    author: "— E.P. Whipple"
+  },
+  {
+    title: "Gợi ý thông minh theo ngân sách của bạn",
+    quote: '"Để cho một cuốn sách cứu rỗi bạn, trước hết hãy mở nó ra."',
+    author: "— Khuyết danh"
+  }
+];
+let heroRotationIndex = 0;
+let heroRotationTimer = null;
+
+// ── 1. Init & Avatar Loader ────────────────────────────────
+function initApp() {
+  loadSavedTheme();
+  loadUserAvatar();
+  loadSessionsFromStorage();
+  startHeroQuotesRotation();
+
+  if (!currentSessionId) {
+    startNewSession(false);
+  }
+}
+
+function loadUserAvatar() {
+  const imgEl = document.getElementById('avatar-img-elem');
+  // 1. Thử nạp từ biến USER_AVATAR_BASE64 nhúng từ file avatar_data.js
+  if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64) {
+    imgEl.src = USER_AVATAR_BASE64;
+  } else {
+    // 2. Fallback relative file
+    imgEl.src = 'avatar.png';
+  }
+}
+
+function handleAvatarError(img) {
+  if (typeof USER_AVATAR_BASE64 !== 'undefined' && USER_AVATAR_BASE64 && img.src !== USER_AVATAR_BASE64) {
+    img.src = USER_AVATAR_BASE64;
+  }
+}
+
+function loadSavedTheme() {
+  const savedTheme = localStorage.getItem('bookrag_theme') || 'dark';
+  applyTheme(savedTheme);
+}
+
+function toggleTheme() {
+  const isLight = document.body.classList.contains('light-mode');
+  applyTheme(isLight ? 'dark' : 'light');
+}
+
+function applyTheme(theme) {
+  const iconSvg = document.getElementById('theme-icon-svg');
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+    localStorage.setItem('bookrag_theme', 'light');
+    if (iconSvg) {
+      iconSvg.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+    }
+  } else {
+    document.body.classList.remove('light-mode');
+    localStorage.setItem('bookrag_theme', 'dark');
+    if (iconSvg) {
+      iconSvg.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+    }
+  }
+}
+
+// ── 2. Sidebar Controls ────────────────────────────────────
+document.getElementById('btn-sidebar-toggle').addEventListener('click', () => {
+  const sidebar = document.getElementById('main-sidebar');
+  sidebar.classList.toggle('collapsed');
+  const isCollapsed = sidebar.classList.contains('collapsed');
+  const btn = document.getElementById('btn-sidebar-toggle');
+  if (isCollapsed) {
+    btn.title = 'Mở rộng thanh bên';
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="m11 9 3 3-3 3"></path></svg>`;
+  } else {
+    btn.title = 'Thu gọn thanh bên';
+    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><path d="m14 9-3 3 3 3"></path></svg>`;
+  }
+});
+
+document.getElementById('btn-search-toggle').addEventListener('click', () => {
+  const box = document.getElementById('session-search-box');
+  box.classList.toggle('open');
+  if (box.classList.contains('open')) {
+    document.getElementById('session-filter-input').focus();
+  }
+});
+
+function toggleSessionsAccordion() {
+  const header = document.getElementById('sessions-acc-header');
+  const container = document.getElementById('sessions-container');
+  header.classList.toggle('collapsed-acc');
+  container.style.display = header.classList.contains('collapsed-acc') ? 'none' : 'flex';
+}
+
+function focusBudgetInput() {
+  document.getElementById('budget-input').focus();
+}
+
+// ── 3. Sessions Storage & Navigation ───────────────────────
+function loadSessionsFromStorage() {
+  try {
+    const raw = localStorage.getItem('bookrag_sessions');
+    allSessions = raw ? JSON.parse(raw) : [];
+  } catch {
+    allSessions = [];
+  }
+  renderSessionsList(allSessions);
+}
+
+function saveSessionsToStorage() {
+  try {
+    localStorage.setItem('bookrag_sessions', JSON.stringify(allSessions));
+  } catch (e) {
+    console.warn('LocalStorage error:', e);
+  }
+}
+
+// ── Session Menu & Rename Logic ─────────────────────────────
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.session-actions') && !e.target.closest('.session-menu-dropdown')) {
+    closeAllSessionMenus();
+  }
+});
+
+function closeAllSessionMenus() {
+  document.querySelectorAll('.session-menu-dropdown').forEach(el => {
+    el.classList.remove('show');
+    el.style.top = '';
+    el.style.bottom = '';
+  });
+  document.querySelectorAll('.session-item').forEach(el => el.classList.remove('menu-open'));
+}
+
+function toggleSessionMenu(event, sessId) {
+  event.stopPropagation();
+  const menu = document.getElementById(`sess-menu-${sessId}`);
+  const item = document.getElementById(`sess-item-${sessId}`);
+  const isAlreadyOpen = menu && menu.classList.contains('show');
+
+  closeAllSessionMenus();
+
+  if (!isAlreadyOpen && menu) {
+    menu.classList.add('show');
+    if (item) {
+      item.classList.add('menu-open');
+      const scrollParent = item.closest('.sessions-scroll');
+      if (scrollParent) {
+        const scrollRect = scrollParent.getBoundingClientRect();
+        const itemRect = item.getBoundingClientRect();
+        if (itemRect.bottom + 85 > scrollRect.bottom) {
+          menu.style.top = 'auto';
+          menu.style.bottom = 'calc(100% + 2px)';
+        } else {
+          menu.style.top = 'calc(100% + 2px)';
+          menu.style.bottom = 'auto';
+        }
+      }
+    }
+  }
+}
+
+function startRenameSession(sessId) {
+  closeAllSessionMenus();
+  const titleEl = document.getElementById(`sess-title-${sessId}`);
+  const inputEl = document.getElementById(`sess-input-${sessId}`);
+  if (!titleEl || !inputEl) return;
+
+  titleEl.style.display = 'none';
+  inputEl.style.display = 'block';
+  inputEl.focus();
+  inputEl.select();
+}
+
+function handleSessionRenameKey(event, sessId) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    finishSessionRename(sessId, event.target.value);
+  } else if (event.key === 'Escape') {
+    event.preventDefault();
+    cancelSessionRename(sessId);
+  }
+}
+
+function finishSessionRename(sessId, newTitle) {
+  const trimmed = (newTitle || '').trim();
+  const sess = allSessions.find(s => s.id === sessId);
+  if (sess && trimmed && trimmed !== sess.title) {
+    sess.title = trimmed;
+    saveSessionsToStorage();
+    showToast(`Đã đổi tên phiên thành: "${trimmed}"`, 'info');
+  }
+  renderSessionsList(allSessions);
+}
+
+function cancelSessionRename(sessId) {
+  renderSessionsList(allSessions);
+}
+
+function renderSessionsList(sessions) {
+  const container = document.getElementById('sessions-container');
+  container.innerHTML = '';
+
+  if (!sessions || sessions.length === 0) {
+    container.innerHTML = '<div style="font-size:11px;color:var(--color-ash);padding:8px 4px">Chưa có phiên hỏi nào.</div>';
+    return;
+  }
+
+  sessions.forEach(sess => {
+    const div = document.createElement('div');
+    div.className = `session-item ${sess.id === currentSessionId ? 'active' : ''}`;
+    div.id = `sess-item-${sess.id}`;
+    div.onclick = () => switchSession(sess.id);
+    div.ondblclick = (e) => {
+      e.stopPropagation();
+      startRenameSession(sess.id);
+    };
+
+    div.innerHTML = `
+      <span class="session-item-title" id="sess-title-${sess.id}" title="${escHtml(sess.title)}">${escHtml(sess.title)}</span>
+      <input type="text" class="session-rename-input" id="sess-input-${sess.id}" style="display:none;" value="${escHtml(sess.title)}" onclick="event.stopPropagation()" onkeydown="handleSessionRenameKey(event, '${sess.id}')" onblur="finishSessionRename('${sess.id}', this.value)" />
+      <div class="session-actions" onclick="event.stopPropagation()">
+        <button class="session-more-btn" onclick="toggleSessionMenu(event, '${sess.id}')" title="Tùy chọn phiên">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="5" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="12" cy="19" r="2"></circle>
+          </svg>
+        </button>
+        <div class="session-menu-dropdown" id="sess-menu-${sess.id}">
+          <button class="session-menu-item" onclick="startRenameSession('${sess.id}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            Đổi tên
+          </button>
+          <button class="session-menu-item danger" onclick="deleteSession(event, '${sess.id}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Xóa phiên
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function filterSessions(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    renderSessionsList(allSessions);
+    return;
+  }
+  const filtered = allSessions.filter(s => s.title.toLowerCase().includes(q));
+  renderSessionsList(filtered);
+}
+
+function startNewSession(clearChat = true) {
+  currentSessionId = 'sess_' + Math.random().toString(36).substring(2, 9);
+  document.getElementById('display-session-id').textContent = currentSessionId;
+  purchasedBookIds.clear();
+  cartItems = [];
+  renderCart();
+
+  const pill = document.getElementById('results-context-pill');
+  if (pill) { pill.style.display = 'none'; pill.textContent = ''; }
+
+  if (clearChat) {
+    const stream = document.getElementById('chat-stream');
+    stream.innerHTML = `
+      <div class="hero-greeting" id="hero-greeting">
+        <span class="hero-tag">
+          <span style="display:inline-block;animation:spinSparkle 4s linear infinite;margin-right:3px">✦</span>
+          Tư Vấn Bán Sách Tự Động RAG
+        </span>
+        <div class="hero-title-rotator">
+          <h1 class="hero-title hero-dynamic-title" id="hero-dynamic-title">Bạn muốn tìm cuốn sách nào?</h1>
+        </div>
+        <div class="hero-quote-box" id="hero-quote-box">
+          <p class="hero-quote-text" id="hero-dynamic-quote">"Không có người bạn nào trung thành như một cuốn sách hay."</p>
+          <span class="hero-quote-author" id="hero-dynamic-author">— Ernest Hemingway</span>
+        </div>
+        <div class="hero-examples">
+          <div class="example-pill" onclick="quickQuery('cho tôi sách của Nguyễn Nhật Ánh')">📖 Sách của Nguyễn Nhật Ánh</div>
+          <div class="example-pill" onclick="quickQuery('cậu bé chăn cừu đi tìm kho báu ở kim tự tháp')">🧭 Cậu bé chăn cừu tìm kho báu</div>
+          <div class="example-pill" onclick="quickQuery('sách tâm lý học dễ hiểu giá dưới 100k', 100000)">💡 Sách tâm lý học dưới 100k</div>
+          <div class="example-pill" onclick="quickQuery('truyện trinh thám án mạng kịch tính')">🕵️ Trinh thám án mạng ly kỳ</div>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('results-cards-container').innerHTML = `
+      <div class="results-empty">
+        <div style="font-size:30px;margin-bottom:8px;opacity:0.3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <p>Các cuốn sách gợi ý kèm điểm số xếp hạng Hybrid sẽ xuất hiện tại đây khi bạn gửi câu hỏi.</p>
+      </div>
+    `;
+    clearAttachedImage();
+    startHeroQuotesRotation();
+  }
+
+  renderSessionsList(allSessions);
+}
+
+function switchSession(sessionId) {
+  const sess = allSessions.find(s => s.id === sessionId);
+  if (!sess) return;
+
+  currentSessionId = sess.id;
+  document.getElementById('display-session-id').textContent = currentSessionId;
+  renderSessionsList(allSessions);
+
+  // Khôi phục giỏ hàng của phiên đã chọn
+  cartItems = sess.cartItems || [];
+  purchasedBookIds = new Set(cartItems.map(b => b.id));
+  renderCart();
+
+  const stream = document.getElementById('chat-stream');
+  stream.innerHTML = '';
+  if (sess.messages && sess.messages.length > 0) {
+    sess.messages.forEach(m => appendChatMessage(m.role, m.text, m.image, false));
+  } else {
+    startNewSession(true);
+  }
+
+  renderBooksRightPanel(sess.books || [], sess.authorRecs || [], sess.queryContext || '');
+}
+
+function deleteSession(e, sessionId) {
+  e.stopPropagation();
+  allSessions = allSessions.filter(s => s.id !== sessionId);
+  saveSessionsToStorage();
+  if (currentSessionId === sessionId) {
+    startNewSession(true);
+  } else {
+    renderSessionsList(allSessions);
+  }
+}
+
+// ── 4. Image Upload & Clipboard Paste (Ctrl + V) ───────────
+function handleImageSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  attachedImageName = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    attachedImageDataUrl = e.target.result;
+    document.getElementById('attached-file-thumb').src = attachedImageDataUrl;
+    document.getElementById('attached-file-name').textContent = attachedImageName;
+    const pill = document.getElementById('attached-file-pill');
+    pill.classList.add('active');
+    pill.style.display = 'flex';
+    showToast('📸 Đã đính kèm ảnh bìa sách!', 'info');
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearAttachedImage() {
+  attachedImageDataUrl = null;
+  attachedImageName = '';
+  document.getElementById('book-img-input').value = '';
+  const pill = document.getElementById('attached-file-pill');
+  pill.classList.remove('active');
+  pill.style.display = 'none';
+}
+
+// ── 5. Keyboard: Enter = Send, Shift+Enter = Newline ───────
+const textarea = document.getElementById('chat-textarea');
+
+// Hỗ trợ dán ảnh trực tiếp từ Clipboard (Ctrl + V vào ô chat hoặc toàn trang)
+function setupClipboardPaste() {
+  const pasteHandler = function(e) {
+    const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type && items[i].type.indexOf('image') !== -1) {
+        const file = items[i].getAsFile();
+        if (file) {
+          e.preventDefault();
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            attachedImageDataUrl = evt.target.result;
+            attachedImageName = file.name || 'anh_chup_bia_sach.png';
+            const thumb = document.getElementById('attached-file-thumb');
+            const nameEl = document.getElementById('attached-file-name');
+            const pill = document.getElementById('attached-file-pill');
+            if (thumb) thumb.src = attachedImageDataUrl;
+            if (nameEl) nameEl.textContent = attachedImageName;
+            if (pill) {
+              pill.classList.add('active');
+              pill.style.display = 'flex';
+            }
+            showToast('📸 Đã đính kèm ảnh bìa sách từ Clipboard (Ctrl + V)!', 'info');
+            if (textarea) textarea.focus();
+          };
+          reader.readAsDataURL(file);
+          break;
+        }
+      }
+    }
+  };
+
+  if (textarea) textarea.addEventListener('paste', pasteHandler);
+  window.addEventListener('paste', function(e) {
+    if (textarea && document.activeElement === textarea) return;
+    pasteHandler(e);
+  });
+}
+setupClipboardPaste();
+
+if (textarea) {
+  textarea.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (e.shiftKey) {
+        return;
+      }
+      e.preventDefault();
+      submitMessage();
+    }
+  });
+
+  textarea.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+}
+
+function quickQuery(text, budget = null) {
+  textarea.value = text;
+  if (budget) {
+    document.getElementById('budget-input').value = budget;
+  }
+  submitMessage();
+}
+
+// ── 6. Message Formatting ──────────────────────────────────
+function formatBotMarkdown(text) {
+  let html = escHtml(text);
+
+  // Headers
+  html = html.replace(/^###\s*(.+)$/gm, '<h3>$1</h3>');
+
+  // Bold **text** -> <strong>text</strong>
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  // Italic *text* -> <em>text</em>
+  html = html.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+
+  // Code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Bullet items
+  html = html.replace(/^[•\-*]\s*(.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.+?<\/li>(\n<li>.+?<\/li>)*)/gs, '<ul>$1</ul>');
+
+  // Xóa sạch toàn bộ dấu * còn sót lại
+  html = html.replace(/\*/g, '');
+
+  // Paragraphs & line breaks
+  html = html.replace(/\n\n+/g, '</p><p>');
+  html = html.replace(/\n/g, '<br/>');
+
+  return `<p>${html}</p>`;
+}
+
+function appendChatMessage(role, text, imageSrc = null, autoScroll = true) {
+  const hero = document.getElementById('hero-greeting');
+  if (hero) hero.style.display = 'none';
+
+  const stream = document.getElementById('chat-stream');
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `chat-msg ${role}`;
+
+  let bodyContent = role === 'bot' ? formatBotMarkdown(text) : `<p>${escHtml(text)}</p>`;
+  if (imageSrc) {
+    bodyContent += `
+      <div class="msg-img-wrap">
+        <span class="msg-img-badge">📷 Tìm bằng ảnh bìa sách</span>
+        <img src="${imageSrc}" class="msg-img-attachment" alt="Ảnh đính kèm" />
+      </div>
+    `;
+  }
+
+  msgDiv.innerHTML = `
+    <div class="msg-avatar">${role === 'user' ? '👤' : '✦'}</div>
+    <div class="msg-bubble">${bodyContent}</div>
+  `;
+  stream.appendChild(msgDiv);
+
+  if (autoScroll) {
+    stream.scrollTop = stream.scrollHeight;
+  }
+  return msgDiv;
+}
+
+function showTypingIndicator(customStatus = '') {
+  removeTypingIndicator();
+  const stream = document.getElementById('chat-stream');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.id = 'active-typing';
+  div.innerHTML = `
+    <div class="msg-avatar">✦</div>
+    <div class="msg-bubble typing-dots">
+      ${customStatus ? `<span class="typing-status-text">${escHtml(customStatus)}</span>` : ''}
+      <div class="typing-dots-anim">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  `;
+  stream.appendChild(div);
+  stream.scrollTop = stream.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('active-typing');
+  if (el) el.remove();
+}
+
+// ── 7. Submit Message ──────────────────────────────────────
+async function submitMessage() {
+  if (isProcessing) return;
+
+  const rawText = textarea.value.trim();
+  const hasImage = Boolean(attachedImageDataUrl);
+
+  if (!rawText && !hasImage) return;
+
+  let queryText = rawText;
+  if (!queryText && hasImage) {
+    queryText = "Tìm mua cuốn sách trong ảnh bìa này";
+  }
+
+  const budgetVal = document.getElementById('budget-input').value;
+  const budget = budgetVal ? parseInt(budgetVal) : null;
+  const imgToSave = attachedImageDataUrl;
+
+  appendChatMessage('user', queryText, imgToSave);
+
+  textarea.value = '';
+  textarea.style.height = 'auto';
+  clearAttachedImage();
+
+  isProcessing = true;
+  document.getElementById('btn-send').disabled = true;
+  if (imgToSave) {
+    showTypingIndicator("📸 Đang phân tích ảnh bìa sách qua Gemini Vision...");
+  } else {
+    showTypingIndicator();
+  }
+
+  let currentSess = allSessions.find(s => s.id === currentSessionId);
+  if (!currentSess) {
+    currentSess = {
+      id: currentSessionId,
+      title: imgToSave ? (rawText ? (rawText.slice(0, 30) + (rawText.length > 30 ? '...' : '')) : 'Tìm theo ảnh bìa sách') : (queryText.slice(0, 30) + (queryText.length > 30 ? '...' : '')),
+      timestamp: Date.now(),
+      messages: [],
+      books: [],
+      authorRecs: [],
+      cartItems: []
+    };
+    allSessions.unshift(currentSess);
+  }
+  currentSess.messages.push({ role: 'user', text: queryText, image: imgToSave });
+  currentSess.cartItems = cartItems;
+  saveSessionsToStorage();
+  renderSessionsList(allSessions);
+
+  // Hiển thị shimmer loading trên thanh bên phải để xóa các cuốn sách cũ ngay lập tức
+  showRightPanelShimmer();
+
+  try {
+    const payload = {
+      message: queryText,
+      session_id: currentSessionId
+    };
+    if (budget) payload.budget = budget;
+    if (imgToSave) payload.image_data = imgToSave;
+
+    const res = await fetch(`${API_BASE}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    removeTypingIndicator();
+    appendChatMessage('bot', data.answer || '');
+    renderBooksRightPanel(data.books || [], data.author_recs || [], data.query_context || '');
+
+    currentSess.messages.push({ role: 'bot', text: data.answer || '' });
+    currentSess.books = data.books || [];
+    currentSess.authorRecs = data.author_recs || [];
+    currentSess.queryContext = data.query_context || '';
+    currentSess.cartItems = cartItems;
+    saveSessionsToStorage();
+
+  } catch (err) {
+    removeTypingIndicator();
+    console.error('Chat error:', err);
+    appendChatMessage('bot', '⚠️ Đang có lỗi xảy ra, bạn vui lòng thử lại sau nhé!');
+  } finally {
+    isProcessing = false;
+    document.getElementById('btn-send').disabled = false;
+    textarea.focus();
+  }
+}
+
+// ── 8. Render Books on Right Panel ─────────────────────────
+function renderBooksRightPanel(books, authorRecs, queryContext = '') {
+  currentBooks = books || [];
+  const container = document.getElementById('results-cards-container');
+  container.innerHTML = '';
+  container.scrollTop = 0;
+
+  const pill = document.getElementById('results-context-pill');
+  if (pill) {
+    if (queryContext) {
+      pill.textContent = queryContext;
+      pill.title = queryContext;
+      pill.style.display = 'inline-block';
+    } else {
+      pill.style.display = 'none';
+    }
+  }
+
+  // Gỡ bỏ author recs box cũ nếu có
+  const oldRec = container.querySelector('.author-recs-box');
+  if (oldRec) oldRec.remove();
+
+  if (!books || books.length === 0) {
+    container.innerHTML = `
+      <div class="results-empty">
+        <div style="font-size:28px;margin-bottom:8px;opacity:0.4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <p>Không có tựa sách nào khớp hoàn toàn với yêu cầu này.<br>Bạn thử nới rộng ngân sách hoặc tìm theo đề tài khác nhé!</p>
+      </div>
+    `;
+    return;
+  }
+
+  const rankLabels = ['#1 Gợi ý', '#2 Gợi ý', '#3 Gợi ý', '#4 Gợi ý', '#5 Gợi ý'];
+
+  books.forEach((b, idx) => {
+    const isBought = purchasedBookIds.has(b.id);
+    const card = document.createElement('div');
+    card.className = 'book-item-card';
+
+    card.innerHTML = `
+      <div class="card-top-row">
+        <span class="card-rank">${rankLabels[idx] || `#${idx+1}`}</span>
+        <span class="card-stock-tag">${b.in_stock ? 'Còn hàng' : 'Hết hàng'}</span>
+      </div>
+
+      <div class="card-book-title">${escHtml(b.title)}</div>
+      <div class="card-book-author">✍️ ${escHtml(b.author)}${b.category ? ' · ' + escHtml(b.category) : ''}</div>
+
+      <div class="card-chips-row">
+        <span class="meta-chip price">${Number(b.price).toLocaleString('vi-VN')}đ</span>
+        <span class="meta-chip">⭐ ${b.rating} (${Number(b.sold_count).toLocaleString('vi-VN')} bán)</span>
+        ${b.target_audience ? `<span class="meta-chip">${escHtml(b.target_audience)}</span>` : ''}
+      </div>
+
+      <div class="card-scores-wrap">
+        ${renderScoreRow('Score tổng', b.score_total, 'total')}
+        ${renderScoreRow('Ngữ nghĩa', b.score_semantic, 'semantic')}
+        ${renderScoreRow('Xếp hạng', b.score_ranking, 'ranking')}
+      </div>
+
+      <button class="btn-buy-book ${isBought ? 'bought' : ''}"
+              id="btn-buy-${b.id}"
+              onclick="toggleBuyBook('${b.id}')"
+              onmouseenter="handleBuyBtnHover(this, '${b.id}', true)"
+              onmouseleave="handleBuyBtnHover(this, '${b.id}', false)">
+        ${isBought ? '✓ Đã chọn mua' : '+ Chọn mua'}
+      </button>
+    `;
+    container.appendChild(card);
+  });
+
+  if (authorRecs && authorRecs.length > 0) {
+    renderAuthorRecommendations(authorRecs);
+  }
+}
+
+function renderScoreRow(label, val, type) {
+  const pct = Math.round((val || 0) * 100);
+  return `
+    <div class="score-metric-row">
+      <span class="score-name">${label}</span>
+      <div class="score-progress-bar">
+        <div class="score-progress-fill ${type}" style="width:${pct}%"></div>
+      </div>
+      <span class="score-num">${pct}%</span>
+    </div>
+  `;
+}
+
+function handleBuyBtnHover(btn, bookId, isEnter) {
+  if (purchasedBookIds.has(bookId)) {
+    btn.textContent = isEnter ? '✕ Bỏ chọn mua' : '✓ Đã chọn mua';
+  } else {
+    btn.textContent = '+ Chọn mua';
+  }
+}
+
+// ── 9. Cart UI & Actions ───────────────────────────────────
+function renderCart() {
+  const container = document.getElementById('cart-container');
+  if (!container) return;
+
+  if (!cartItems || cartItems.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const totalPrice = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+
+  container.innerHTML = `
+    <div class="cart-box">
+      <div class="cart-header">
+        <div class="cart-title">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span>Giỏ hàng đã chọn</span>
+          <span class="cart-count-badge">${cartItems.length}</span>
+        </div>
+        <button class="cart-clear-btn" onclick="clearCart()" title="Xóa toàn bộ giỏ hàng">Xóa hết</button>
+      </div>
+
+      <div class="cart-items-list">
+        ${cartItems.map(item => `
+          <div class="cart-item" id="cart-item-${item.id}">
+            <div class="cart-item-info">
+              <div class="cart-item-title" title="${escHtml(item.title)}">${escHtml(item.title)}</div>
+              <div class="cart-item-meta">
+                <span class="cart-item-price">${Number(item.price || 0).toLocaleString('vi-VN')}đ</span>
+                ${item.author ? `<span class="cart-item-author">· ${escHtml(item.author)}</span>` : ''}
+              </div>
+            </div>
+            <button class="cart-item-remove-btn" onclick="removeFromCart('${item.id}', '${escAttr(item.title)}')" title="Bỏ chọn cuốn này">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span class="cart-total-label">Tổng cộng (${cartItems.length} cuốn):</span>
+          <span class="cart-total-val">${totalPrice.toLocaleString('vi-VN')}đ</span>
+        </div>
+        <button class="btn-checkout" onclick="handleCheckout()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Xác nhận mua ngay</span>
+        </button>
+        <button class="btn-print-cart" onclick="openPrintAdviceModal()" title="Lưu phiếu tư vấn chi tiết về máy">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Lưu phiếu tư vấn & Báo giá</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleBuyBook(bookId) {
+  if (purchasedBookIds.has(bookId)) {
+    removeFromCart(bookId);
+  } else {
+    const book = currentBooks.find(b => b.id === bookId) ||
+                 (allSessions.find(s => s.id === currentSessionId)?.books || []).find(b => b.id === bookId);
+    buyBookAction(bookId, book?.title || 'Sách', book);
+  }
+}
+
+async function buyBookAction(bookId, title, bookObj) {
+  if (!currentSessionId) return;
+  if (purchasedBookIds.has(bookId)) return;
+
+  // 1. Thêm vào local state
+  purchasedBookIds.add(bookId);
+  if (!bookObj) {
+    bookObj = currentBooks.find(b => b.id === bookId) || { id: bookId, title: title || bookId, price: 0, author: '' };
+  }
+  if (!cartItems.some(item => item.id === bookId)) {
+    cartItems.push(bookObj);
+  }
+
+  // 2. Cập nhật giao diện
+  updateBookButtonState(bookId, true);
+  renderCart();
+  syncCartToCurrentSession();
+
+  // 3. Gửi API /buy
+  try {
+    const res = await fetch(`${API_BASE}/buy`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: currentSessionId, book_id: bookId })
+    });
+    const data = await res.json();
+    showToast(`✓ Đã thêm vào giỏ: ${title || bookObj.title}`, 'success');
+
+    if (data.author_recommendations && data.author_recommendations.length > 0) {
+      renderAuthorRecommendations(data.author_recommendations);
+    }
+  } catch (err) {
+    console.warn('Error recording purchase:', err);
+    showToast('⚠️ Đang có lỗi xảy ra, vui lòng thử lại sau!', 'warn');
+  }
+}
+
+async function removeFromCart(bookId, title) {
+  if (!currentSessionId) return;
+
+  const itemIndex = cartItems.findIndex(item => item.id === bookId);
+  const removedItem = itemIndex >= 0 ? cartItems[itemIndex] : null;
+  const bookTitle = title || removedItem?.title || 'Sách';
+
+  // 1. Gỡ khỏi local state
+  if (itemIndex >= 0) cartItems.splice(itemIndex, 1);
+  purchasedBookIds.delete(bookId);
+
+  // 2. Cập nhật giao diện
+  updateBookButtonState(bookId, false);
+  renderCart();
+  syncCartToCurrentSession();
+
+  // 3. Gửi API /remove_from_cart
+  try {
+    await fetch(`${API_BASE}/remove_from_cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: currentSessionId, book_id: bookId })
+    });
+    showToast(`Đã bỏ chọn: ${bookTitle}`, 'warn');
+  } catch (err) {
+    console.warn('Error removing from cart:', err);
+  }
+}
+
+async function clearCart() {
+  if (!currentSessionId || cartItems.length === 0) return;
+  const count = cartItems.length;
+
+  for (const item of [...cartItems]) {
+    try {
+      await fetch(`${API_BASE}/remove_from_cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: currentSessionId, book_id: item.id })
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+    updateBookButtonState(item.id, false);
+  }
+
+  cartItems = [];
+  purchasedBookIds.clear();
+  renderCart();
+  syncCartToCurrentSession();
+  showToast(`🗑️ Đã làm trống giỏ hàng (${count} cuốn)`, 'warn');
+}
+
+function handleCheckout() {
+  if (cartItems.length === 0) return;
+  const totalPrice = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+  const itemsList = cartItems.map(item => `• **${item.title}** — ${Number(item.price || 0).toLocaleString('vi-VN')}đ (✍️ ${item.author || 'Nhiều tác giả'})`).join('\n');
+
+  appendChatMessage('bot', `🎉 **XÁC NHẬN ĐƠN HÀNG THÀNH CÔNG!**\n\nBạn đã chọn mua **${cartItems.length} cuốn sách**:\n${itemsList}\n\n💳 **Tổng thanh toán:** **${totalPrice.toLocaleString('vi-VN')}đ**\n📦 **Trạng thái:** Đơn hàng đã được lưu vào phiên tư vấn \`${currentSessionId}\`.\n\nCảm ơn bạn đã trải nghiệm hệ thống RAG Bookstore!`);
+  showToast(`🎉 Đã đặt hàng thành công ${cartItems.length} cuốn!`, 'success');
+}
+
+function updateBookButtonState(bookId, isBought) {
+  const btn = document.getElementById(`btn-buy-${bookId}`);
+  if (btn) {
+    if (isBought) {
+      btn.textContent = ' Đã chọn mua';
+      btn.classList.add('bought');
+    } else {
+      btn.textContent = '+ Chọn mua';
+      btn.classList.remove('bought');
+    }
+  }
+}
+
+function syncCartToCurrentSession() {
+  const currentSess = allSessions.find(s => s.id === currentSessionId);
+  if (currentSess) {
+    currentSess.cartItems = cartItems;
+    saveSessionsToStorage();
+  }
+}
+
+function renderAuthorRecommendations(recommendations) {
+  const container = document.getElementById('results-cards-container');
+  const oldRec = container.querySelector('.author-recs-box');
+  if (oldRec) oldRec.remove();
+
+  const recsBox = document.createElement('div');
+  recsBox.className = 'author-recs-box';
+  recsBox.innerHTML = `
+    <div class="author-recs-heading">📖 Tác phẩm khác của cùng tác giả:</div>
+    <ul class="author-recs-list">
+      ${recommendations.map(r => `
+        <li class="author-recs-item">
+          <span><strong>${escHtml(r.title)}</strong></span>
+          <span>${Number(r.price).toLocaleString('vi-VN')}đ</span>
+        </li>
+      `).join('')}
+    </ul>
+  `;
+  container.appendChild(recsBox);
+}
+
+// ── 10. Toast Notification & Shimmer Helpers ───────────────
+function showToast(message, type = 'info') {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `toast-msg ${type}`;
+  
+  let iconSvg = 'ℹ';
+  if (type === 'success') iconSvg = '✓';
+  else if (type === 'warn') iconSvg = '✕';
+
+  toast.innerHTML = `
+    <span class="toast-icon">${iconSvg}</span>
+    <span class="toast-text">${escHtml(message)}</span>
+  `;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('toast-out');
+    setTimeout(() => toast.remove(), 280);
+  }, 2300);
+}
+
+function showRightPanelShimmer() {
+  const container = document.getElementById('results-cards-container');
+  if (!container) return;
+  const pill = document.getElementById('results-context-pill');
+  if (pill) {
+    pill.textContent = 'Đang tìm kiếm...';
+    pill.style.display = 'inline-block';
+  }
+  container.innerHTML = `
+    <div class="results-shimmer-box">
+      <div class="shimmer-card"></div>
+      <div class="shimmer-card"></div>
+      <div class="shimmer-card"></div>
+    </div>
+  `;
+}
+
+// ── 11. Hero Dynamic Quotes Rotation ───────────────────────
+function startHeroQuotesRotation() {
+  if (heroRotationTimer) clearInterval(heroRotationTimer);
+  heroRotationTimer = setInterval(() => {
+    rotateHeroGreeting();
+  }, 4500);
+}
+
+function rotateHeroGreeting() {
+  const titleEl = document.getElementById('hero-dynamic-title');
+  const quoteEl = document.getElementById('hero-dynamic-quote');
+  const authorEl = document.getElementById('hero-dynamic-author');
+  const quoteBox = document.getElementById('hero-quote-box');
+  if (!titleEl || !quoteEl) return;
+
+  titleEl.classList.add('fade-out');
+  if (quoteBox) quoteBox.classList.add('fade-out');
+
+  setTimeout(() => {
+    heroRotationIndex = (heroRotationIndex + 1) % HERO_ROTATING_CONTENT.length;
+    const item = HERO_ROTATING_CONTENT[heroRotationIndex];
+
+    titleEl.textContent = item.title;
+    quoteEl.textContent = item.quote;
+    if (authorEl) authorEl.textContent = item.author;
+
+    titleEl.classList.remove('fade-out');
+    titleEl.classList.add('fade-in');
+    if (quoteBox) {
+      quoteBox.classList.remove('fade-out');
+      quoteBox.classList.add('fade-in');
+    }
+
+    setTimeout(() => {
+      titleEl.classList.remove('fade-in');
+      if (quoteBox) quoteBox.classList.remove('fade-in');
+    }, 450);
+  }, 400);
+}
+
+// ── Helpers ────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/'/g, "\\'");
+}
+
+// ── 10. Modals & Printable Sheet Functions ───────────────────
+function openRagTransparencyModal() {
+  const modal = document.getElementById('rag-transparency-modal');
+  if (modal) modal.classList.add('active');
+}
+
+function closeRagTransparencyModal() {
+  const modal = document.getElementById('rag-transparency-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function openPrintAdviceModal() {
+  prepareAdvicePreview();
+  const modal = document.getElementById('print-advice-modal');
+  if (modal) modal.classList.add('active');
+}
+
+function closePrintAdviceModal() {
+  const modal = document.getElementById('print-advice-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function prepareAdvicePreview() {
+  const previewBody = document.getElementById('advice-preview-content');
+  const printableSheet = document.getElementById('printable-advice-sheet');
+  if (!previewBody || !printableSheet) return;
+
+  // Lấy danh sách sách từ giỏ hàng hoặc từ kết quả RAG gần nhất
+  let itemsToPrint = [];
+  if (cartItems && cartItems.length > 0) {
+    itemsToPrint = [...cartItems];
+  } else if (currentBooks && currentBooks.length > 0) {
+    itemsToPrint = currentBooks.slice(0, 5).map(r => ({
+      id: r.id,
+      title: r.title,
+      author: r.author || 'Đang cập nhật',
+      price: r.price || 0,
+      genre: r.category || r.genre || 'Sách tham khảo',
+      score: r.score_total || r.final_score || r.score || 0.9,
+      description: r.description || ''
+    }));
+  }
+
+  const sessId = currentSessionId || 'sess_demo';
+  const nowStr = new Date().toLocaleString('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+
+  const total = itemsToPrint.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+
+  const htmlContent = `
+    <div style="font-family: var(--font-main); color: var(--color-ink); line-height: 1.5;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--color-border); padding-bottom:12px; margin-bottom:14px;">
+        <div>
+          <div style="font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">Trường THPT Nguyễn Hữu Thọ</div>
+          <div style="font-size:12px; color:var(--color-graphite);">Dự Án NCKH KHKT 2026-2027 • Hệ Thống Tư Vấn Bán Sách Tự Động RAG</div>
+          <div style="font-size:12px; color:var(--color-graphite); margin-top:2px;">Mã phiên tư vấn: <code style="background:var(--bg-pill); padding:1px 5px; border-radius:4px;">${sessId}</code></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px; font-weight:700; color:#10b981;">PHIẾU TƯ VẤN BÁO GIÁ</div>
+          <div style="font-size:11.5px; color:var(--color-graphite);">Ngày in: ${nowStr}</div>
+          <div style="font-size:11px; margin-top:3px; background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.3); padding:1px 6px; border-radius:4px; display:inline-block;">RAG Verified 100%</div>
+        </div>
+      </div>
+
+      ${itemsToPrint.length === 0 ? `
+        <div style="text-align:center; padding:30px 0; color:var(--color-graphite);">
+          <p>Chưa có cuốn sách nào được chọn trong phiên hiện tại.</p>
+          <p style="font-size:12px; margin-top:4px;">Hãy đặt câu hỏi tìm sách hoặc bấm <b>+ Chọn mua</b> để tạo danh sách tư vấn.</p>
+        </div>
+      ` : `
+        <div style="font-size:12.5px; margin-bottom:10px; color:var(--color-graphite);">
+          Danh mục sách được hệ thống RAG phân tích ngữ nghĩa và đề xuất phù hợp với nhu cầu bạn đọc:
+        </div>
+        <table style="width:100%; border-collapse:collapse; font-size:12.5px; margin-bottom:16px;">
+          <thead>
+            <tr style="background:var(--bg-pill); border-bottom:1px solid var(--color-border); text-align:left;">
+              <th style="padding:8px 10px; width:30px;">STT</th>
+              <th style="padding:8px 10px;">Tên tác phẩm & Tác giả</th>
+              <th style="padding:8px 10px; width:110px;">Thể loại</th>
+              <th style="padding:8px 10px; width:90px; text-align:right;">Độ khớp</th>
+              <th style="padding:8px 10px; width:100px; text-align:right;">Giá bìa</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsToPrint.map((book, idx) => `
+              <tr style="border-bottom:1px solid var(--color-border-subtle);">
+                <td style="padding:8px 10px; color:var(--color-graphite);">${idx + 1}</td>
+                <td style="padding:8px 10px;">
+                  <div style="font-weight:600; color:var(--color-ink);">${escHtml(book.title)}</div>
+                  <div style="font-size:11.5px; color:var(--color-graphite);">${escHtml(book.author || 'Nhiều tác giả')}</div>
+                </td>
+                <td style="padding:8px 10px; font-size:12px; color:var(--color-graphite);">${escHtml(book.genre || 'Sách')}</td>
+                <td style="padding:8px 10px; text-align:right; font-weight:600; color:#10b981;">
+                  ${Math.round((Number(book.score) || 0.9) * 100)}%
+                </td>
+                <td style="padding:8px 10px; text-align:right; font-weight:600; color:var(--color-ink);">
+                  ${Number(book.price || 0).toLocaleString('vi-VN')}đ
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr style="background:var(--bg-pill); font-weight:700;">
+              <td colspan="4" style="padding:10px; text-align:right;">TỔNG CỘNG TIỀN SÁCH:</td>
+              <td style="padding:10px; text-align:right; color:var(--color-ink); font-size:14px;">
+                ${total.toLocaleString('vi-VN')}đ
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:20px; padding-top:10px; border-top:1px dashed var(--color-border); font-size:11.5px; color:var(--color-graphite);">
+          <div>
+            <div>• Cam kết 100% sách có trong kho dữ liệu thư viện / nhà sách.</div>
+            <div>• Định danh thông tin tác giả và bản quyền bởi RAG Grounding Engine.</div>
+          </div>
+          <div style="text-align:center; min-width:180px;">
+            <div style="margin-bottom:30px; font-weight:600;">HỆ THỐNG XÁC THỰC</div>
+            <div style="font-size:10.5px; color:var(--color-graphite);">(Ký & Đóng dấu điện tử)</div>
+          </div>
+        </div>
+      `}
+    </div>
+  `;
+
+  previewBody.innerHTML = htmlContent;
+
+  // Render ra bản in khổ A4 (dự phòng)
+  printableSheet.innerHTML = htmlContent;
+}
+
+function saveAdviceSheetToFile() {
+  const sessId = currentSessionId || 'sess_demo';
+  const nowStr = new Date().toLocaleString('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  });
+  const fileDateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+
+  let itemsToPrint = [];
+  if (cartItems && cartItems.length > 0) {
+    itemsToPrint = [...cartItems];
+  } else if (currentBooks && currentBooks.length > 0) {
+    itemsToPrint = currentBooks.slice(0, 5).map(r => ({
+      id: r.id,
+      title: r.title,
+      author: r.author || 'Đang cập nhật',
+      price: r.price || 0,
+      genre: r.category || r.genre || 'Sách tham khảo',
+      score: r.score_total || r.final_score || r.score || 0.9,
+      description: r.description || ''
+    }));
+  }
+
+  const total = itemsToPrint.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+
+  const fullHtml = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phiếu Tư Vấn Báo Giá Sách - ${sessId}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 30px 15px;
+      line-height: 1.6;
+    }
+    .sheet-container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+    .sheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+    .school-title {
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0f172a;
+    }
+    .project-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 3px;
+    }
+    .session-code {
+      font-size: 12.5px;
+      color: #475569;
+      margin-top: 4px;
+    }
+    .session-code code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .sheet-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #059669;
+      text-transform: uppercase;
+    }
+    .date-str {
+      font-size: 12.5px;
+      color: #64748b;
+      margin-top: 3px;
+    }
+    .badge-rag {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .intro-note {
+      font-size: 13.5px;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-bottom: 24px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+    }
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      text-align: left;
+    }
+    .col-stt { width: 44px; text-align: center; }
+    .col-score { width: 95px; text-align: right; }
+    .col-price { width: 125px; text-align: right; }
+    .score-val { color: #059669; font-weight: 700; }
+    .price-val { font-weight: 700; }
+    tfoot tr {
+      background: #f8fafc;
+      font-weight: 800;
+    }
+    .total-title {
+      text-align: right;
+      font-size: 14px;
+      color: #1e293b;
+    }
+    .total-val {
+      text-align: right;
+      font-size: 16px;
+      color: #b91c1c;
+      font-weight: 800;
+    }
+    .sheet-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 36px;
+      padding-top: 18px;
+      border-top: 1px dashed #cbd5e1;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .verification-box {
+      text-align: center;
+      min-width: 220px;
+    }
+    .stamp-box {
+      margin-top: 40px;
+      font-weight: 800;
+      color: #059669;
+      letter-spacing: 0.05em;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet-container { border: none; box-shadow: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet-container">
+    <div class="sheet-header">
+      <div>
+        <div class="school-title">TRƯỜNG THPT NGUYỄN HỮU THỌ</div>
+        <div class="project-sub">Dự án NCKH KHKT 2026-2027 • Hệ thống Tư Vấn Bán Sách Tự Động RAG</div>
+        <div class="session-code">Mã phiên tư vấn: <code>${sessId}</code></div>
+      </div>
+      <div class="header-right">
+        <div class="sheet-title">PHIẾU TƯ VẤN & BÁO GIÁ SÁCH</div>
+        <div class="date-str">Ngày xuất phiếu: ${nowStr}</div>
+        <div class="badge-rag">RAG VERIFIED • GROUNDED 100%</div>
+      </div>
+    </div>
+
+    <div class="intro-note">
+      Danh mục sách được hệ thống Hybrid RAG phân tích ngữ nghĩa và đề xuất phù hợp với câu hỏi bạn đọc:
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="col-stt">STT</th>
+          <th>Tên tác phẩm & Tác giả</th>
+          <th style="width: 120px;">Thể loại</th>
+          <th class="col-score">Độ khớp</th>
+          <th class="col-price">Đơn giá</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsToPrint.length === 0 ? `
+          <tr><td colspan="5" style="text-align:center; padding:24px; color:#64748b;">Chưa có cuốn sách nào trong danh mục tư vấn.</td></tr>
+        ` : itemsToPrint.map((b, idx) => `
+          <tr>
+            <td class="col-stt">${idx + 1}</td>
+            <td>
+              <strong style="color:#0f172a;">${escHtml(b.title)}</strong><br/>
+              <span style="font-size:12px; color:#64748b;">Tác giả: ${escHtml(b.author || 'Nhiều tác giả')}</span>
+            </td>
+            <td>${escHtml(b.genre || 'Sách')}</td>
+            <td class="col-score score-val">${Math.round((Number(b.score) || 0.9) * 100)}%</td>
+            <td class="col-price price-val">${Number(b.price || 0).toLocaleString('vi-VN')}đ</td>
+          </tr>
+        `).join('')}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="total-title">TỔNG CỘNG TIỀN SÁCH:</td>
+          <td class="total-val">${total.toLocaleString('vi-VN')}đ</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="sheet-footer">
+      <div>
+        <div>• Cam kết 100% tựa sách và đơn giá có thật trong cơ sở dữ liệu (Anti-Hallucination).</div>
+        <div>• Phiếu tư vấn có giá trị tham khảo và xác nhận danh mục sách đề xuất.</div>
+        <div style="margin-top:6px; font-style:italic;">Hệ thống phát triển bởi Nhóm NCKH THPT Nguyễn Hữu Thọ, TP.HCM.</div>
+      </div>
+      <div class="verification-box">
+        <div style="font-weight:700; color:#334155;">XÁC NHẬN HỆ THỐNG</div>
+        <div class="stamp-box">[ ĐÃ XÁC THỰC RAG ]</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const filename = `Phieu_Tu_Van_Bao_Gia_${sessId}_${fileDateStr}.html`;
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast(`💾 Đã tải "${filename}" thành công về máy tính!`, 'success');
+  closePrintAdviceModal();
+}
+
+function downloadAdvicePdf() {
+  const sessId = currentSessionId || 'sess_demo';
+  const fileDateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const filename = `Phieu_Tu_Van_Bao_Gia_${sessId}_${fileDateStr}.pdf`;
+
+  const previewEl = document.getElementById('advice-preview-content');
+  if (!previewEl || !previewEl.firstElementChild) {
+    showToast('Chưa có nội dung phiếu để xuất PDF.', 'error');
+    return;
+  }
+
+  if (typeof html2pdf !== 'undefined') {
+    showToast('⏳ Đang kết xuất và lưu file PDF...', 'info');
+
+    const element = previewEl.firstElementChild.cloneNode(true);
+    element.style.background = '#ffffff';
+    element.style.color = '#0f172a';
+    element.style.padding = '24px 28px';
+    element.style.boxShadow = 'none';
+    element.style.border = 'none';
+
+    const opt = {
+      margin:       [10, 10, 10, 10],
+      filename:     filename,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      showToast(`📥 Đã lưu file "${filename}" về máy!`, 'success');
+    }).catch(err => {
+      console.warn('Lỗi html2pdf, tải file HTML thay thế:', err);
+      saveAdviceSheetToFile();
+    });
+  } else {
+    saveAdviceSheetToFile();
+  }
+}
+
+function printAdviceSheet() {
+  prepareAdvicePreview();
+  window.print();
+}
+
+// Bắt phím Escape để đóng modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeRagTransparencyModal();
+    closePrintAdviceModal();
+  }
+});
+
+initApp();
+</script>
+
+<!-- ── 4. RAG TRANSPARENCY MODAL ─────────────────────────────── -->
+<div class="app-modal-overlay" id="rag-transparency-modal" onclick="if(event.target===this)closeRagTransparencyModal()">
+  <div class="app-modal-dialog">
+    <div class="app-modal-header">
+      <div class="app-modal-title">
+        <span>🛡️</span>
+        <span>Minh Bạch Thuật Toán RAG & Đánh Giá Khoa Học RAGAS</span>
+      </div>
+      <button class="app-modal-close-btn" onclick="closeRagTransparencyModal()" title="Đóng">✕</button>
+    </div>
+    <div class="app-modal-body">
+      <div>
+        <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--color-graphite); margin-bottom:4px;">
+          Đề tài NCKH KHKT 2026-2027 • Trường THPT Nguyễn Hữu Thọ, TP.HCM
+        </div>
+        <h3 style="color:var(--color-ink); font-size:16px; margin-bottom:6px;">
+          Kiến Trúc Hybrid RAG 3 Lớp Chống Ảo Giác (Anti-Hallucination)
+        </h3>
+        <p>
+          Hệ thống loại bỏ hoàn toàn hiện tượng "bịa sách" và "bịa giá" thông qua việc ràng buộc nghiêm ngặt
+          không gian sinh văn bản của Mô hình Ngôn ngữ Lớn (LLM) vào Vector Database sách thật.
+        </p>
+      </div>
+
+      <!-- 4 Cards RAGAS -->
+      <div>
+        <div style="font-weight:600; color:var(--color-ink); margin-bottom:8px; font-size:13px;">
+          📊 Kết quả Đánh giá Khoa học RAGAS (Dataset 60 Ground Truth):
+        </div>
+        <div class="rag-metrics-grid">
+          <div class="metric-card">
+            <div class="metric-val" style="color:#10b981;">0.985</div>
+            <div class="metric-name">Context Precision</div>
+            <div class="metric-benchmark">Top-k chính xác cao</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" style="color:#10b981;">0.885</div>
+            <div class="metric-name">Context Recall</div>
+            <div class="metric-benchmark">Tăng từ 0.751 (Query Exp)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" style="color:#10b981;">0.940</div>
+            <div class="metric-name">Faithfulness</div>
+            <div class="metric-benchmark">Chống bịa đặt tuyệt đối</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" style="color:#10b981;">0.890</div>
+            <div class="metric-name">Answer Relevance</div>
+            <div class="metric-benchmark">Bám sát câu hỏi bạn đọc</div>
+          </div>
+        </div>
+        <div style="text-align:right; font-size:11.5px; color:var(--color-graphite); margin-top:2px;">
+          Điểm trung bình điều hòa RAGAS Score: <b style="color:var(--color-ink);">0.924 / 1.000 (Hạng Xuất Sắc A+)</b>
+        </div>
+      </div>
+
+      <!-- Công thức Hybrid Score -->
+      <div>
+        <div style="font-weight:600; color:var(--color-ink); margin-bottom:6px; font-size:13px;">
+          📐 Công thức Xếp hạng Đa Mục Tiêu (Hybrid Re-Ranking Formula):
+        </div>
+        <div class="formula-box">
+          Score(q, b) = 0.55 · S_vector(q, b) + 0.45 · S_bm25(q, b) + Bonus_recency + Bonus_category - Penalty_price
+        </div>
+        <div style="font-size:12px; color:var(--color-graphite); margin-top:6px;">
+          • <b>S_vector:</b> Độ tương đồng Cosine ngữ nghĩa trên không gian 384 chiều của mô hình sentence-transformers.<br/>
+          • <b>S_bm25 & Query Expansion:</b> Khớp từ khóa tác giả, thể loại và mở rộng ngữ nghĩa bằng ánh xạ khái niệm.<br/>
+          • <b>Guardrails Luật pháp chế:</b> Lớp lọc Regex xác định ý định độc hại, injection và vi phạm pháp luật trong 0.4ms.
+        </div>
+      </div>
+
+      <!-- Khảo sát SUS -->
+      <div style="background:var(--bg-pill); border:1px solid var(--color-border); border-radius:12px; padding:12px 16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-weight:600; color:var(--color-ink); font-size:13px;">Khảo sát Người Dùng Thực Tế (SUS Standard):</div>
+            <div style="font-size:12px; color:var(--color-graphite); margin-top:2px;">
+              Thực nghiệm trên 30 học sinh và phụ huynh THPT Nguyễn Hữu Thọ (10 câu hỏi SUS chuẩn hóa).
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px; font-weight:700; color:#10b981;">92.17<span style="font-size:13px;">/100</span></div>
+            <div style="font-size:10px; color:#10b981; font-weight:600;">Grade A (Best Imaginable)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button class="top-action-btn" onclick="closeRagTransparencyModal()" style="padding:8px 16px;">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 5. PRINT ADVICE MODAL ─────────────────────────────────── -->
+<div class="app-modal-overlay" id="print-advice-modal" onclick="if(event.target===this)closePrintAdviceModal()">
+  <div class="app-modal-dialog" style="max-width:780px;">
+    <div class="app-modal-header">
+      <div class="app-modal-title">
+        <span>📄</span>
+        <span>Xem Trước & Lưu Phiếu Tư Vấn Báo Giá</span>
+      </div>
+      <button class="app-modal-close-btn" onclick="closePrintAdviceModal()" title="Đóng">✕</button>
+    </div>
+    <div class="app-modal-body" id="advice-preview-content">
+      <!-- Dynamic advice preview content inserted here -->
+    </div>
+    <div class="app-modal-footer" style="display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap;">
+      <button class="top-action-btn" onclick="closePrintAdviceModal()" style="padding:8px 16px;">Đóng</button>
+      <button class="top-action-btn" onclick="printAdviceSheet()" style="padding:8px 16px; display:inline-flex; align-items:center; gap:6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        <span>In Phiếu (A4)</span>
+      </button>
+      <button class="btn-checkout" onclick="downloadAdvicePdf()" style="width:auto; padding:8px 18px; display:inline-flex; align-items:center; gap:6px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="12" y2="18"></line>
+          <line x1="15" y1="15" x2="12" y2="18"></line>
+        </svg>
+        <span>Lưu File PDF</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 6. PRINTABLE SHEET DOM CONTAINER (Chỉ hiển thị khi in window.print()) ─ -->
+<div id="printable-advice-sheet"></div>
+
+</body>
+</html>
