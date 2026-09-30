@@ -2103,17 +2103,369 @@
       }
     }
 
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .results-panel { display: none; }
+    /* ─────────────────────────────────────────────────────────────
+       RESPONSIVE DESIGN SYSTEM — MOBILE, TABLET & DESKTOP
+    ───────────────────────────────────────────────────────────── */
+    
+    /* Mobile / Tablet UI Controls */
+    .mobile-menu-btn {
+      display: none;
     }
-    @media (max-width: 768px) {
-      .sidebar { position: absolute; height: calc(100vh - 24px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-      .sidebar.collapsed { display: none; }
+    .mobile-brand-title {
+      display: none;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-ink);
+      letter-spacing: -0.01em;
+    }
+    .results-toggle-btn {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      position: relative;
+    }
+    .results-close-btn {
+      display: none;
+    }
+    .results-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--color-accent);
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    body.light-mode .results-badge {
+      background: #000;
+      color: #fff;
+    }
+    .api-settings-btn {
+      padding: 5px 9px;
+    }
+
+    /* Floating Toast on Mobile/Tablet when books are returned */
+    .mobile-books-toast {
+      position: absolute;
+      bottom: 85px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      opacity: 0;
+      pointer-events: none;
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--color-accent-border);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      z-index: 60;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .mobile-books-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Mobile Backdrop Overlays */
+    .sidebar-backdrop, .results-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .sidebar-backdrop.active, .results-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── TABLET & MEDIUM SCREENS (<= 1100px) ─────────────────── */
+    @media (max-width: 1100px) {
+      .app-container {
+        padding: 0;
+        gap: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+      }
+
+      /* Center panel takes full viewport */
+      .center-panel {
+        border-radius: 0;
+        border: none;
+        height: 100%;
+        width: 100%;
+        flex: 1;
+      }
+
+      /* Header Controls */
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+      .mobile-brand-title {
+        display: inline-block;
+      }
+      .results-toggle-btn {
+        display: inline-flex;
+      }
+      .results-close-btn {
+        display: inline-flex;
+      }
+
+      /* Left Sidebar becomes Slide-over Drawer */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0 20px 20px 0;
+        border-left: none;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
+      }
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+      .sidebar.collapsed {
+        width: min(320px, 85vw);
+      }
+      .sidebar.collapsed .sidebar-inner {
+        padding: 16px 12px;
+        align-items: stretch;
+      }
+      .sidebar.collapsed .sidebar-logo {
+        display: flex !important;
+      }
+      .sidebar.collapsed .btn-new-session span {
+        display: inline !important;
+      }
+      .sidebar.collapsed .btn-new-session {
+        width: 100%;
+        height: auto;
+        padding: 9px 14px;
+        border-radius: var(--radius-pill);
+      }
+      .sidebar.collapsed .user-info {
+        display: flex !important;
+      }
+      .sidebar.collapsed .theme-toggle-btn {
+        display: flex !important;
+      }
+
+      /* Right Results Panel becomes Slide-over Drawer */
+      .results-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(420px, 92vw);
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 20px 0 0 20px;
+        border-right: none;
+        z-index: 100;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+      }
+      .results-panel.open {
+        transform: translateX(0);
+      }
+
+      /* Center top bar spacing */
+      .center-top-bar {
+        padding: 8px 14px;
+        gap: 8px;
+      }
+      .top-bar-left {
+        gap: 8px;
+      }
+      .top-bar-right {
+        gap: 6px;
+      }
+
+      /* Chat stream */
+      .chat-stream {
+        padding: 16px 18px 12px;
+        gap: 16px;
+      }
+      .chat-msg {
+        max-width: 90%;
+      }
+      .chat-msg.bot {
+        max-width: 94%;
+      }
+
+      /* Input container */
+      .chat-input-container {
+        padding: 8px 14px calc(12px + env(safe-area-inset-bottom, 0px));
+      }
+    }
+
+    /* ── SMARTPHONE & SMALL SCREENS (<= 640px) ─────────────────── */
+    @media (max-width: 640px) {
+      .center-top-bar {
+        padding: 6px 10px;
+      }
+      .top-bar-left {
+        gap: 6px;
+      }
+      .top-bar-right {
+        gap: 5px;
+      }
+      .project-pill-label {
+        display: none;
+      }
+      .system-status-pill span:last-child {
+        display: none;
+      }
+      .rag-badge-score {
+        display: none;
+      }
+      .rag-badge-text {
+        display: none;
+      }
+      .rag-badge-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+      }
+      .results-toggle-text {
+        display: none;
+      }
+      .results-toggle-btn {
+        padding: 5px 8px;
+      }
+      .print-btn-text {
+        display: none;
+      }
+
+      /* Chat Stream on Mobile */
+      .chat-stream {
+        padding: 12px 10px 8px;
+        gap: 12px;
+      }
+      .chat-msg {
+        max-width: 95%;
+        gap: 8px;
+      }
+      .chat-msg.bot {
+        max-width: 98%;
+      }
+      .msg-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+      }
+      .msg-bubble {
+        padding: 10px 13px;
+        font-size: 13.5px;
+        border-radius: 14px;
+        line-height: 1.55;
+      }
+
+      /* Hero section on Mobile */
+      .hero-greeting {
+        padding: 12px 0;
+      }
+      .hero-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      .hero-quote-box {
+        padding: 8px 12px;
+        margin-bottom: 10px;
+      }
+      .hero-quote-text {
+        font-size: 12px;
+      }
+      .hero-examples {
+        gap: 6px;
+      }
+      .example-pill {
+        padding: 5px 10px;
+        font-size: 11.5px;
+      }
+
+      /* Input Container on Mobile */
+      .chat-input-container {
+        padding: 4px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+      .hero-input-box {
+        padding: 8px 10px;
+        border-radius: 14px;
+      }
+      .hero-input-textarea {
+        font-size: 16px !important; /* Ngăn iOS Safari tự động phóng to */
+        min-height: 24px;
+        max-height: 100px;
+      }
+      .input-pill-actions {
+        max-width: calc(100% - 44px);
+        gap: 5px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .input-pill-actions::-webkit-scrollbar {
+        display: none;
+      }
+      .pill-action-btn {
+        padding: 4px 8px;
+        font-size: 11.5px;
+        flex-shrink: 0;
+      }
+      .btn-send-hero {
+        width: 34px;
+        height: 34px;
+      }
+
+      /* Modals on Mobile */
+      .app-modal-overlay {
+        padding: 10px;
+      }
+      .app-modal-dialog {
+        max-height: 92vh;
+        border-radius: 16px;
+      }
+      .app-modal-header {
+        padding: 12px 16px;
+      }
+      .app-modal-body {
+        padding: 14px 16px;
+      }
     }
   </style>
 </head>
 <body>
+
+<!-- Mobile Backdrop Overlays -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
+<div class="results-backdrop" id="results-backdrop" onclick="toggleResultsPanel(false)"></div>
 
 <div class="app-container">
 
@@ -2226,17 +2578,32 @@
     <!-- Top System Header Bar -->
     <div class="center-top-bar">
       <div class="top-bar-left">
+        <!-- Mobile Sidebar Hamburger Button -->
+        <button class="icon-btn mobile-menu-btn" id="btn-mobile-sidebar" onclick="toggleMobileSidebar(true)" title="Danh sách phiên chat">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <span class="mobile-brand-title">BookRAG</span>
         <span class="project-pill-label">NCKH KHKT 2026-2027</span>
         <span class="system-status-pill">
           <span class="pulse-green"></span>
-          <span>RAG Hybrid Engine v2.4</span>
+          <span>RAG v2.4</span>
         </span>
       </div>
       <div class="top-bar-right">
+        <!-- Toggle button for Recommended Books (Mobile/Tablet) -->
+        <button class="top-action-btn results-toggle-btn" id="btn-toggle-results" onclick="toggleResultsPanel()" title="Xem sách gợi ý RAG">
+          <span>📚</span>
+          <span class="results-toggle-text">Sách gợi ý</span>
+          <span class="results-badge" id="results-count-badge" style="display:none">0</span>
+        </button>
         <button class="rag-badge-btn" onclick="openRagTransparencyModal()" title="Bấm để xem Cơ chế Chống Bịa Đặt & Minh Bạch Thuật Toán RAGAS">
           <span>🛡️</span>
-          <span>RAG Verified</span>
-          <span class="rag-badge-score">94% Faithfulness</span>
+          <span class="rag-badge-text">RAG Verified</span>
+          <span class="rag-badge-score">94%</span>
         </button>
         <button class="top-action-btn" onclick="openPrintAdviceModal()" title="Lưu phiếu tư vấn & Báo giá về máy">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -2244,7 +2611,13 @@
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span>Lưu phiếu tư vấn</span>
+          <span class="print-btn-text">Phiếu</span>
+        </button>
+        <button class="top-action-btn api-settings-btn" onclick="openApiConfigModal()" title="Cài đặt kết nối máy chủ Backend (API URL)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
         </button>
       </div>
     </div>
@@ -2341,6 +2714,12 @@
         <div style="display:flex;align-items:center;gap:6px">
           <span class="results-context-pill" id="results-context-pill" style="display:none"></span>
           <span class="rag-tag-badge">RAG</span>
+          <button class="icon-btn results-close-btn" id="btn-close-results" onclick="toggleResultsPanel(false)" title="Đóng danh sách sách">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -2368,7 +2747,11 @@
 <script>
 // [AI-Assisted Code] Prompt #06 — Monochrome Black & White Glassmorphism Engine
 
-const API_BASE = 'http://localhost:8000';
+let API_BASE = localStorage.getItem('bookrag_api_base') || (
+  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:8000' 
+    : (window.location.hostname.includes('github.io') ? 'http://localhost:8000' : `${window.location.protocol}//${window.location.host}`)
+);
 let currentSessionId = null;
 let isProcessing = false;
 let attachedImageDataUrl = null;
@@ -2377,6 +2760,142 @@ let purchasedBookIds = new Set();
 let cartItems = [];
 let currentBooks = [];
 let allSessions = [];
+
+// ── Mobile & Tablet UI Controls ────────────────────────────
+function toggleMobileSidebar(forceState) {
+  const sidebar = document.getElementById('main-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (!sidebar) return;
+  const isOpen = sidebar.classList.contains('mobile-open');
+  const nextState = (typeof forceState === 'boolean') ? forceState : !isOpen;
+  if (nextState) {
+    sidebar.classList.add('mobile-open');
+    if (backdrop) backdrop.classList.add('active');
+    toggleResultsPanel(false);
+  } else {
+    sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.classList.remove('active');
+  }
+}
+
+function toggleResultsPanel(forceState) {
+  const panel = document.getElementById('results-panel');
+  const backdrop = document.getElementById('results-backdrop');
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  const nextState = (typeof forceState === 'boolean') ? forceState : !isOpen;
+  if (nextState) {
+    panel.classList.add('open');
+    if (backdrop) backdrop.classList.add('active');
+    toggleMobileSidebar(false);
+    hideMobileToast();
+  } else {
+    panel.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('active');
+  }
+}
+
+function showMobileToast(msg, onClickAction) {
+  let toast = document.getElementById('mobile-books-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'mobile-books-toast';
+    toast.className = 'mobile-books-toast';
+    document.querySelector('.center-panel')?.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.onclick = () => {
+    if (typeof onClickAction === 'function') onClickAction();
+    hideMobileToast();
+  };
+  toast.classList.add('show');
+  setTimeout(() => {
+    hideMobileToast();
+  }, 6000);
+}
+
+function hideMobileToast() {
+  const toast = document.getElementById('mobile-books-toast');
+  if (toast) toast.classList.remove('show');
+}
+
+// ── Backend API Config Modal Functions ─────────────────────
+function openApiConfigModal() {
+  const modal = document.getElementById('api-config-modal');
+  const input = document.getElementById('api-base-input');
+  const statusEl = document.getElementById('api-test-status');
+  if (statusEl) statusEl.style.display = 'none';
+  if (input) input.value = API_BASE;
+  if (modal) modal.classList.add('active');
+}
+
+function closeApiConfigModal() {
+  const modal = document.getElementById('api-config-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function saveApiBase() {
+  const input = document.getElementById('api-base-input');
+  let val = (input ? input.value : '').trim();
+  if (!val) val = 'http://localhost:8000';
+  val = val.replace(/\/+$/, '');
+  API_BASE = val;
+  localStorage.setItem('bookrag_api_base', val);
+  closeApiConfigModal();
+  showMobileToast(`✅ Đã lưu Backend URL: ${val}`);
+}
+
+function resetApiBase() {
+  const defaultVal = 'http://localhost:8000';
+  API_BASE = defaultVal;
+  localStorage.removeItem('bookrag_api_base');
+  const input = document.getElementById('api-base-input');
+  if (input) input.value = defaultVal;
+  const statusEl = document.getElementById('api-test-status');
+  if (statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.style.background = 'rgba(255, 255, 255, 0.08)';
+    statusEl.style.color = 'var(--color-ink)';
+    statusEl.textContent = 'Đã khôi phục về mặc định http://localhost:8000';
+  }
+}
+
+async function testApiConnection() {
+  const input = document.getElementById('api-base-input');
+  const statusEl = document.getElementById('api-test-status');
+  let testUrl = (input ? input.value : '').trim().replace(/\/+$/, '');
+  if (!testUrl) testUrl = 'http://localhost:8000';
+  
+  if (statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.style.background = 'rgba(255, 255, 255, 0.08)';
+    statusEl.style.color = 'var(--color-ink)';
+    statusEl.textContent = '⏳ Đang kiểm tra kết nối tới ' + testUrl + '/health ...';
+  }
+
+  try {
+    const res = await fetch(`${testUrl}/health`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: { 'bypass-tunnel-reminder': 'true' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (statusEl) {
+      statusEl.style.background = 'rgba(16, 185, 129, 0.15)';
+      statusEl.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+      statusEl.style.color = '#10b981';
+      statusEl.textContent = `✅ Kết nối thành công! Kho sách: ${data.total_books || 'OK'} cuốn | ChromaDB: Ready`;
+    }
+  } catch (err) {
+    if (statusEl) {
+      statusEl.style.background = 'rgba(239, 68, 68, 0.15)';
+      statusEl.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+      statusEl.style.color = '#ef4444';
+      statusEl.textContent = `❌ Không kết nối được: ${err.message}. Hãy kiểm tra xem Backend đã chạy chưa và URL có đúng không.`;
+    }
+  }
+}
 
 // Danh sách câu chào và quotes truyền cảm hứng về sách
 const HERO_ROTATING_CONTENT = [
@@ -3003,7 +3522,10 @@ async function submitMessage() {
 
     const res = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'bypass-tunnel-reminder': 'true'
+      },
       body: JSON.stringify(payload)
     });
 
@@ -3024,7 +3546,15 @@ async function submitMessage() {
   } catch (err) {
     removeTypingIndicator();
     console.error('Chat error:', err);
-    appendChatMessage('bot', '⚠️ Đang có lỗi xảy ra, bạn vui lòng thử lại sau nhé!');
+    let errMsg = '⚠️ Đang có lỗi kết nối tới máy chủ Backend RAG!';
+    if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
+      errMsg += `\n\n📌 **Nguyên nhân:** Trang web đang chạy trên bảo mật HTTPS (GitHub Pages), nhưng API URL lại là HTTP (\`${API_BASE}\`). Trình duyệt sẽ tự động chặn do chính sách bảo mật Mixed Content.\n\n👉 **Cách khắc phục:** Hãy bấm vào biểu tượng ⚙️ (Cài đặt) trên thanh tiêu đề để nhập link Backend HTTPS công khai (ngrok / Cloudflare Tunnel / Render).`;
+    } else if (API_BASE.includes('localhost') && window.location.hostname !== 'localhost') {
+      errMsg += `\n\n📌 **Nguyên nhân:** Bạn đang mở web trên thiết bị khác (${window.location.hostname}), nhưng API đang trỏ về \`${API_BASE}\` (máy này không có server Backend chạy cổng 8000).\n\n👉 **Cách khắc phục:** Hãy bấm vào nút ⚙️ trên thanh tiêu đề để nhập link Backend công khai của bạn.`;
+    } else {
+      errMsg += `\n\nChi tiết: ${err.message || 'Không thể kết nối'}. Vui lòng kiểm tra lại server Backend (uvicorn main:app).`;
+    }
+    appendChatMessage('bot', errMsg);
   } finally {
     isProcessing = false;
     document.getElementById('btn-send').disabled = false;
@@ -3038,6 +3568,27 @@ function renderBooksRightPanel(books, authorRecs, queryContext = '') {
   const container = document.getElementById('results-cards-container');
   container.innerHTML = '';
   container.scrollTop = 0;
+
+  // Cập nhật số lượng sách gợi ý lên badge nút header
+  const badge = document.getElementById('results-count-badge');
+  if (badge) {
+    const totalRecs = (books ? books.length : 0);
+    if (totalRecs > 0) {
+      badge.textContent = totalRecs;
+      badge.style.display = 'inline-flex';
+      // Nếu đang ở màn hình tablet/mobile (<= 1100px) và panel đang đóng, hiện toast gợi ý bấm xem
+      if (window.innerWidth <= 1100) {
+        const panel = document.getElementById('results-panel');
+        if (panel && !panel.classList.contains('open')) {
+          showMobileToast(`📚 Đã có <b>${totalRecs} sách gợi ý</b> phù hợp • <span style="text-decoration:underline;color:var(--color-accent)">Xem ngay</span>`, () => {
+            toggleResultsPanel(true);
+          });
+        }
+      }
+    } else {
+      badge.style.display = 'none';
+    }
+  }
 
   const pill = document.getElementById('results-context-pill');
   if (pill) {
@@ -3237,7 +3788,10 @@ async function buyBookAction(bookId, title, bookObj) {
   try {
     const res = await fetch(`${API_BASE}/buy`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'bypass-tunnel-reminder': 'true'
+      },
       body: JSON.stringify({ session_id: currentSessionId, book_id: bookId })
     });
     const data = await res.json();
@@ -3272,7 +3826,10 @@ async function removeFromCart(bookId, title) {
   try {
     await fetch(`${API_BASE}/remove_from_cart`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'bypass-tunnel-reminder': 'true'
+      },
       body: JSON.stringify({ session_id: currentSessionId, book_id: bookId })
     });
     showToast(`Đã bỏ chọn: ${bookTitle}`, 'warn');
@@ -3289,7 +3846,10 @@ async function clearCart() {
     try {
       await fetch(`${API_BASE}/remove_from_cart`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'bypass-tunnel-reminder': 'true'
+        },
         body: JSON.stringify({ session_id: currentSessionId, book_id: item.id })
       });
     } catch (e) {
@@ -3888,11 +4448,14 @@ function printAdviceSheet() {
   window.print();
 }
 
-// Bắt phím Escape để đóng modal
+// Bắt phím Escape để đóng modal & drawer
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeRagTransparencyModal();
     closePrintAdviceModal();
+    closeApiConfigModal();
+    toggleMobileSidebar(false);
+    toggleResultsPanel(false);
   }
 });
 
@@ -4029,7 +4592,37 @@ initApp();
   </div>
 </div>
 
-<!-- ── 6. PRINTABLE SHEET DOM CONTAINER (Chỉ hiển thị khi in window.print()) ─ -->
+<!-- ── 6. BACKEND API SETTINGS MODAL ───────────────────────── -->
+<div class="app-modal-overlay" id="api-config-modal" onclick="if(event.target===this)closeApiConfigModal()">
+  <div class="app-modal-dialog" style="max-width:540px;">
+    <div class="app-modal-header">
+      <div class="app-modal-title">
+        <span>⚙️</span>
+        <span>Cấu Hình Máy Chủ Backend (API)</span>
+      </div>
+      <button class="app-modal-close-btn" onclick="closeApiConfigModal()" title="Đóng">✕</button>
+    </div>
+    <div class="app-modal-body" style="display:flex;flex-direction:column;gap:14px;">
+      <p style="font-size:13.5px;color:var(--color-graphite);line-height:1.5;">
+        Cấu hình đường dẫn kết nối tới Backend FastAPI RAG. Nếu bạn dùng trên điện thoại/iPad hoặc qua link GitHub Pages, hãy nhập URL Backend công khai (ngrok / Cloudflare Tunnel / Render).
+      </p>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label style="font-size:12px;font-weight:600;color:var(--color-ink);text-transform:uppercase;letter-spacing:0.04em;">Backend API URL:</label>
+        <input type="text" id="api-base-input" class="session-search-input" style="padding:10px 14px;border-radius:10px;font-size:14px;font-family:monospace;width:100%;" placeholder="http://localhost:8000 hoặc https://your-tunnel.ngrok-free.app" />
+      </div>
+      <div id="api-test-status" style="font-size:12.5px;display:none;padding:10px 12px;border-radius:10px;line-height:1.4;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;flex-wrap:wrap;">
+        <button class="top-action-btn" onclick="testApiConnection()" style="padding:8px 14px;">🔍 Kiểm tra kết nối</button>
+        <div style="display:flex;gap:8px;">
+          <button class="top-action-btn" onclick="resetApiBase()" style="padding:8px 14px;">Mặc định</button>
+          <button class="btn-checkout" onclick="saveApiBase()" style="width:auto;padding:8px 18px;">Lưu & Áp dụng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 7. PRINTABLE SHEET DOM CONTAINER (Chỉ hiển thị khi in window.print()) ─ -->
 <div id="printable-advice-sheet"></div>
 
 </body>
