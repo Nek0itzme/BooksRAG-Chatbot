@@ -2144,9 +2144,6 @@
       background: #000;
       color: #fff;
     }
-    .api-settings-btn {
-      padding: 5px 9px;
-    }
 
     /* Floating Toast on Mobile/Tablet when books are returned */
     .mobile-books-toast {
@@ -2613,12 +2610,6 @@
           </svg>
           <span class="print-btn-text">Phiếu</span>
         </button>
-        <button class="top-action-btn api-settings-btn" onclick="openApiConfigModal()" title="Cài đặt kết nối máy chủ Backend (API URL)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </button>
       </div>
     </div>
 
@@ -2747,11 +2738,7 @@
 <script>
 // [AI-Assisted Code] Prompt #06 — Monochrome Black & White Glassmorphism Engine
 
-let API_BASE = localStorage.getItem('bookrag_api_base') || (
-  window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:8000' 
-    : (window.location.hostname.includes('github.io') ? 'http://localhost:8000' : `${window.location.protocol}//${window.location.host}`)
-);
+const API_BASE = 'http://localhost:8000';
 let currentSessionId = null;
 let isProcessing = false;
 let attachedImageDataUrl = null;
@@ -2819,83 +2806,6 @@ function hideMobileToast() {
   if (toast) toast.classList.remove('show');
 }
 
-// ── Backend API Config Modal Functions ─────────────────────
-function openApiConfigModal() {
-  const modal = document.getElementById('api-config-modal');
-  const input = document.getElementById('api-base-input');
-  const statusEl = document.getElementById('api-test-status');
-  if (statusEl) statusEl.style.display = 'none';
-  if (input) input.value = API_BASE;
-  if (modal) modal.classList.add('active');
-}
-
-function closeApiConfigModal() {
-  const modal = document.getElementById('api-config-modal');
-  if (modal) modal.classList.remove('active');
-}
-
-function saveApiBase() {
-  const input = document.getElementById('api-base-input');
-  let val = (input ? input.value : '').trim();
-  if (!val) val = 'http://localhost:8000';
-  val = val.replace(/\/+$/, '');
-  API_BASE = val;
-  localStorage.setItem('bookrag_api_base', val);
-  closeApiConfigModal();
-  showMobileToast(`✅ Đã lưu Backend URL: ${val}`);
-}
-
-function resetApiBase() {
-  const defaultVal = 'http://localhost:8000';
-  API_BASE = defaultVal;
-  localStorage.removeItem('bookrag_api_base');
-  const input = document.getElementById('api-base-input');
-  if (input) input.value = defaultVal;
-  const statusEl = document.getElementById('api-test-status');
-  if (statusEl) {
-    statusEl.style.display = 'block';
-    statusEl.style.background = 'rgba(255, 255, 255, 0.08)';
-    statusEl.style.color = 'var(--color-ink)';
-    statusEl.textContent = 'Đã khôi phục về mặc định http://localhost:8000';
-  }
-}
-
-async function testApiConnection() {
-  const input = document.getElementById('api-base-input');
-  const statusEl = document.getElementById('api-test-status');
-  let testUrl = (input ? input.value : '').trim().replace(/\/+$/, '');
-  if (!testUrl) testUrl = 'http://localhost:8000';
-  
-  if (statusEl) {
-    statusEl.style.display = 'block';
-    statusEl.style.background = 'rgba(255, 255, 255, 0.08)';
-    statusEl.style.color = 'var(--color-ink)';
-    statusEl.textContent = '⏳ Đang kiểm tra kết nối tới ' + testUrl + '/health ...';
-  }
-
-  try {
-    const res = await fetch(`${testUrl}/health`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: { 'bypass-tunnel-reminder': 'true' }
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (statusEl) {
-      statusEl.style.background = 'rgba(16, 185, 129, 0.15)';
-      statusEl.style.border = '1px solid rgba(16, 185, 129, 0.4)';
-      statusEl.style.color = '#10b981';
-      statusEl.textContent = `✅ Kết nối thành công! Kho sách: ${data.total_books || 'OK'} cuốn | ChromaDB: Ready`;
-    }
-  } catch (err) {
-    if (statusEl) {
-      statusEl.style.background = 'rgba(239, 68, 68, 0.15)';
-      statusEl.style.border = '1px solid rgba(239, 68, 68, 0.4)';
-      statusEl.style.color = '#ef4444';
-      statusEl.textContent = `❌ Không kết nối được: ${err.message}. Hãy kiểm tra xem Backend đã chạy chưa và URL có đúng không.`;
-    }
-  }
-}
 
 // Danh sách câu chào và quotes truyền cảm hứng về sách
 const HERO_ROTATING_CONTENT = [
@@ -3546,15 +3456,7 @@ async function submitMessage() {
   } catch (err) {
     removeTypingIndicator();
     console.error('Chat error:', err);
-    let errMsg = '⚠️ Đang có lỗi kết nối tới máy chủ Backend RAG!';
-    if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
-      errMsg += `\n\n📌 **Nguyên nhân:** Trang web đang chạy trên bảo mật HTTPS (GitHub Pages), nhưng API URL lại là HTTP (\`${API_BASE}\`). Trình duyệt sẽ tự động chặn do chính sách bảo mật Mixed Content.\n\n👉 **Cách khắc phục:** Hãy bấm vào biểu tượng ⚙️ (Cài đặt) trên thanh tiêu đề để nhập link Backend HTTPS công khai (ngrok / Cloudflare Tunnel / Render).`;
-    } else if (API_BASE.includes('localhost') && window.location.hostname !== 'localhost') {
-      errMsg += `\n\n📌 **Nguyên nhân:** Bạn đang mở web trên thiết bị khác (${window.location.hostname}), nhưng API đang trỏ về \`${API_BASE}\` (máy này không có server Backend chạy cổng 8000).\n\n👉 **Cách khắc phục:** Hãy bấm vào nút ⚙️ trên thanh tiêu đề để nhập link Backend công khai của bạn.`;
-    } else {
-      errMsg += `\n\nChi tiết: ${err.message || 'Không thể kết nối'}. Vui lòng kiểm tra lại server Backend (uvicorn main:app).`;
-    }
-    appendChatMessage('bot', errMsg);
+    appendChatMessage('bot', '⚠️ Đang có lỗi xảy ra hoặc chưa khởi động máy chủ Backend (cổng 8000), bạn vui lòng kiểm tra lại nhé!');
   } finally {
     isProcessing = false;
     document.getElementById('btn-send').disabled = false;
@@ -4453,7 +4355,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeRagTransparencyModal();
     closePrintAdviceModal();
-    closeApiConfigModal();
     toggleMobileSidebar(false);
     toggleResultsPanel(false);
   }
@@ -4592,35 +4493,6 @@ initApp();
   </div>
 </div>
 
-<!-- ── 6. BACKEND API SETTINGS MODAL ───────────────────────── -->
-<div class="app-modal-overlay" id="api-config-modal" onclick="if(event.target===this)closeApiConfigModal()">
-  <div class="app-modal-dialog" style="max-width:540px;">
-    <div class="app-modal-header">
-      <div class="app-modal-title">
-        <span>⚙️</span>
-        <span>Cấu Hình Máy Chủ Backend (API)</span>
-      </div>
-      <button class="app-modal-close-btn" onclick="closeApiConfigModal()" title="Đóng">✕</button>
-    </div>
-    <div class="app-modal-body" style="display:flex;flex-direction:column;gap:14px;">
-      <p style="font-size:13.5px;color:var(--color-graphite);line-height:1.5;">
-        Cấu hình đường dẫn kết nối tới Backend FastAPI RAG. Nếu bạn dùng trên điện thoại/iPad hoặc qua link GitHub Pages, hãy nhập URL Backend công khai (ngrok / Cloudflare Tunnel / Render).
-      </p>
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <label style="font-size:12px;font-weight:600;color:var(--color-ink);text-transform:uppercase;letter-spacing:0.04em;">Backend API URL:</label>
-        <input type="text" id="api-base-input" class="session-search-input" style="padding:10px 14px;border-radius:10px;font-size:14px;font-family:monospace;width:100%;" placeholder="http://localhost:8000 hoặc https://your-tunnel.ngrok-free.app" />
-      </div>
-      <div id="api-test-status" style="font-size:12.5px;display:none;padding:10px 12px;border-radius:10px;line-height:1.4;"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;flex-wrap:wrap;">
-        <button class="top-action-btn" onclick="testApiConnection()" style="padding:8px 14px;">🔍 Kiểm tra kết nối</button>
-        <div style="display:flex;gap:8px;">
-          <button class="top-action-btn" onclick="resetApiBase()" style="padding:8px 14px;">Mặc định</button>
-          <button class="btn-checkout" onclick="saveApiBase()" style="width:auto;padding:8px 18px;">Lưu & Áp dụng</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ── 7. PRINTABLE SHEET DOM CONTAINER (Chỉ hiển thị khi in window.print()) ─ -->
 <div id="printable-advice-sheet"></div>
