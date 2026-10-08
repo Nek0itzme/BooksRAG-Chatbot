@@ -1,0 +1,110 @@
+{
+  "_comment": "Bộ từ điển chuẩn hóa Teencode và Bản đồ ánh xạ Tiếng lòng sang Thể loại sách - Đề tài RAG NCKH 2026",
+  "teencode_dict": {
+    "k bt": "không biết",
+    "k biet": "không biết",
+    "ko bt": "không biết",
+    "ko biet": "không biết",
+    "khong bt": "không biết",
+    "khong biet": "không biết",
+    "ntn": "như thế nào",
+    "nhu the nao": "như thế nào",
+    "tac gia": "tác giả",
+    "sach cua": "sách của",
+    "sach j": "sách gì",
+    "sach gi": "sách gì",
+    "cuon nao": "cuốn nào",
+    "cuon j": "cuốn gì",
+    "doc j": "đọc gì",
+    "nen doc": "nên đọc",
+    "hay vcl": "rất hay",
+    "hay vl": "rất hay",
+    "hay vkl": "rất hay",
+    "hay lam": "rất hay",
+    "hay qua": "rất hay",
+    "buon qua": "buồn lắm",
+    "buon lam": "buồn lắm",
+    "met qua": "mệt mỏi",
+    "met lam": "mệt mỏi",
+    "stress qua": "căng thẳng",
+    "chan qua": "chán nản",
+    "that tinh": "thất tình",
+    "chia tay": "chia tay",
+    "ap luc qua": "áp lực",
+    "lo lang qua": "lo lắng",
+    "ko": "không",
+    "k": "không",
+    "kh": "không",
+    "hk": "không",
+    "hổng": "không",
+    "hong": "không",
+    "dc": "được",
+    "đc": "được",
+    "dk": "được",
+    "j": "gì",
+    "gi": "gì",
+    "bt": "biết",
+    "bit": "biết",
+    "mk": "mình",
+    "mn": "mọi người",
+    "ad": "admin",
+    "vs": "với",
+    "cx": "cũng",
+    "ny": "người yêu",
+    "tg": "tác giả",
+    "nxb": "nhà xuất bản",
+    "vcl": "rất",
+    "vl": "rất",
+    "vkl": "rất",
+    "vđ": "rất",
+    "lm": "lắm",
+    "ng": "người",
+    "qua": "quá",
+    "đang": "đang",
+    "m": "mình",
+    "t": "tôi",
+    "bn": "bạn",
+    "s": "sao",
+    "z": "vậy",
+    "v": "vậy",
+    "thui": "thôi",
+    "thôi": "thôi",
+    "ok": "được rồi",
+    "oke": "được rồi",
+    "oki": "được rồi"
+  },
+  "mood_map": [
+    {
+      "pattern": "thất tình|chia tay|tim tan|cô đơn|lẻ loi|buồn|sad|heartbreak",
+      "hint": "chữa lành cảm xúc yêu thương bản thân"
+    },
+    {
+      "pattern": "stress|áp lực|overthinking|lo lắng|bồn chồn|lo âu|căng thẳng",
+      "hint": "tâm lý tích cực chánh niệm giảm căng thẳng"
+    },
+    {
+      "pattern": "lười|trì hoãn|mất động lực|chán nản|không có hứng",
+      "hint": "kỷ luật bản thân thói quen thành công"
+    },
+    {
+      "pattern": "hết tiền|cháy túi|nghèo|không có tiền|kiếm tiền",
+      "hint": "tài chính cá nhân đầu tư tiết kiệm"
+    },
+    {
+      "pattern": "ngại giao tiếp|hướng nội|sợ đám đông|không tự tin|nhút nhát",
+      "hint": "kỹ năng giao tiếp tự tin"
+    },
+    {
+      "pattern": "mông lung|không biết làm gì|mất phương hướng|lạc lõng",
+      "hint": "định hướng cuộc sống ý nghĩa mục tiêu"
+    },
+    {
+      "pattern": "cần truyền cảm hứng|muốn phấn đấu|muốn thành công|khởi nghiệp",
+      "hint": "truyền cảm hứng khởi nghiệp lãnh đạo"
+    },
+    {
+      "pattern": "buồn ngủ|rảnh|nhàm chán|giải trí|cười",
+      "hint": "hài hước truyện vui giải trí nhẹ nhàng"
+    }
+  ]
+}

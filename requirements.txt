@@ -1,0 +1,21 @@
+# Requirements for School Project — Hệ Thống Tư Vấn Bán Sách Tự Động RAG
+# Cài đặt toàn bộ: pip install -r requirements.txt
+
+# ── Backend & API ────────────────────────────────────────────────────────────
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.0.0
+slowapi>=0.1.9
+python-dotenv>=1.0.0
+httpx>=0.27.0
+
+# ── RAG & Machine Learning ───────────────────────────────────────────────────
+chromadb>=0.4.22
+sentence-transformers>=2.5.0
+torch>=2.0.0
+geoopt>=0.5.0                    # Hyperbolic Poincaré Ball geometry cho HyPE Filter
+google-genai>=0.1.1               # Google Gemini 2.5 Flash SDK
+
+# ── Sample Tests & Benchmark Visualizations ──────────────────────────────────
+matplotlib>=3.8.0
+pandas>=2.0.0

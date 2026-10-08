@@ -1,0 +1,156 @@
+{
+  "timestamp": "2026-09-26 14:17:17",
+  "summary": {
+    "Baseline Load": {
+      "scenario": "Baseline Load",
+      "concurrency": 1,
+      "total_requests": 2,
+      "success_count": 2,
+      "failed_count": 0,
+      "error_rate_pct": 0.0,
+      "total_duration_sec": 19.54,
+      "requests_per_sec": 0.1,
+      "latency_ms": {
+        "min": 5833.87,
+        "mean": 9770.1,
+        "p50": 13706.33,
+        "p90": 13706.33,
+        "p95": 13706.33,
+        "p99": 13706.33,
+        "max": 13706.33
+      },
+      "target_threshold_ms": 1800.0,
+      "criteria_passed": false
+    },
+    "Normal Load": {
+      "scenario": "Normal Load",
+      "concurrency": 10,
+      "total_requests": 3,
+      "success_count": 3,
+      "failed_count": 0,
+      "error_rate_pct": 0.0,
+      "total_duration_sec": 7.97,
+      "requests_per_sec": 0.38,
+      "latency_ms": {
+        "min": 6052.64,
+        "mean": 7114.08,
+        "p50": 7420.09,
+        "p90": 7869.5,
+        "p95": 7869.5,
+        "p99": 7869.5,
+        "max": 7869.5
+      },
+      "target_threshold_ms": 2500.0,
+      "criteria_passed": false
+    },
+    "Peak Stress Load": {
+      "scenario": "Peak Stress Load",
+      "concurrency": 30,
+      "total_requests": 3,
+      "success_count": 3,
+      "failed_count": 0,
+      "error_rate_pct": 0.0,
+      "total_duration_sec": 8.94,
+      "requests_per_sec": 0.34,
+      "latency_ms": {
+        "min": 4494.45,
+        "mean": 7329.18,
+        "p50": 8650.59,
+        "p90": 8842.51,
+        "p95": 8842.51,
+        "p99": 8842.51,
+        "max": 8842.51
+      },
+      "target_threshold_ms": 3000.0,
+      "criteria_passed": false
+    }
+  },
+  "raw_results": {
+    "Baseline Load": [
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 13706.33,
+        "query": "Tư vấn sách tâm lý học kỹ năng sống giá dưới 90k",
+        "user_id": 0,
+        "query_type": "specific",
+        "found": true,
+        "books_count": 5
+      },
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 5833.87,
+        "query": "Tặng sách cho học sinh cấp 3 16 tuổi thích tư duy logic",
+        "user_id": 0,
+        "query_type": "specific",
+        "found": true,
+        "books_count": 5
+      }
+    ],
+    "Normal Load": [
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 6052.64,
+        "query": "Sách phát triển bản thân vượt qua trì hoãn giá rẻ",
+        "user_id": 1,
+        "query_type": "specific",
+        "found": true,
+        "books_count": 5
+      },
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 7420.09,
+        "query": "Tìm sách kinh tế khởi nghiệp giá dưới 100000đ",
+        "user_id": 0,
+        "query_type": "specific",
+        "found": true,
+        "books_count": 5
+      },
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 7869.5,
+        "query": "Tặng sách cho học sinh cấp 3 16 tuổi thích tư duy logic",
+        "user_id": 2,
+        "query_type": "specific",
+        "found": true,
+        "books_count": 5
+      }
+    ],
+    "Peak Stress Load": [
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 4494.45,
+        "query": "Tìm sách tình cảm tuổi học trò nhân vật Ngạn và Hà Lan",
+        "user_id": 1,
+        "query_type": "by_author",
+        "found": true,
+        "books_count": 4
+      },
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 8650.59,
+        "query": "Tôi muốn tìm sách về triết học khắc kỷ và nghệ thuật sống",
+        "user_id": 2,
+        "query_type": "general",
+        "found": true,
+        "books_count": 5
+      },
+      {
+        "success": true,
+        "status_code": 200,
+        "latency_ms": 8842.51,
+        "query": "Tôi vừa mua cuốn Nhà Giả Kim, tác giả Paulo Coelho còn sách nào hay?",
+        "user_id": 0,
+        "query_type": "by_author",
+        "found": true,
+        "books_count": 3
+      }
+    ]
+  }
+}

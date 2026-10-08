@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+chromadb
+google-genai
+sentence-transformers
+python-dotenv
+pydantic
+torch
+geoopt
+slowapi
+httpx
