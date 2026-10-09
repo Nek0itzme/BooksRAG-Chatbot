@@ -1,6 +1,6 @@
-# Hệ Thống Tư Vấn Sách Tự Động Tích Hợp RAG (Book RAG System)
+# Hệ Thống Tư Vấn Sách Tự Động Tích Hợp RAG
 
-> **Đề tài Nghiên cứu Khoa học Kỹ thuật (NCKH KHKT):**  
+> Đề tài Nghiên cứu Khoa học Kỹ thuật (NCKH KHKT):  
 > *"Nghiên cứu và xây dựng hệ thống tư vấn sách tự động tích hợp RAG nhằm giảm thiểu sai lệch thông tin"*
 
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue.svg)](https://www.python.org/)
@@ -11,97 +11,100 @@
 
 ---
 
-## Điểm Nổi Bật Của Dự Án
+## Tính năng và kiến trúc cốt lõi
 
-1. **Triệt tiêu Ảo giác thông tin (Anti-Hallucination):** Ràng buộc không gian sinh từ của LLM (Gemini 2.5 Flash) vào kho dữ liệu sách có thật 100%, bảo đảm thông tin tác giả, giá niêm yết và nhà xuất bản chính xác tuyệt đối.
-2. **Thuật toán Tìm kiếm lai (Hybrid Search):** Kết hợp Dense Semantic Vector (ChromaDB + SentenceTransformers `all-MiniLM-L6-v2`) và Sparse Lexical (BM25) qua thuật toán hợp nhất thứ hạng Reciprocal Rank Fusion (RRF).
-3. **Bộ lọc bao hàm Hyperbolic Poincaré Ball (HyPE):** Ứng dụng hình học phi Euclid (ECCV 2024) xây dựng nón bao hàm (Entailment Cones) để lọc bỏ sách lạc đề trước khi đưa vào LLM.
-4. **Xếp hạng thương mại đa tiêu chí (Explainable AI):** Chấm điểm minh bạch theo công thức $Score = 75\% \text{ Semantic} + 25\% \text{ Commercial Ranking}$ (kết hợp Đánh giá sao, Doanh số bán thực tế và Chất lượng review).
-5. **Chuẩn hóa Ngôn ngữ phi hình thức (Teencode & Tiếng lòng):** Tự động giải mã từ viết tắt, tiếng lóng và ánh xạ cảm xúc bạn đọc (thất tình, stress, mất động lực...) sang thể loại sách phù hợp.
-6. **Dây cương an toàn pháp lý (Rule Harness):** Tự động chặn các truy vấn vi phạm Điều 10 Luật Xuất bản Việt Nam 2012 và phòng vệ tấn công bẻ khóa (Prompt Injection / Jailbreak).
-7. **Giao diện Web trực quan:** Hỗ trợ Light/Dark mode, tìm kiếm bằng hình ảnh (Gemini Vision OCR), giỏ sách yêu thích và xuất phiếu tư vấn PDF khổ A4 có xác thực điện tử.
+1. **Kiểm soát ảo giác thông tin (Anti-Hallucination):** Giới hạn phạm vi sinh từ của mô hình ngôn ngữ (Gemini 2.5 Flash) trong cơ sở dữ liệu sách đã kiểm chứng, đảm bảo thông tin tác giả, giá niêm yết và nhà xuất bản khớp với dữ liệu thực tế.
+2. **Tìm kiếm lai (Hybrid Search):** Kết hợp tìm kiếm vector ngữ nghĩa (SentenceTransformers `all-MiniLM-L6-v2` + ChromaDB) và tìm kiếm từ khóa (BM25), sau đó hợp nhất thứ hạng bằng thuật toán Reciprocal Rank Fusion (RRF).
+3. **Bộ lọc bao hàm Hyperbolic (HyPE):** Sử dụng mô hình Poincaré Ball (phỏng theo Kim et al., ECCV 2024) để lọc bỏ các kết quả nằm ngoài nón bao hàm của câu hỏi trước khi đưa vào LLM.
+4. **Xếp hạng đa tiêu chí:** Tính điểm đề xuất theo công thức:
+   $$\text{Score} = 0.75 \times \text{Semantic Score} + 0.25 \times \text{Commercial Score}$$
+   trong đó điểm thương mại tính từ đánh giá sao, doanh số bán và chất lượng phản hồi của độc giả.
+5. **Chuẩn hóa ngôn ngữ phi hình thức:** Tự động chuẩn hóa từ viết tắt, tiếng lóng (teencode) và ánh xạ các từ khóa cảm xúc (tiếng lòng) sang danh mục thể loại sách tương ứng thông qua từ điển cấu hình `teencode_lexicon.json`.
+6. **Kiểm soát an toàn và tuân thủ pháp lý (Rule Harness):** Bộ quy tắc tiền kiểm và hậu kiểm nhằm chặn prompt injection, lọc câu hỏi ngoài phạm vi và rà soát nội dung theo Điều 10 Luật Xuất bản Việt Nam 2012.
+7. **Giao diện người dùng:** Hỗ trợ giao diện sáng/tối, tìm kiếm bằng ảnh bìa sách (Gemini Vision OCR), quản lý giỏ sách và xuất phiếu tư vấn PDF khổ A4.
 
 ---
 
-## Cấu Trúc Thư Mục Dự Án
+## Cấu trúc thư mục
 
 ```text
-├── Back End/              # Máy chủ FastAPI, RAG Engine, Gemini Client, HyPE Filter
-│   ├── config.py          # Cấu hình siêu tham số, hằng số toàn hệ thống
-│   ├── gemini_client.py   # Tương tác Gemini API (Key Pool Rotation, Prompt Single-Call)
-│   ├── hype_filter.py     # Bộ lọc bao hàm hình học phi Euclid Poincaré Ball
-│   ├── indexer.py         # Quy trình nhúng vector và tạo chỉ mục ChromaDB
-│   ├── main.py            # REST API FastAPI, Rate Limiting (SlowAPI), Async ThreadPool
-│   ├── models.py          # Schema Pydantic định nghĩa request/response và boundary guards
-│   ├── rag_engine.py      # Lõi thực thi chuỗi RAG 6 bước
-│   ├── teen_normalizer.py # Chuẩn hóa teencode & bản đồ tâm trạng tiếng lòng
-│   └── start_web.bat      # Script khởi chạy máy chủ 1-click + Cloudflare Tunnel
-├── database/              # Kho dữ liệu sách (JSON) và từ điển Teencode
-│   ├── sample.json        # Dữ liệu sách crawl thực tế
-│   └── teencode_lexicon.json # Bộ từ điển teencode & quy tắc cảm xúc
-├── Front End/             # Giao diện Web Vanilla HTML5/CSS3/JavaScript
-│   ├── index.html         # Giao diện chatbot, giỏ sách, xuất PDF A4
+├── Back End/              # Máy chủ FastAPI, RAG engine, Gemini client, bộ lọc HyPE
+│   ├── config.py          # Cấu hình tham số hệ thống
+│   ├── gemini_client.py   # Module gọi Gemini API (xoay vòng key, prompt gộp)
+│   ├── hype_filter.py     # Bộ lọc bao hàm hình học hyperbolic
+│   ├── indexer.py         # Tiến trình trích xuất vector và lập chỉ mục ChromaDB
+│   ├── main.py            # API server FastAPI và middleware
+│   ├── models.py          # Schema Pydantic cho dữ liệu đầu vào/đầu ra
+│   ├── rag_engine.py      # Pipeline xử lý truy vấn RAG
+│   ├── teen_normalizer.py # Chuẩn hóa teencode và ánh xạ tâm trạng
+│   └── start_web.bat      # Script khởi chạy nhanh máy chủ
+├── database/              # Dữ liệu sách (JSON) và từ điển ngôn ngữ
+│   ├── sample.json        # Dữ liệu sách mẫu
+│   └── teencode_lexicon.json # Từ điển chuẩn hóa teencode và tâm trạng
+├── Front End/             # Giao diện web người dùng
+│   ├── index.html         # Mã nguồn giao diện chính
 │   └── avatar_data.js     # Dữ liệu hình ảnh đại diện
-├── Icon Projects/         # Bộ icon định dạng SVG giao diện
-├── RAG Rules/             # Dây cương quy tắc pháp lý & thuật toán tìm kiếm
-│   ├── legal_rules.py     # Quy tắc an toàn theo Luật Xuất bản 2012
-│   ├── rule_harness.py    # Input/Output Rule Harness chống Jailbreak
-│   └── search_algorithms.py # Thuật toán BM25, Cosine, RRF, Commercial Scoring
-├── Sample Tests/          # Bộ công cụ kiểm thử & đo lường khoa học
-│   ├── ragas_evaluator.py # Đánh giá định lượng RAGAS (Dataset 60 Ground Truth)
-│   ├── stress_test.py     # Kiểm thử chịu tải đồng thời (Concurrency Benchmark)
-│   ├── survey_analyzer.py # Phân tích thống kê khảo sát SUS & Likert (Cronbach's Alpha)
-│   └── chat_terminal.py   # Giao diện tương tác 9 kịch bản mẫu qua dòng lệnh
-├── Web Database/          # Quản trị CSDL phiên SQLite 3NF (WAL Mode)
-│   ├── db_manager.py      # Thread-Local Connection Pool, CRUD operations
-│   ├── session_routes.py  # Router quản lý phiên và giỏ sách
-│   └── schema.sql         # Cấu trúc CSDL quan hệ chuẩn 3NF
-├── requirements.txt       # Danh sách thư viện Python phụ thuộc
-└── .gitignore             # Danh mục loại trừ khi đẩy lên Git
+├── Icon Projects/         # Tài nguyên icon SVG
+├── RAG Rules/             # Quy tắc kiểm duyệt và thuật toán tìm kiếm
+│   ├── legal_rules.py     # Bộ kiểm tra an toàn theo Luật Xuất bản
+│   ├── rule_harness.py    # Khung kiểm soát đầu vào/đầu ra
+│   └── search_algorithms.py # Thuật toán BM25, Cosine, RRF và scoring
+├── Sample Tests/          # Bộ công cụ đánh giá và kiểm thử
+│   ├── ragas_evaluator.py # Đánh giá định lượng theo bộ tiêu chí RAGAS
+│   ├── stress_test.py     # Kiểm thử tải đồng thời
+│   ├── survey_analyzer.py # Phân tích thống kê kết quả khảo sát (SUS, Cronbach's Alpha)
+│   └── chat_terminal.py   # Giao diện kiểm thử nhanh trên terminal
+├── Web Database/          # CSDL lưu trữ phiên làm việc SQLite (WAL mode)
+│   ├── db_manager.py      # Quản lý kết nối và thao tác SQLite
+│   ├── session_routes.py  # Router quản lý phiên và danh sách đã lưu
+│   └── schema.sql         # Cấu trúc bảng CSDL
+├── requirements.txt       # Danh sách thư viện phụ thuộc
+└── .gitignore             # Cấu hình loại trừ file của Git
 ```
 
 ---
 
-## Hướng Dẫn Cài Đặt & Khởi Chạy
+## Cài đặt và khởi chạy
 
-### 1. Yêu cầu hệ thống
-* Python 3.10+ (Khuyên dùng Python 3.12+)
-* Khóa Google Gemini API Key (miễn phí tại [Google AI Studio](https://aistudio.google.com/app/apikey))
+### 1. Yêu cầu môi trường
+* Python 3.10 trở lên (khuyến nghị 3.12)
+* Khóa API Google Gemini (đăng ký tại [Google AI Studio](https://aistudio.google.com/app/apikey))
 
-### 2. Cài đặt các thư viện cần thiết
+### 2. Cài đặt thư viện
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Cấu hình biến môi trường
-Tạo file `.env` bên trong thư mục `Back End/` (dựa trên mẫu `.env.example`):
+### 3. Thiết lập biến môi trường
+Tạo file `.env` trong thư mục `Back End/` theo mẫu từ `.env.example`:
 ```env
-GEMINI_API_KEY=your_actual_gemini_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### 4. Khởi chạy ứng dụng
-* **Cách 1 (Nhanh nhất trên Windows):** Nhấp đúp vào file `Back End/start_web.bat`.
-* **Cách 2 (Dòng lệnh):**
+### 4. Chạy ứng dụng
+* **Windows (khởi chạy nhanh):** Chạy file `Back End/start_web.bat`.
+* **Dòng lệnh:**
   ```bash
   cd "Back End"
   uvicorn main:app --reload --host 0.0.0.0 --port 8000
   ```
-* Mở trình duyệt và truy cập: `http://localhost:8000`
+* Truy cập ứng dụng tại: `http://localhost:8000`
 
 ---
 
-## Kết Quả Đo Lường Thực Nghiệm
+## Kết quả thực nghiệm
 
-* **RAGAS Benchmark (60 Ground Truth):**
+* **Đánh giá RAGAS ($N=60$ mẫu Ground Truth):**
   * *Context Precision:* **0.985**
-  * *Faithfulness (Độ trung thực):* **1.000** (0% ảo giác)
+  * *Faithfulness:* **1.000** (không xuất hiện thông tin ngoài kho dữ liệu)
   * *Answer Relevance:* **0.942**
-* **Khảo sát Trải nghiệm Người dùng ($N=30$):**
-  * *Điểm chuẩn SUS (System Usability Scale):* **> 85/100** (Hạng A - Best Imaginable)
-  * *Độ tin cậy thang đo Cronbach's Alpha:* $\alpha \ge 0.75$ (Đạt chuẩn khoa học cao)
+* **Khảo sát người dùng ($N=37$ người tham gia):**
+  * *Điểm khả dụng SUS (System Usability Scale):* **88.72 / 100** (Hạng A - Excellent)
+  * *Hệ số độ tin cậy Cronbach's Alpha (SUS):* $\alpha = 0.939$
+  * *Hệ số độ tin cậy Cronbach's Alpha (5 tiêu chí RAG):* $\alpha = 0.865$
 
 ---
 
-## Giấy Phép & Đạo Đức Nghiên Cứu
+## Giấy phép và quy định đạo đức
 
-Mã nguồn được phát triển phục vụ mục đích nghiên cứu khoa học, tuân thủ nghiêm ngặt Quy chế sử dụng AI có trách nhiệm và Điều 10 Luật Xuất bản Việt Nam 2012.
+Mã nguồn được phát triển phục vụ mục đích nghiên cứu khoa học học đường, tuân thủ các hướng dẫn về sử dụng AI có trách nhiệm trong giáo dục và Điều 10 Luật Xuất bản Việt Nam số 19/2012/QH13.
