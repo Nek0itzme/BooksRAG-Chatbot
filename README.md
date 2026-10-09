@@ -11,7 +11,7 @@
 
 ---
 
-## 🌟 Điểm Nổi Bật Của Dự Án
+## Điểm Nổi Bật Của Dự Án
 
 1. **Triệt tiêu Ảo giác thông tin (Anti-Hallucination):** Ràng buộc không gian sinh từ của LLM (Gemini 2.5 Flash) vào kho dữ liệu sách có thật 100%, bảo đảm thông tin tác giả, giá niêm yết và nhà xuất bản chính xác tuyệt đối.
 2. **Thuật toán Tìm kiếm lai (Hybrid Search):** Kết hợp Dense Semantic Vector (ChromaDB + SentenceTransformers `all-MiniLM-L6-v2`) và Sparse Lexical (BM25) qua thuật toán hợp nhất thứ hạng Reciprocal Rank Fusion (RRF).
@@ -23,7 +23,7 @@
 
 ---
 
-## 📁 Cấu Trúc Thư Mục Dự Án
+## Cấu Trúc Thư Mục Dự Án
 
 ```text
 ├── Back End/              # Máy chủ FastAPI, RAG Engine, Gemini Client, HyPE Filter
@@ -62,7 +62,7 @@
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Khởi Chạy
+## Hướng Dẫn Cài Đặt & Khởi Chạy
 
 ### 1. Yêu cầu hệ thống
 * Python 3.10+ (Khuyên dùng Python 3.12+)
@@ -90,7 +90,7 @@ GEMINI_API_KEY=your_actual_gemini_api_key_here
 
 ---
 
-## 📊 Kết Quả Đo Lường Thực Nghiệm
+## Kết Quả Đo Lường Thực Nghiệm
 
 * **RAGAS Benchmark (60 Ground Truth):**
   * *Context Precision:* **0.985**
@@ -102,6 +102,6 @@ GEMINI_API_KEY=your_actual_gemini_api_key_here
 
 ---
 
-## 📜 Giấy Phép & Đạo Đức Nghiên Cứu
+## Giấy Phép & Đạo Đức Nghiên Cứu
 
 Mã nguồn được phát triển phục vụ mục đích nghiên cứu khoa học, tuân thủ nghiêm ngặt Quy chế sử dụng AI có trách nhiệm và Điều 10 Luật Xuất bản Việt Nam 2012.
