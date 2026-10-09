@@ -40,7 +40,7 @@
 │   └── start_web.bat      # Script khởi chạy nhanh máy chủ
 ├── database/              # Dữ liệu sách (JSON) và từ điển ngôn ngữ
 │   ├── sample.json        # Dữ liệu sách mẫu
-│   └── teencode_lexicon.json # Từ điển chuẩn hóa teencode và tâm trạng
+│   └── teencode_lexicon.json # Từ điển chuẩn hóa teencode và tiếng lóng
 ├── Front End/             # Giao diện web người dùng
 │   ├── index.html         # Mã nguồn giao diện chính
 │   └── avatar_data.js     # Dữ liệu hình ảnh đại diện
