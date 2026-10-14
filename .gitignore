@@ -32,3 +32,6 @@ Web Database/sessions.db
 .DS_Store
 Thumbs.db
 desktop.ini
+
+database/user_uploads/
+*.pdf

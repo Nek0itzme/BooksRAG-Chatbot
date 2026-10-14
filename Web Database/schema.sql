@@ -58,8 +58,20 @@ CREATE TABLE IF NOT EXISTS saved_books (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
--- ── 5. CÁC CHỈ MỤC TỐI ƯU TRUY VẤN (INDEXES FOR HIGH-THROUGHPUT RETRIEVAL) ─────
+-- 5. BẢNG TÀI LIỆU PDF ĐÃ TẢI LÊN (UPLOADED_DOCUMENTS)
+CREATE TABLE IF NOT EXISTS uploaded_documents (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id  TEXT NOT NULL,                 -- Mã phiên upload (liên kết logic hoặc dùng tra cứu)
+    filename    TEXT NOT NULL,                 -- Tên file PDF gốc
+    file_path   TEXT NOT NULL,                 -- Đường dẫn lưu trữ vật lý trên server
+    file_size   INTEGER DEFAULT 0,             -- Dung lượng file (bytes)
+    page_count  INTEGER DEFAULT 0,             -- Số trang tài liệu bóc tách được
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP -- Thời điểm tải lên
+);
+
+-- ── 6. CÁC CHỈ MỤC TỐI ƯU TRUY VẤN (INDEXES FOR HIGH-THROUGHPUT RETRIEVAL) ─────
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_history_session ON session_history(session_id);
 CREATE INDEX IF NOT EXISTS idx_history_user ON session_history(user_id);
 CREATE INDEX IF NOT EXISTS idx_saved_user ON saved_books(user_id);
+CREATE INDEX IF NOT EXISTS idx_uploaded_docs_session ON uploaded_documents(session_id);

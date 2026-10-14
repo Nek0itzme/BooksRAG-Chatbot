@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code] Prompt #04 — Tích hợp Hybrid Search (Dense + Sparse Lexical),
-# Author Routing & Anti-Hallucination Gate theo plan.md §3.1 & §3.2
+[AI-Assisted Code] Prompt #04 — Tích hợp Hybrid Search (Dense + Sparse Lexical)
+Tích hợp Hybrid Search (Dense + Sparse Lexical),
+Author Routing & Anti-Hallucination Gate theo plan.md §3.1 & §3.2
 rag_engine.py — Lõi thực thi quy trình RAG và tìm kiếm xếp hạng kết hợp (Hybrid RAG Pipeline)
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 
@@ -55,12 +56,26 @@ except Exception:
     OutputRuleHarness = None
 
 # ── Tích hợp Bộ lọc Hyperbolic Poincaré Ball (HyPE Filter) ────────────────────
+get_hype_filter: Any = None
 try:
     from hype_filter import get_hype_filter
     _HYPE_ENABLED = True
 except Exception as _hype_err:
     _HYPE_ENABLED = False
     print(f"[WARN] HyPE Filter không khởi động được: {_hype_err}")
+
+HYPE_ENABLED = _HYPE_ENABLED
+
+__all__ = [
+    "run_rag",
+    "is_chroma_ready",
+    "_get_books",
+    "get_author_recommendations",
+    "_HYPE_ENABLED",
+    "HYPE_ENABLED",
+    "InputRuleHarness",
+    "OutputRuleHarness",
+]
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -71,6 +86,7 @@ _embedder: Optional[SentenceTransformer] = None
 _chroma_collection = None
 _books_cache: List[dict] = []          # Cache toàn bộ sách từ sample.json
 _author_index: Dict[str, str] = {}     # Chỉ mục tác giả (chữ thường & không dấu -> Tên chuẩn)
+_author_keys_sorted: List[str] = []      # Keys sắp theo độ dài giảm dần (cache 1 lần, dùng cho detect_author)
 _sold_count_max: int = 1               # Giá trị doanh số cao nhất dùng cho log-normalization
 _collection_count_cache: int = 0       # Cache số lượng vector trong ChromaDB
 
@@ -105,19 +121,52 @@ def _get_collection():
     return _chroma_collection
 
 
+def _safe_price(v: Any, default: int = 0) -> int:
+    """Ép giá về int, chịu được None / chuỗi bẩn / float (tránh crash hard_filter, /books)."""
+    try:
+        if v is None:
+            return default
+        if isinstance(v, str):
+            v = re.sub(r"[^\d]", "", v)
+            return int(v) if v else default
+        return int(float(v))
+    except (TypeError, ValueError):
+        return default
+
+
+def _safe_rating(v: Any, default: float = 0.0) -> float:
+    """Ép rating về float, chịu được None / chuỗi bẩn."""
+    try:
+        if v is None:
+            return default
+        return float(v)
+    except (TypeError, ValueError):
+        return default
+
+
 def _get_books() -> List[dict]:
     """Nạp và lập chỉ mục nhanh danh mục sách từ sample.json."""
-    global _books_cache, _sold_count_max, _author_index
+    global _books_cache, _sold_count_max, _author_index, _author_keys_sorted
     if not _books_cache:
         with open(SAMPLE_JSON, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
         _books_cache = raw_data.get("data", raw_data) if isinstance(raw_data, dict) else raw_data
-        _sold_count_max = max(b.get("sold_count", 1) for b in _books_cache) or 1
+        # FIX: sold_count có thể là None / chuỗi (data cào thực tế bẩn) → max() cũ nổ TypeError
+        # làm sập mọi endpoint (/health, /chat, /books) ngay lần gọi đầu tiên.
+        _sold_count_max = 1
+        for b in _books_cache:
+            try:
+                s = int(float(b.get("sold_count", 1)))
+                if s > _sold_count_max:
+                    _sold_count_max = s
+            except (TypeError, ValueError):
+                continue
+        _sold_count_max = _sold_count_max or 1
 
         # Xây dựng chỉ mục tác giả hai chiều (có dấu và không dấu)
         _author_index = {}
         for b in _books_cache:
-            author_full = b.get("author", "").strip()
+            author_full = str(b.get("author", "")).strip()
             if not author_full:
                 continue
             _author_index[author_full.lower()] = author_full
@@ -127,6 +176,9 @@ def _get_books() -> List[dict]:
                 if len(sub_a) >= 5 and len(sub_a.split()) >= 2:
                     _author_index[sub_a.lower()] = author_full
                     _author_index[_remove_accents(sub_a)] = author_full
+        # FIX (hiệu năng): sắp xếp keys 1 lần khi build index thay vì sorted() lại
+        # mỗi lần detect_author() được gọi (mỗi request /chat gọi nhiều lần).
+        _author_keys_sorted = sorted(_author_index.keys(), key=len, reverse=True)
     return _books_cache
 
 
@@ -151,16 +203,26 @@ def is_author_negated(message: str, author: str) -> bool:
     auth_no_acc = _remove_accents(author)
     msg_no_acc = _remove_accents(message)
 
-    patterns = [
-        rf"(?:ngoài|trừ|không\s+(?:phải|muốn|thích|đọc|lấy|xem)|khác\s+(?:với|ngoài)?)\s*(?:nhà\s*văn|tác\s*giả)?\s*{re.escape(auth_low)}",
-        rf"{re.escape(auth_low)}\s*(?:thôi|chán|không\s*đọc|không\s*mua|không\s*thích|ra)",
-        rf"(?:tác\s*giả|sách)\s*khác.*{re.escape(auth_low)}",
-        rf"đổi\s*(?:sang|qua)?.*{re.escape(auth_low)}",
-        rf"không\s+.*{re.escape(auth_low)}",
+    # FIX: code cũ dùng `_remove_accents()` lên cả CHUỖI PATTERN REGEX (chứa \b, \s, re.escape)
+    # làm hỏng pattern nhánh không dấu → khớp sai/bỏ lọt. Cách mới: tìm vị trí nhắc tác giả
+    # trước (cả 2 bản dấu/không dấu), rồi soi cửa sổ ±30 ký tự quanh đó có từ phủ định không.
+    # Tránh dựng regex động từ tên tác giả — tên có ký tự đặc biệt cũng không vỡ.
+    neg_cues = [
+        "ngoài", "trừ", "không", "khác", "đổi", "chán", "thôi",
+        "ngoai", "tru", "khong", "khac", "doi", "chan", "thoi",
     ]
-    for p in patterns:
-        if re.search(p, msg_low) or re.search(_remove_accents(p), msg_no_acc):
-            return True
+    for variant, text in ((auth_low, msg_low), (auth_no_acc, msg_no_acc)):
+        if len(variant) < 3:
+            continue
+        start = 0
+        while True:
+            idx = text.find(variant, start)
+            if idx == -1:
+                break
+            window = text[max(0, idx - 30):idx + len(variant) + 30]
+            if any(cue in window for cue in neg_cues):
+                return True
+            start = idx + len(variant)
     return False
 
 
@@ -209,7 +271,8 @@ def detect_author(query: str, intent_author: Optional[str] = None, check_negatio
     candidates.append(query)
 
     has_author_cue = bool(re.search(r"(?:tác giả|nhà văn|sách của|viết bởi|của)\s+", query.lower()))
-    sorted_keys = sorted(_author_index.keys(), key=len, reverse=True)
+    # FIX: dùng cache sắp sẵn thay vì sorted(...) mỗi lần gọi (697 sách × nhiều lượt/request).
+    sorted_keys = _author_keys_sorted or sorted(_author_index.keys(), key=len, reverse=True)
     for text in candidates:
         t_low = text.lower()
         t_no_acc = _remove_accents(text)
@@ -288,11 +351,15 @@ def hard_filter(books: List[dict], budget: int, min_rating: float) -> List[dict]
       AND b.rating >= min_rating (chất lượng đánh giá đạt chuẩn)
       AND b.price <= budget (nằm trong khả năng tài chính của độc giả)
     """
+    # FIX: ép kiểu an toàn — data cào có thể chứa price/rating = None hoặc chuỗi
+    # ("120.000đ", "") khiến float()/int() cũ nổ ValueError → 500 toàn bộ /chat.
+    # Sách chưa rõ rating (rating_unknown, do trang nguồn không công bố) vẫn được qua cửa
+    # lọc sao — không thể phạt sách vì thiếu metadata; score_rating cho điểm trung lập 0.5.
     return [
         b for b in books
         if b.get("in_stock", True)
-        and float(b.get("rating", 0)) >= min_rating
-        and int(b.get("price", 0)) <= budget
+        and (b.get("rating_unknown") or _safe_rating(b.get("rating", 0)) >= min_rating)
+        and _safe_price(b.get("price", 0)) <= budget
     ]
 
 
@@ -304,8 +371,11 @@ def score_rating(book: dict) -> float:
     """
     Chuẩn hóa điểm đánh giá sao về thang đo đơn vị [0, 1].
     Công thức: R_hat(b) = (rating - 1.0) / 4.0
+    Sách chưa rõ rating (rating_unknown) được 0.5 trung lập thay vì 0 — tương đương sách 3*.
     """
-    r = float(book.get("rating", 1.0))
+    if book.get("rating_unknown"):
+        return 0.5
+    r = _safe_rating(book.get("rating", 1.0), default=1.0)
     return max(0.0, min(1.0, (r - 1.0) / 4.0))
 
 
@@ -314,10 +384,15 @@ def score_sales(book: dict) -> float:
     Chuẩn hóa doanh số bán theo hàm Logarit tự nhiên (Diminishing Marginal Returns).
     Công thức: S_hat(b) = ln(1 + sold_count) / ln(1 + sold_count_max)
     """
-    s = int(book.get("sold_count", 0))
+    try:
+        s = int(float(book.get("sold_count", 0)))
+    except (TypeError, ValueError):
+        s = 0
+    s = max(0, s)  # FIX: sold_count âm (data bẩn) → log1p số âm tuy không crash nhưng cho điểm âm
     if _sold_count_max <= 0:
         return 0.0
-    return math.log1p(s) / math.log1p(_sold_count_max)
+    # Giới hạn giá trị trong khoảng [0, 1] để chuẩn hóa điểm số
+    return min(1.0, math.log1p(s) / math.log1p(_sold_count_max))
 
 
 def score_review_quality(book: dict) -> float:
@@ -325,8 +400,16 @@ def score_review_quality(book: dict) -> float:
     Đánh giá độ tin cậy và lọc đánh giá rác (Review Quality Factor).
     Công thức: Q(b) = (valid_reviews / total_reviews) * min(1.0, valid_reviews / 10)
     """
-    total = int(book.get("total_reviews", 0))
-    valid = int(book.get("valid_reviews", 0))
+    try:
+        total = int(float(book.get("total_reviews", 0)))
+    except (TypeError, ValueError):
+        total = 0
+    try:
+        valid = int(float(book.get("valid_reviews", 0)))
+    except (TypeError, ValueError):
+        valid = 0
+    valid = max(0, valid)
+    total = max(0, total)
     if total == 0:
         return 0.0
     ratio = valid / total
@@ -359,7 +442,7 @@ def hybrid_score(semantic: float, book: dict) -> float:
 # BƯỚC 5: GỢI Ý TÁC PHẨM CÙNG TÁC GIẢ (IN-SESSION RECOMMENDATIONS)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def get_author_recommendations(purchased_book_id: str, exclude_ids: List[str] = None) -> List[dict]:
+def get_author_recommendations(purchased_book_id: str, exclude_ids: Optional[List[str]] = None) -> List[dict]:
     """
     Khi độc giả chọn mua một cuốn sách -> Hệ thống tự động truy vấn và gợi ý thêm
     AUTHOR_REC_COUNT tác phẩm xuất sắc nhất của cùng tác giả đó còn hàng trong kho.
@@ -374,12 +457,12 @@ def get_author_recommendations(purchased_book_id: str, exclude_ids: List[str] = 
 
     same_author = [
         b for b in books
-        if b["author"] == author
-        and b["id"] not in exclude
+        if b.get("author") == author
+        and b.get("id") not in exclude
         and b.get("in_stock", True)
     ]
-    # Sắp xếp theo số sao đánh giá giảm dần
-    same_author.sort(key=lambda b: float(b.get("rating", 0)), reverse=True)
+    # Sắp xếp theo số sao đánh giá giảm dần (ép kiểu an toàn với data bẩn)
+    same_author.sort(key=lambda b: _safe_rating(b.get("rating", 0)), reverse=True)
     return same_author[:AUTHOR_REC_COUNT]
 
 
@@ -390,7 +473,7 @@ def get_author_recommendations(purchased_book_id: str, exclude_ids: List[str] = 
 def run_rag(
     message: str,
     budget: Optional[int] = None,
-    session_history: List[dict] = None,
+    session_history: Optional[List[dict]] = None,
     purchased_book_id: Optional[str] = None,
     image_data: Optional[str] = None,
 ) -> Dict[str, Any]:
@@ -460,7 +543,14 @@ def run_rag(
             }
 
     # ── [Gate 0B] HyPE Specificity Gate: Chủ động hỏi lại khi truy vấn quá mơ hồ ──
-    if _HYPE_ENABLED and not image_data and len(message.split()) < 10:
+    # FIX: gate cũ chặn mọi query <10 từ — kể cả query ngắn nhưng cụ thể
+    # ("Nhà Giả Kim Paulo Coelho", "sách dưới 100k") bị bắt làm rõ vô ích, tốn 1 lượt chat.
+    # Chỉ hỏi lại khi KHÔNG có tín hiệu mạnh nào: tên tác giả, ràng buộc ngân sách, ảnh bìa.
+    _has_budget_signal = bool(re.search(
+        r"(?:dưới|tầm|khoảng|tối đa|<|<=)?\s*\d+\s*(k|nghìn|ngàn|triệu|tr|đ|vnd|đồng)\b", message.lower()))
+    _has_author_signal = detect_author(message, check_negation=False) is not None
+    if (_HYPE_ENABLED and not image_data and not _has_budget_signal and not _has_author_signal
+            and len(message.split()) < 10):
         try:
             _hype_check = get_hype_filter(_get_embedder())
             if _hype_check.is_underspecified(message, threshold=0.12):
@@ -494,7 +584,7 @@ def run_rag(
         unit = m_budget.group(2) or ""
         regex_budget = val * 1000 if (unit in ("k", "nghìn", "ngàn") or val < 1000) else val
 
-    recent_author = extract_recent_author_from_history(session_history)
+    recent_author = extract_recent_author_from_history(session_history or [])
     asking_different = is_query_asking_for_different_book_or_author(message)
 
     raw_author = detect_author(message, check_negation=False)
@@ -539,7 +629,11 @@ def run_rag(
     timings["intent_ms"] = round((time.time() - t0) * 1000)
 
     effective_budget = budget or regex_budget or intent.get("budget_max") or DEFAULT_BUDGET
-    min_rating_req   = float(intent.get("min_rating") or MIN_RATING)
+    # FIX: model có thể trả min_rating dạng chuỗi ("4.5 sao") → float() nổ 500.
+    try:
+        min_rating_req = float(intent.get("min_rating") or MIN_RATING)
+    except (TypeError, ValueError):
+        min_rating_req = MIN_RATING
 
     # ── Bước 2: Lọc cứng theo Ngân sách, Tồn kho và Số sao (Hard Filter) ──────
     t0 = time.time()
@@ -562,6 +656,9 @@ def run_rag(
             "query_context": f"Ngân sách ≤ {effective_budget:,.0f}đ".replace(",", "."),
             "found": False,
             "latency_ms": timings,
+            # FIX: giữ hợp đồng response đồng nhất — trước đây nhánh này thiếu vision_info
+            # khiến client phải đoán key có tồn tại hay không.
+            "vision_info": vision_info,
         }
 
     # ── Bước 2B: Điều hướng Tác giả & Xử lý Chống Bẫy Hallucination ───────────
@@ -612,6 +709,7 @@ def run_rag(
                 "query_context": query_context,
                 "found": False,
                 "latency_ms": timings,
+                "vision_info": vision_info,
             }
 
         if direct_image_matches:
@@ -644,6 +742,7 @@ def run_rag(
                     "query_context": query_context,
                     "found": False,
                     "latency_ms": timings,
+                    "vision_info": vision_info,
                 }
             author_books = matched_author_books
 
@@ -695,6 +794,7 @@ def run_rag(
             "query_context": query_context,
             "found": len(top_books) > 0,
             "latency_ms": timings,
+            "vision_info": vision_info,
             "output_harness_issues": output_harness_issues,
         }
 
@@ -719,6 +819,7 @@ def run_rag(
             "query_context": query_context,
             "found": False,
             "latency_ms": timings,
+            "vision_info": vision_info,
         }
 
     # ── Bước 3: Tìm kiếm Ngữ nghĩa Vector (ChromaDB Dense Search) ─────────────
@@ -726,15 +827,15 @@ def run_rag(
     embedder   = _get_embedder()
     collection = _get_collection()
 
-    eligible_ids = {b["id"] for b in eligible}
-    eligible_map = {b["id"]: b for b in eligible}
+    eligible_ids = {b.get("id") for b in eligible if b.get("id")}
+    eligible_map = {b.get("id"): b for b in eligible if b.get("id")}
 
     search_query = intent.get("semantic_query") or message
     query_vec    = embedder.encode([search_query])[0].tolist()
 
     results = collection.query(
         query_embeddings=[query_vec],
-        n_results=min(len(all_books), _collection_count_cache or collection.count()),
+        n_results=min(100, len(all_books)),  # Lấy 100 ứng viên để đảm bảo độ bao phủ trước khi áp dụng bộ lọc cứng
         include=["distances", "metadatas"],
     )
     timings["semantic_ms"] = round((time.time() - t0) * 1000)
@@ -743,8 +844,8 @@ def run_rag(
     t0 = time.time()
     scored_books = []
 
-    distances = results["distances"][0]
-    metadatas = results["metadatas"][0]
+    distances = (results.get("distances") or [[]])[0]
+    metadatas = (results.get("metadatas") or [[]])[0]
 
     all_kws = list(dict.fromkeys(topic_kws + [k.lower() for k in intent.get("keywords", []) if len(k) > 1]))
     intent_cat = (intent.get("category") or "").lower()

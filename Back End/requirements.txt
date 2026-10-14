@@ -9,3 +9,5 @@ torch
 geoopt
 slowapi
 httpx
+pymupdf
+python-multipart

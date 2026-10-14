@@ -161,7 +161,7 @@ class AutomatedTestHarness:
         total = max(1, len(self.test_cases))
         avg_latency = sum(latencies) / total
         latencies_sorted = sorted(latencies)
-        p95_latency = latencies_sorted[int(total * 0.95)] if total > 1 else latencies_sorted[0]
+        p95_latency = latencies_sorted[min(len(latencies_sorted) - 1, int(total * 0.95))] if latencies_sorted else 0
         accuracy_rate = sum(1 for r in self.results if r.get("correct")) / total
         grounded_rate = grounded_count / total
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code]
+[AI-Assisted Code] Prompt #01 — Trích xuất vector và lập chỉ mục ChromaDB
 indexer.py — Tiến trình nhúng vector và tạo chỉ mục ChromaDB (Vector Indexing Pipeline)
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 
@@ -70,26 +70,41 @@ def build_metadata(book: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         dict: Tập thuộc tính metadata dùng cho lọc cứng (Hard Filter) và hiển thị kết quả.
     """
+    # FIX: ép kiểu chịu lỗi — rating/price từ crawler có thể là None/chuỗi bẩn,
+    # float(None) cũ sẽ nổ ngay khi indexer chạy, chặn cả pipeline re-index.
+    def _f(v, d=0.0):
+        try:
+            return float(v) if v is not None else d
+        except (TypeError, ValueError):
+            return d
+
+    def _i(v, d=0):
+        try:
+            return int(float(v)) if v is not None else d
+        except (TypeError, ValueError):
+            return d
+
     return {
         "id":              book["id"],
-        "isbn":            book.get("isbn", ""),
-        "title":           book["title"],
-        "original_title":  book.get("original_title", ""),
-        "author":          book["author"],
-        "category":        book["category"],
-        "publisher":       book.get("publisher", ""),
-        "publish_year":    book.get("publish_year", 0),
-        "price":           int(book.get("price", 0)),
-        "original_price":  int(book.get("original_price", book.get("price", 0))),
-        "rating":          float(book.get("rating", 0.0)),
-        "sold_count":      int(book.get("sold_count", 0)),
-        "total_reviews":   int(book.get("total_reviews", 0)),
-        "valid_reviews":   int(book.get("valid_reviews", 0)),
+        "isbn":            str(book.get("isbn", "")),
+        "title":           str(book.get("title", "")),
+        "original_title":  str(book.get("original_title", "")),
+        "author":          str(book.get("author", "")),
+        "category":        str(book.get("category", "")),
+        "publisher":       str(book.get("publisher", "")),
+        "publish_year":    _i(book.get("publish_year", 0)),
+        "price":           _i(book.get("price", 0)),
+        "original_price":  _i(book.get("original_price", book.get("price", 0))),
+        "rating":          _f(book.get("rating", 0.0)),
+        "rating_unknown":  bool(book.get("rating_unknown", False)),
+        "sold_count":      _i(book.get("sold_count", 0)),
+        "total_reviews":   _i(book.get("total_reviews", 0)),
+        "valid_reviews":   _i(book.get("valid_reviews", 0)),
         "in_stock":        bool(book.get("in_stock", True)),
-        "target_audience": book.get("target_audience", ""),
+        "target_audience": str(book.get("target_audience", "")),
         "tags":            "|".join(book.get("tags", [])),   # Chuyển đổi list -> string
-        "description":     book.get("description", ""),
-        "search_keyword":  book.get("search_keyword", ""),
+        "description":     str(book.get("description", "")),
+        "search_keyword":  str(book.get("search_keyword", "")),
     }
 
 
@@ -162,7 +177,7 @@ def run_indexer() -> None:
             ids=ids[i:batch_end],
             embeddings=embeddings[i:batch_end],
             documents=documents[i:batch_end],
-            metadatas=metadatas[i:batch_end],
+            metadatas=metadatas[i:batch_end],  # type: ignore
         )
         batch_num = (i // BATCH_SIZE) + 1
         print(f"   ✅ Đã nạp xong Batch {batch_num}/{total_batches} ({batch_end}/{len(ids)} cuốn sách)", flush=True)

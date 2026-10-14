@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code] Prompt #07 — Adaptation từ:
+[AI-Assisted Code] Prompt #07 — Hyperbolic Poincaré Ball Entailment Cones (HyPE Filter)
+Adaptation từ:
   "HYPE: Hyperbolic Entailment Filtering for Underspecified Images and Texts"
   Wonjae Kim et al., ECCV 2024 | arxiv: 2404.17507
   Nguồn: https://github.com/naver-ai/hype

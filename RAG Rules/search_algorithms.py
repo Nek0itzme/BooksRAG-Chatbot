@@ -127,13 +127,21 @@ def compute_commercial_score(
 ) -> float:
     """
     Tính điểm xếp hạng chất lượng bổ trợ dựa trên đánh giá sao, doanh số và độ tin cậy review.
-    - Điểm sao: Chuẩn hóa từ thang 1-5 về [0, 1].
+    - Điểm sao: Chuẩn hóa từ thang 1-5 về [0, 1]. Sách chưa rõ rating → 0.5 trung lập.
     - Doanh số: Dùng hàm logarit để giảm chênh lệch quá lớn giữa sách cũ và mới.
     - Độ tin cậy review: Dựa trên tỷ lệ đánh giá hợp lệ.
     """
     # 1. Chuẩn hóa rating về khoảng [0, 1]
-    raw_rating = float(book.get("rating", 4.5))
-    r_hat = max(0.0, min(1.0, (raw_rating - 1.0) / 4.0))
+    # FIX: default cũ 4.5 bịa điểm cho sách thiếu rating (thổi phồng ranking).
+    # Thiếu rating → 0.5 trung lập (tương đương 3*), đúng khi rating_unknown.
+    if book.get("rating_unknown") or book.get("rating") is None:
+        r_hat = 0.5
+    else:
+        try:
+            raw_rating = float(book.get("rating", 3.0))
+        except (TypeError, ValueError):
+            raw_rating = 3.0
+        r_hat = max(0.0, min(1.0, (raw_rating - 1.0) / 4.0))
 
     # 2. Chuẩn hóa số lượng đã bán theo logarit
     sold = max(0.0, float(book.get("sold_count", 0)))  # clamp trước log — sold âm → log(-x) crash ValueError
@@ -141,8 +149,15 @@ def compute_commercial_score(
     s_hat = min(1.0, max(0.0, s_hat))
 
     # 3. Hệ số tin cậy đánh giá
-    valid_rev = float(book.get("valid_reviews", 1))
-    total_rev = max(1.0, float(book.get("total_reviews", 1)))
+    # FIX: default cũ valid=1/total=1 bịa "1 review hợp lệ" cho sách không có review.
+    try:
+        valid_rev = max(0.0, float(book.get("valid_reviews", 0)))
+    except (TypeError, ValueError):
+        valid_rev = 0.0
+    try:
+        total_rev = max(1.0, float(book.get("total_reviews", 0)))
+    except (TypeError, ValueError):
+        total_rev = 1.0
     q_ratio = min(1.0, valid_rev / total_rev)
     q_confidence = min(1.0, valid_rev / 10.0)
     q_score = q_ratio * q_confidence

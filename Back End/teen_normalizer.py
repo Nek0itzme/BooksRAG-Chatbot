@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code]
+[AI-Assisted Code] Prompt #04 — Chuẩn hóa teencode và ánh xạ cảm xúc
 teen_normalizer.py — Chuẩn hóa truy vấn tiếng Việt phi hình thức (Teencode / Từ lóng / Tiếng lòng)
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 
@@ -106,8 +106,8 @@ def normalize_query(query: str) -> Tuple[str, Optional[str]]:
 if __name__ == "__main__":
     import sys
     try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except AttributeError:
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
+    except (AttributeError, Exception):
         pass
 
     print(f"[*] Đã nạp từ điển từ: {_LEXICON_PATH.name}")

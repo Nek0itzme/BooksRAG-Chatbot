@@ -1,0 +1,245 @@
+[
+  {
+    "drug_id": "OTC_01",
+    "trade_name": "Hapacol 650",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Paracetamol 650mg",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Ức chế tổng hợp prostaglandin tại hệ thần kinh trung ương và ức chế ngoại biên tín hiệu truyền cảm thụ đau.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Sốt", "Sốt cao", "Đau đầu", "Đau nhức cơ thể", "Đau răng"],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 842)",
+    "category": "Thuốc giảm đau - hạ sốt không kê đơn (OTC)",
+    "common_symptoms": ["Sốt cao", "Đau đầu", "Đau răng", "Đau nhức cơ bắp"],
+    "contraindications": [
+      "Người suy giảm chức năng gan nặng",
+      "Người thiếu hụt men G6PD",
+      "Người dị ứng với Paracetamol"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia (tăng nguy cơ độc tính tế bào gan)",
+      "Các chế phẩm khác chứa Paracetamol (nguy cơ quá liều tích lũy)"
+    ],
+    "safe_usage_note": "Khoảng cách giữa 2 lần uống tối thiểu 4-6 giờ. Không uống quá 4g/ngày đối với người lớn."
+  },
+  {
+    "drug_id": "OTC_02",
+    "trade_name": "Berberin 100mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Berberin clorid 100mg",
+    "drugbank_id": "DB01427",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01427",
+    "mechanism_of_action": "Kháng khuẩn thực vật ức chế Shigella, E. Coli; ức chế độc tố tả và giảm bài tiết dịch ruột.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Tiêu chảy", "Đau quặn bụng", "Đi ngoài phân lỏng", "Nhiễm khuẩn ruột"],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 315)",
+    "category": "Thuốc trị tiêu chảy không kê đơn (OTC)",
+    "common_symptoms": ["Tiêu chảy", "Đau bụng", "Rối loạn tiêu hóa", "Viêm ruột nhẹ"],
+    "contraindications": [
+      "Phụ nữ có thai (kích thích co bóp tử cung gây sảy thai)",
+      "Trẻ sơ sinh thiếu hụt men G6PD"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế miễn dịch Ciclosporin (tăng nồng độ thuốc trong máu)"
+    ],
+    "safe_usage_note": "Uống sau bữa ăn. Ngưng dùng và đi khám nếu tiêu chảy ra máu hoặc sốt cao trên 2 ngày."
+  },
+  {
+    "drug_id": "OTC_03",
+    "trade_name": "Vitamin C 500mg",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Acid ascorbic 500mg",
+    "drugbank_id": "DB00126",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00126",
+    "mechanism_of_action": "Cofactor phản ứng hydroxyl hóa sinh tổng hợp collagen, carnitine và chống oxy hóa dọn dẹp gốc tự do.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Mệt mỏi", "Giảm đề kháng", "Chảy máu chân răng", "Phục hồi sức khỏe"],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1207)",
+    "category": "Vitamin bổ sung không kê đơn (OTC)",
+    "common_symptoms": ["Tăng đề kháng", "Mệt mỏi", "Chảy máu chân răng", "Phục hồi sau ốm"],
+    "contraindications": [
+      "Người có tiền sử sỏi thận oxalat",
+      "Người thiếu men G6PD (nguy cơ tan máu liều cao)",
+      "Người dị ứng với Acid ascorbic"
+    ],
+    "dangerous_interactions": [
+      "Aspirin liều cao (làm giảm hấp thu Vitamin C)",
+      "Thuốc kháng acid chứa nhôm (tăng hấp thu nhôm gây độc tính)"
+    ],
+    "safe_usage_note": "Nên uống vào ban ngày (buổi sáng/trưa) sau ăn, tránh uống tối gây mất ngủ và lắng cặn sỏi thận."
+  },
+  {
+    "drug_id": "OTC_04",
+    "trade_name": "Gaviscon Dual Action",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Natri alginat 500mg, Natri bicarbonat 213mg, Calci carbonat 325mg",
+    "drugbank_id": "DB13978",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB13978",
+    "mechanism_of_action": "Phản ứng với acid dịch vị tạo lớp màng bọt gel alginate nhớt trung tính nổi trên đỉnh dịch vị ngăn trào ngược.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Ợ chua", "Ợ nóng", "Đau rát ngực", "Trào ngược dạ dày", "Khó tiêu"],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 512)",
+    "category": "Thuốc kháng acid & chống trào ngược dạ dày (OTC)",
+    "common_symptoms": ["Ợ chua", "Ợ nóng", "Trào ngược dạ dày thực quản", "Đau rát thượng vị"],
+    "contraindications": [
+      "Người suy tim nặng hoặc tăng huyết áp cần ăn kiêng muối nghiêm ngặt (do chứa Natri)",
+      "Người tăng calci máu hoặc sỏi thận calci"
+    ],
+    "dangerous_interactions": [
+      "Kháng sinh nhóm Tetracyclin, Quinolon, Thuốc bổ sắt (cần uống cách nhau ít nhất 2 giờ)"
+    ],
+    "safe_usage_note": "Uống sau bữa ăn chính và trước khi đi ngủ. Lắc kỹ gói hỗn dịch trước khi uống."
+  },
+  {
+    "drug_id": "OTC_05",
+    "trade_name": "Panadol Extra (Đỏ)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Paracetamol 500mg + Caffeine 65mg",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Tác động kép: Paracetamol giảm đau hạ sốt trung ương kết hợp Caffeine đối vận thụ thể adenosine làm co mạch não.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Đau đầu dữ dội", "Đau nửa đầu", "Đau răng", "Đau bụng kinh", "Sốt nhức"],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 844)",
+    "category": "Thuốc giảm đau hạ sốt tăng cường không kê đơn (OTC)",
+    "common_symptoms": ["Đau đầu dữ dội", "Đau nửa đầu", "Đau răng", "Đau bụng kinh", "Sốt"],
+    "contraindications": [
+      "Người suy gan nặng",
+      "Người rối loạn nhịp tim nhanh, mất ngủ kinh niên",
+      "Phụ nữ mang thai 3 tháng đầu (do có chứa Caffeine liều cao)",
+      "Trẻ em dưới 12 tuổi"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia, cà phê, trà đậm (gây bồn chồn, hồi hộp tim và tăng độc tính gan)",
+      "Thuốc an thần, thuốc ngủ (bị giảm tác dụng bởi caffeine)"
+    ],
+    "safe_usage_note": "Không dùng quá 8 viên/ngày. Tránh uống vào buổi tối sát giờ đi ngủ."
+  },
+  {
+    "drug_id": "OTC_06",
+    "trade_name": "Smecta 3g",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Diosmectite 3g",
+    "drugbank_id": "DB11589",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB11589",
+    "mechanism_of_action": "Cấu trúc phiến silicat nhôm magnesi đa lớp có khả năng bao phủ niêm mạc ruột và gắn kết độc tố vi khuẩn.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Tiêu chảy", "Đầy hơi", "Chướng bụng", "Rối loạn đường ruột"],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 418)",
+    "category": "Thuốc bao phủ niêm mạc & cầm tiêu chảy không kê đơn (OTC)",
+    "common_symptoms": ["Tiêu chảy cấp và mạn tính", "Đau bụng đi ngoài", "Đầy hơi chướng bụng"],
+    "contraindications": [
+      "Người tắc ruột cơ học",
+      "Người dị ứng với Diosmectite"
+    ],
+    "dangerous_interactions": [
+      "Làm giảm hấp thu tất cả các thuốc uống khác (phải uống cách các thuốc khác tối thiểu 2 giờ)"
+    ],
+    "safe_usage_note": "Pha với 50ml nước ấm hoặc trộn đều vào thức ăn sệt. Kết hợp bù nước điện giải Oresol."
+  },
+  {
+    "drug_id": "OTC_07",
+    "trade_name": "Eugica Xanh (Viên nang mềm)",
+    "source_pharmacy": "Pharmacity / Long Châu",
+    "active_ingredient": "Eucalyptol 100mg, Tinh dầu tràm 50mg, Menthol 0.5mg, Tinh dầu gừng 0.75mg",
+    "drugbank_id": "DB03852",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB03852",
+    "mechanism_of_action": "Kích thích niêm mạc phế quản tăng bài tiết dịch lỏng, sát trùng nhẹ đường thở và làm dịu phản xạ ho.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Ho có đờm", "Đau họng", "Rát cổ", "Khản giọng", "Cảm lạnh"],
+    "min_age": 3,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 480)",
+    "category": "Thuốc ho thảo dược long đờm không kê đơn (OTC)",
+    "common_symptoms": ["Ho có đờm", "Ho do cảm lạnh", "Đau rát họng", "Khản tiếng"],
+    "contraindications": [
+      "Trẻ em dưới 30 tháng tuổi hoặc trẻ có tiền sử co giật do sốt cao",
+      "Người hen suyễn, suy hô hấp",
+      "Người ho do lao phổi"
+    ],
+    "dangerous_interactions": [
+      "Không phối hợp với thuốc ức chế trung tâm ho như Codein, Dextromethorphan (gây ứ đọng đờm)"
+    ],
+    "safe_usage_note": "Uống sau ăn với nhiều nước ấm để giúp loãng đờm tự nhiên."
+  },
+  {
+    "drug_id": "OTC_08",
+    "trade_name": "Decolgen Forte",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Paracetamol 500mg, Phenylephrine HCl 10mg, Chlorpheniramine maleate 2mg",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Phối hợp: Giảm đau hạ sốt (Paracetamol) + Co mạch giảm sung huyết mũi (Phenylephrine) + Kháng histamin H1 chống dị ứng (Chlorpheniramine).",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Sổ mũi", "Nghẹt mũi", "Hắt hơi", "Cảm cúm", "Sốt kèm chảy mũi"],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 382)",
+    "category": "Thuốc trị cảm cúm, sổ mũi không kê đơn (OTC)",
+    "common_symptoms": ["Nghẹt mũi", "Sổ mũi", "Hắt hơi", "Sốt kèm nhức đầu", "Đau họng"],
+    "contraindications": [
+      "Người tăng huyết áp nặng, bệnh mạch vành tim",
+      "Người u tuyến tiền liệt, bí tiểu",
+      "Người mắc bệnh Glaucoma góc đóng (tăng nhãn áp)",
+      "Người đang dùng thuốc ức chế IMAO"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia (tăng tác dụng buồn ngủ và ức chế thần kinh trung ương)",
+      "Thuốc an thần, chống trầm cảm"
+    ],
+    "safe_usage_note": "Thuốc gây buồn ngủ, không dùng khi lái xe hoặc vận hành máy móc nguy hiểm."
+  },
+  {
+    "drug_id": "OTC_09",
+    "trade_name": "Ibuprofen 400mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Ibuprofen 400mg",
+    "drugbank_id": "DB01050",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01050",
+    "mechanism_of_action": "Ức chế không chọn lọc enzyme cyclooxygenase COX-1 và COX-2, ức chế sinh tổng hợp prostaglandin gây viêm.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Đau nhức xương khớp", "Đau răng", "Đau bụng kinh", "Viêm đau cơ"],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 650)",
+    "category": "Thuốc kháng viêm hạ sốt giảm đau không steroid (NSAID)",
+    "common_symptoms": ["Đau cơ bắp", "Đau răng", "Đau lưng", "Đau bụng kinh", "Viêm sưng khớp"],
+    "contraindications": [
+      "Người viêm loét dạ dày tá tràng tiến triển hoặc xuất huyết tiêu hóa",
+      "Phụ nữ mang thai 3 tháng cuối (nguy cơ đóng sớm ống động mạch thai nhi)",
+      "Người suy thận nặng hoặc hen suyễn co thắt phế quản do aspirin"
+    ],
+    "dangerous_interactions": [
+      "Thuốc chống đông máu Warfarin, Aspirin (tăng nguy cơ xuất huyết tiêu hóa)",
+      "Thuốc ức chế men chuyển điều trị tăng huyết áp (giảm tác dụng hạ áp)"
+    ],
+    "safe_usage_note": "Bắt buộc uống sau bữa ăn no với một cốc nước đầy để bảo vệ niêm mạc dạ dày."
+  },
+  {
+    "drug_id": "OTC_10",
+    "trade_name": "Loratadine 10mg",
+    "source_pharmacy": "Pharmacity / Long Châu",
+    "active_ingredient": "Loratadine 10mg",
+    "drugbank_id": "DB00455",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00455",
+    "mechanism_of_action": "Thuốc kháng histamin 3 vòng thế hệ 2 tác dụng kéo dài, đối kháng chọn lọc thụ thể H1 ngoại biên, không qua hàng rào máu não nên không gây buồn ngủ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": ["Mẩn ngứa", "Mề đay", "Dị ứng thời tiết", "Viêm mũi dị ứng", "Ngứa mắt"],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 720)",
+    "category": "Thuốc chống dị ứng mẩn ngứa không kê đơn (OTC)",
+    "common_symptoms": ["Mẩn ngứa dị ứng", "Mề đay tự phát", "Hắt hơi ngứa mũi", "Viêm kết mạc dị ứng"],
+    "contraindications": [
+      "Người dị ứng hoặc quá mẫn với Loratadine hoặc Desloratadine",
+      "Người suy gan nặng (cần dùng liều cách nhật)"
+    ],
+    "dangerous_interactions": [
+      "Ketoconazole, Erythromycin, Cimetidine (làm tăng nồng độ loratadine trong huyết tương nhưng ít biểu hiện lâm sàng)"
+    ],
+    "safe_usage_note": "Chỉ cần uống 1 viên (10mg) mỗi ngày một lần. Không gây buồn ngủ ở liều điều trị thông thường."
+  }
+]

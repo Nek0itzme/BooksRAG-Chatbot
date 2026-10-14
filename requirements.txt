@@ -8,13 +8,15 @@ pydantic>=2.0.0
 slowapi>=0.1.9
 python-dotenv>=1.0.0
 httpx>=0.27.0
+python-multipart>=0.0.9
 
-# ── RAG & Machine Learning ───────────────────────────────────────────────────
+# ── RAG, Document Processing & Machine Learning ──────────────────────────────
 chromadb>=0.4.22
 sentence-transformers>=2.5.0
 torch>=2.0.0
 geoopt>=0.5.0                    # Hyperbolic Poincaré Ball geometry cho HyPE Filter
 google-genai>=0.1.1               # Google Gemini 2.5 Flash SDK
+pymupdf>=1.23.0                  # PyMuPDF trích xuất text & chèn page anchor từ PDF
 
 # ── Sample Tests & Benchmark Visualizations ──────────────────────────────────
 matplotlib>=3.8.0

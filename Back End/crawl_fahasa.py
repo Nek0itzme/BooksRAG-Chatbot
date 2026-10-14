@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+[AI-Assisted Code] Prompt #12 — Thu thập dữ liệu sách Fahasa
 crawl_fahasa.py: Thu thập và chuẩn hóa dữ liệu sách từ hệ thống Fahasa.com
 Đề tài: Nghiên cứu và xây dựng hệ thống tư vấn sách tự động tích hợp RAG nhằm giảm thiểu sai lệch thông tin
 
@@ -14,15 +15,20 @@ import sys
 import json
 import time
 import re
+from typing import Optional
 from bs4 import BeautifulSoup
 
 try:
-    from curl_cffi import requests
+    from curl_cffi import requests  # type: ignore
 except ImportError:
     print("[ERROR] Cần thư viện curl_cffi: pip install curl_cffi")
     sys.exit(1)
 
-sys.stdout.reconfigure(encoding="utf-8")
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
+    except Exception:
+        pass
 
 # Toàn bộ danh mục "Sách Trong Nước" từ website Fahasa
 FAHASA_CATEGORIES = [
@@ -144,7 +150,7 @@ def load_existing_database():
     return books, existing_titles, existing_ids
 
 
-def extract_fahasa_book(detail_url: str, category_name: str, index_id: int) -> dict:
+def extract_fahasa_book(detail_url: str, category_name: str, index_id: int) -> Optional[dict]:
     """Truy cập trang chi tiết một cuốn sách trên Fahasa và trích xuất dữ liệu chuẩn khoa học."""
     html = fetch_page(detail_url)
     if not html:
@@ -211,18 +217,73 @@ def extract_fahasa_book(detail_url: str, category_name: str, index_id: int) -> d
     if desc_el:
         desc = clean_text(desc_el.text)
 
+    # FIX: như crawl_tiki — không bịa marketing text; fallback chỉ restate metadata thật.
     if len(desc) < 40:
         desc = (
-            f"{title} là tác phẩm tiêu biểu thuộc danh mục {category_name} của tác giả {author}, "
-            f"do {publisher} phát hành năm {publish_year}. Cuốn sách cung cấp kiến thức giá trị "
-            f"và trải nghiệm đọc phong phú cho độc giả yêu thích thể loại này."
+            f"[Chưa có mô tả chi tiết] {title} — Tác giả: {author} — "
+            f"Danh mục: {category_name} — {publisher} ({publish_year})."
         )
 
-    # 5. Rating & Reviews thực tế
-    rating = 4.8
-    sold_count = 120
-    total_reviews = 10
-    valid_reviews = 8
+    # 5. Rating & Reviews — parse thật từ trang, thiếu thì 0 + cờ unknown (không hardcode 4.8)
+    rating = 0.0
+    rating_unknown = True
+    sold_count = 0
+    total_reviews = 0
+    try:
+        # Ưu tiên JSON-LD aggregateRating (chuẩn schema.org, nhiều trang Fahasa có)
+        for script in soup.select('script[type="application/ld+json"]'):
+            try:
+                ld = json.loads(script.text)
+            except Exception:
+                continue
+            nodes = ld if isinstance(ld, list) else [ld]
+            for node in nodes:
+                agg = (node or {}).get("aggregateRating") if isinstance(node, dict) else None
+                if isinstance(agg, dict):
+                    try:
+                        rating = float(agg.get("ratingValue", 0))
+                        total_reviews = int(agg.get("reviewCount", 0))
+                        if rating > 0:
+                            rating_unknown = False
+                        break
+                    except (TypeError, ValueError):
+                        pass
+            if not rating_unknown:
+                break
+        if rating_unknown:
+            # Fallback: meta ratingValue / width % của sao (width:86% ≈ 4.3/5)
+            meta_rating = soup.select_one('meta[itemprop="ratingValue"]')
+            if meta_rating and meta_rating.get("content"):
+                rating = float(meta_rating["content"])
+                if rating > 0:
+                    rating_unknown = False
+            else:
+                star_el = soup.select_one(".rating-box .rating, .ratings .rating")
+                if star_el and star_el.get("style"):
+                    m = re.search(r"width\s*:\s*(\d+(?:\.\d+)?)\s*%", star_el["style"])
+                    if m:
+                        rating = round(float(m.group(1)) / 20, 1)
+                        if rating > 0:
+                            rating_unknown = False
+        # Số lượt đánh giá hiển thị ("12 đánh giá")
+        if total_reviews == 0:
+            rev_el = soup.select_one(".rating-links a, .review-count, .amount a")
+            if rev_el:
+                m = re.search(r"(\d+)", clean_text(rev_el.text).replace(".", ""))
+                if m:
+                    total_reviews = int(m.group(1))
+        # Doanh số ("Đã bán 1.2k") — parse được thì dùng, không thì 0
+        sold_el = soup.select_one(".sold-qty, .sale-qty, [class*='sold']")
+        if sold_el:
+            m = re.search(r"([\d.,]+)\s*(k)?", clean_text(sold_el.text).lower())
+            if m:
+                sold_count = float(m.group(1).replace(",", "."))
+                if m.group(2):
+                    sold_count *= 1000
+                sold_count = int(sold_count)
+    except Exception:
+        pass
+    valid_reviews = int(total_reviews * 0.8) if total_reviews > 0 else 0
 
     # Tags
     tags = [w.lower() for w in re.findall(r"\b\w{3,}\b", title)[:5]]
@@ -246,7 +307,8 @@ def extract_fahasa_book(detail_url: str, category_name: str, index_id: int) -> d
         "publish_year": publish_year,
         "price": price,
         "original_price": original_price,
-        "rating": rating,
+        "rating": round(rating, 1),
+        "rating_unknown": rating_unknown,
         "sold_count": sold_count,
         "total_reviews": total_reviews,
         "valid_reviews": valid_reviews,
@@ -310,7 +372,7 @@ def crawl_fahasa_categories(categories_to_crawl: list, max_per_cat: int = 100, a
             detail_links = []
 
             for a in soup.select(".product-item a, .item-inner a, h2.product-name-no-ellipsis a"):
-                href = a.get("href", "")
+                href = str(a.get("href") or "")
                 if href.endswith(".html") and not any(k in href for k in ["/sach-trong-nuoc/", "/category/", "cart", "account"]):
                     if href not in seen_urls and href not in detail_links:
                         seen_urls.add(href)
@@ -318,7 +380,7 @@ def crawl_fahasa_categories(categories_to_crawl: list, max_per_cat: int = 100, a
                         # Trích xuất ID và tiêu đề nhanh từ link trên trang danh mục
                         fhs_id_match = re.search(r"(\d+)\.html", href)
                         fhs_id = int(fhs_id_match.group(1)) if fhs_id_match else None
-                        title_candidate = clean_text(a.get("title") or a.get_text(strip=True)).lower()
+                        title_candidate = clean_text(str(a.get("title") or a.get_text(strip=True))).lower()
 
                         # ==============================================================
                         # 🚀 CƠ CHẾ SCAN NHANH: Kiểm tra sách đã có trong Database chưa
@@ -397,6 +459,36 @@ def crawl_fahasa_categories(categories_to_crawl: list, max_per_cat: int = 100, a
         merge_into_main_sample(all_new_books)
 
 
+def _atomic_write_json(path: str, payload: dict) -> None:
+    """Ghi JSON atomic (tmp + os.replace) — crash giữa chừng không làm corrupt file chính."""
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
+def _backup_once(db_dir: str, main_file: str) -> None:
+    """Giữ đúng 1 bản backup (ghi đè) thay vì file timestamped phình không giới hạn mỗi lần cào."""
+    if os.path.exists(main_file):
+        backup_file = os.path.join(db_dir, "sample_backup.json")
+        try:
+            with open(main_file, "r", encoding="utf-8") as f_src, open(backup_file, "w", encoding="utf-8") as f_dst:
+                f_dst.write(f_src.read())
+            print(f"🛡️ Đã sao lưu an toàn kho sách cũ vào: {os.path.basename(backup_file)}")
+        except Exception as e:
+            print(f"⚠️ Cảnh báo backup: {e}")
+
+
+def _next_book_id(existing_books: list) -> int:
+    """Số thứ tự ID tiếp theo (giữ nguyên ID sách cũ, chỉ cấp cho sách mới)."""
+    max_n = 0
+    for b in existing_books:
+        m = re.match(r"BK(\d+)$", str(b.get("id", "")))
+        if m:
+            max_n = max(max_n, int(m.group(1)))
+    return max_n + 1
+
+
 def merge_into_main_sample(fahasa_books: list):
     """Tự động gộp sách Fahasa vào database/sample.json và chuẩn hóa ID."""
     if not fahasa_books:
@@ -407,14 +499,7 @@ def merge_into_main_sample(fahasa_books: list):
     main_file = os.path.join(db_dir, "sample.json")
 
     # Tạo bản backup an toàn trước khi ghi đè
-    if os.path.exists(main_file):
-        backup_file = os.path.join(db_dir, f"sample_backup_{int(time.time())}.json")
-        try:
-            with open(main_file, "r", encoding="utf-8") as f_src, open(backup_file, "w", encoding="utf-8") as f_dst:
-                f_dst.write(f_src.read())
-            print(f"🛡️ Đã sao lưu an toàn kho sách cũ vào: {os.path.basename(backup_file)}")
-        except Exception as e:
-            print(f"⚠️ Cảnh báo backup: {e}")
+    _backup_once(db_dir, main_file)
 
     try:
         with open(main_file, "r", encoding="utf-8") as f:
@@ -424,18 +509,18 @@ def merge_into_main_sample(fahasa_books: list):
         existing_books = []
 
     existing_titles = {b.get("title", "").strip().lower() for b in existing_books}
+    next_id = _next_book_id(existing_books)
     added_count = 0
 
     for fb in fahasa_books:
         title = fb.get("title", "").strip().lower()
         if title and title not in existing_titles:
+            # FIX: chỉ cấp ID cho sách mới — không đánh lại toàn bộ ID cũ (xem crawl_tiki).
+            fb["id"] = f"BK{next_id:04d}"
+            next_id += 1
             existing_books.append(fb)
             existing_titles.add(title)
             added_count += 1
-
-    # Đánh lại ID thống nhất chuẩn khoa học: BK0001 -> BKxxxx
-    for i, b in enumerate(existing_books, start=1):
-        b["id"] = f"BK{i:04d}"
 
     final_payload = {
         "metadata": {
@@ -447,8 +532,7 @@ def merge_into_main_sample(fahasa_books: list):
         "data": existing_books,
     }
 
-    with open(main_file, "w", encoding="utf-8") as f:
-        json.dump(final_payload, f, ensure_ascii=False, indent=2)
+    _atomic_write_json(main_file, final_payload)
 
     # Lưu bản JSONL của toàn bộ database
     main_jsonl = os.path.join(db_dir, "sample.jsonl")

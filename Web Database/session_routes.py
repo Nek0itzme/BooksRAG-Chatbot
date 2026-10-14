@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code]
+[AI-Assisted Code] Prompt #08 — Router quản lý phiên và tài liệu đã lưu
 session_routes.py — FastAPI Router cho quản lý phiên người dùng và dữ liệu tương tác
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 
@@ -17,7 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from fastapi import APIRouter, Depends, HTTPException, Header, Request
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, Dict, Any, List
 
 # Giới hạn tần suất gọi API đăng nhập theo chuẩn an ninh OWASP (Rate Limiting)
@@ -36,6 +36,7 @@ from db_manager import (
     get_user,
     create_session,
     get_session,
+    touch_session,
     invalidate_session,
     get_session_history,
     get_user_sessions,
@@ -55,9 +56,18 @@ analytics_router = APIRouter(prefix="/analytics", tags=["analytics"])
 
 class LoginRequest(BaseModel):
     """Schema tiếp nhận thông tin yêu cầu đăng nhập từ Client."""
-    username: str = Field(..., description="Tên đăng nhập hoặc định danh người dùng")
-    display_name: Optional[str] = Field("", description="Tên hiển thị trên giao diện người dùng")
-    device_info: Optional[str] = Field("", description="Thông tin User-Agent hoặc thiết bị kết nối")
+    username: str = Field(..., min_length=1, max_length=64,
+                          description="Tên đăng nhập hoặc định danh người dùng")
+    display_name: Optional[str] = Field("", max_length=100,
+                                        description="Tên hiển thị trên giao diện người dùng")
+    device_info: Optional[str] = Field("", max_length=255,
+                                       description="Thông tin User-Agent hoặc thiết bị kết nối")
+
+    @field_validator("username", "display_name", "device_info", mode="before")
+    @classmethod
+    def _strip_fields(cls, v):
+        # FIX: chặn username rỗng/toàn khoảng trắng và cắt chuỗi quá dài trước khi vào DB.
+        return v.strip()[:255] if isinstance(v, str) else v
 
 
 class LoginResponse(BaseModel):
@@ -93,7 +103,7 @@ class SaveBookRequest(BaseModel):
 async def _require_session(x_session_id: str = Header(default="")) -> dict:
     """
     FastAPI Dependency: Trích xuất và kiểm tra tính hợp lệ của phiên từ HTTP Header `X-Session-Id`.
-    
+
     Quy trình kiểm duyệt:
     1. Kiểm tra sự tồn tại của header `X-Session-Id`. Nếu thiếu -> HTTP 401 Unauthorized.
     2. Truy vấn session trong SQLite Database (`get_session`).
@@ -105,6 +115,12 @@ async def _require_session(x_session_id: str = Header(default="")) -> dict:
     session = get_session(x_session_id)
     if not session:
         raise HTTPException(status_code=401, detail="Session expired or invalid. Please login again.")
+    # FIX: gia hạn TTL mỗi lần dùng — trước đây chỉ save_message mới chạm last_active,
+    # user chỉ đọc (xem lịch sử, wishlist, analytics) vẫn bị tính hết hạn 7 ngày.
+    try:
+        touch_session(x_session_id)
+    except Exception:
+        pass
     return session
 
 
@@ -130,7 +146,16 @@ async def login(request: Request, req: LoginRequest):
     4. Phản hồi Session ID để client lưu trữ trên LocalStorage.
     """
     user = create_or_get_user(req.username, req.display_name or "")
-    is_new = "last_seen" not in user or user.get("created_at") == user.get("last_seen")
+    # FIX: so sánh thời gian thay vì so chuỗi — code cũ `created_at == last_seen` ở độ chính xác
+    # giây nên login lần 2 trong cùng 1 giây vẫn bị gắn cờ "new user".
+    is_new = False
+    try:
+        from datetime import datetime
+        created = datetime.strptime(user.get("created_at", ""), "%Y-%m-%d %H:%M:%S")
+        seen = datetime.strptime(user.get("last_seen", ""), "%Y-%m-%d %H:%M:%S")
+        is_new = abs((seen - created).total_seconds()) <= 5
+    except Exception:
+        is_new = user.get("created_at") == user.get("last_seen")
 
     session = create_session(user["user_id"], req.device_info or "")
 

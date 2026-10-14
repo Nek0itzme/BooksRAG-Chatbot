@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 [AI-Assisted Code] Prompt #06 — Multi-key rotation + Retry config
+Multi-key rotation + Retry config
 config.py — Hằng số & siêu tham số toàn hệ thống
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 """
@@ -28,7 +29,7 @@ for _suffix in ["", "_2", "_3", "_4", "_5"]:
 
 GEMINI_API_KEY = GEMINI_API_KEYS[0] if GEMINI_API_KEYS else ""
 GEMINI_FLASH    = "gemini-flash-lite-latest"
-GEMINI_FALLBACK = "gemini-3.5-flash-lite"
+GEMINI_FALLBACK = "gemini-2.0-flash-lite"   # Mô hình dự phòng chính thức của Gemini
 
 # 3. Cơ chế tự động thử lại khi gặp lỗi mạng
 RETRY_MAX        = 3

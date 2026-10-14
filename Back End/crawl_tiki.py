@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+[AI-Assisted Code] Prompt #12 — Thu thập dữ liệu sách Tiki
 crawl_tiki.py: Thu thập và chuẩn hóa dữ liệu sách từ Tiki.vn
 Đề tài: Nghiên cứu và xây dựng hệ thống tư vấn sách tự động tích hợp RAG nhằm giảm thiểu sai lệch thông tin
 
@@ -169,27 +170,41 @@ def extract_book_info(detail: dict, category_name: str, index_id: int) -> dict:
         short_d = clean_html(detail.get("short_description", ""))
         if len(short_d) >= 40:
             clean_desc = short_d
-        else:
-            title_name = detail.get("name", "").strip()
-            clean_desc = (
-                f"{title_name} là tác phẩm tiêu biểu thuộc danh mục '{category_name}' của tác giả {author}, "
-                f"được ấn hành bởi {publisher} vào năm {publish_year}. Cuốn sách cung cấp kiến thức giá trị, "
-                f"nội dung phong phú và trải nghiệm đọc sâu sắc cho độc giả quan tâm đến lĩnh vực này."
-            )
+    # FIX: code cũ bịa đoạn marketing ("cung cấp kiến thức giá trị...") khi thiếu mô tả rồi lưu
+    # như data thật → nhiễm ground truth RAG (LLM trích dẫn nội dung không tồn tại).
+    # Fallback chỉ được restate metadata có thật, gắn nhãn rõ ràng.
+    if len(clean_desc) < 40:
+        title_name = detail.get("name", "").strip()
+        clean_desc = (
+            f"[Chưa có mô tả chi tiết] {title_name} — Tác giả: {author} — "
+            f"Danh mục: {category_name} — {publisher} ({publish_year})."
+        )
 
-    # 4. Doanh số & Reviews
+    # 4. Doanh số & Reviews (chỉ dùng số liệu thật từ API)
     qty_sold = 0
     if isinstance(detail.get("quantity_sold"), dict):
-        qty_sold = detail["quantity_sold"].get("value", 0)
+        try:
+            qty_sold = int(detail["quantity_sold"].get("value", 0))
+        except (TypeError, ValueError):
+            qty_sold = 0
     elif isinstance(detail.get("quantity_sold"), (int, float)):
         qty_sold = int(detail["quantity_sold"])
 
-    review_count = int(detail.get("review_count", 0))
-    rating = float(detail.get("rating_average", 4.8))
-    if rating == 0:
-        rating = 4.8
-
-    valid_reviews = max(1, int(review_count * 0.8)) if review_count > 0 else 1
+    try:
+        review_count = int(detail.get("review_count", 0))
+    except (TypeError, ValueError):
+        review_count = 0
+    try:
+        rating = float(detail.get("rating_average", 0) or 0)
+    except (TypeError, ValueError):
+        rating = 0.0
+    # FIX: code cũ ép rating 0 → 4.8 và valid_reviews tối thiểu 1 (bịa số liệu → thổi phồng
+    # điểm ranking của sách không có đánh giá). Giữ 0 + cờ rating_unknown, pipeline RAG đã
+    # hỗ trợ: qua cửa lọc sao nhưng chỉ ăn điểm trung lập 0.5.
+    rating_unknown = rating <= 0
+    if rating_unknown:
+        rating = 0.0
+    valid_reviews = int(review_count * 0.8) if review_count > 0 else 0
 
     # 5. Tags tự động từ tên & thể loại
     title = detail.get("name", "").strip()
@@ -211,6 +226,7 @@ def extract_book_info(detail: dict, category_name: str, index_id: int) -> dict:
         "price": int(detail.get("price", 0)),
         "original_price": int(detail.get("original_price", detail.get("price", 0))),
         "rating": round(rating, 1),
+        "rating_unknown": rating_unknown,
         "sold_count": qty_sold,
         "total_reviews": review_count,
         "valid_reviews": valid_reviews,
@@ -356,6 +372,36 @@ def crawl_tiki_categories(categories_to_crawl: list, max_books_per_cat: int = 10
         merge_into_main_sample(all_new_books)
 
 
+def _atomic_write_json(path: str, payload: dict) -> None:
+    """Ghi JSON atomic (tmp + os.replace) — crash giữa chừng không làm corrupt file chính."""
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
+
+
+def _backup_once(db_dir: str, main_file: str) -> None:
+    """Giữ đúng 1 bản backup (ghi đè) thay vì file timestamped phình không giới hạn mỗi lần cào."""
+    if os.path.exists(main_file):
+        backup_file = os.path.join(db_dir, "sample_backup.json")
+        try:
+            with open(main_file, "r", encoding="utf-8") as f_src, open(backup_file, "w", encoding="utf-8") as f_dst:
+                f_dst.write(f_src.read())
+            print(f"🛡️ Đã sao lưu an toàn kho sách cũ vào: {os.path.basename(backup_file)}")
+        except Exception as e:
+            print(f"⚠️ Cảnh báo backup: {e}")
+
+
+def _next_book_id(existing_books: list) -> int:
+    """Số thứ tự ID tiếp theo (giữ nguyên ID sách cũ, chỉ cấp cho sách mới)."""
+    max_n = 0
+    for b in existing_books:
+        m = re.match(r"BK(\d+)$", str(b.get("id", "")))
+        if m:
+            max_n = max(max_n, int(m.group(1)))
+    return max_n + 1
+
+
 def merge_into_main_sample(tiki_books: list):
     """Tự động gộp sách Tiki vào database/sample.json, backup an toàn và chuẩn hóa ID."""
     if not tiki_books:
@@ -366,14 +412,7 @@ def merge_into_main_sample(tiki_books: list):
     main_file = os.path.join(db_dir, "sample.json")
 
     # Tạo bản backup an toàn trước khi ghi đè
-    if os.path.exists(main_file):
-        backup_file = os.path.join(db_dir, f"sample_backup_{int(time.time())}.json")
-        try:
-            with open(main_file, "r", encoding="utf-8") as f_src, open(backup_file, "w", encoding="utf-8") as f_dst:
-                f_dst.write(f_src.read())
-            print(f"🛡️ Đã sao lưu an toàn kho sách cũ vào: {os.path.basename(backup_file)}")
-        except Exception as e:
-            print(f"⚠️ Cảnh báo backup: {e}")
+    _backup_once(db_dir, main_file)
 
     try:
         with open(main_file, "r", encoding="utf-8") as f:
@@ -383,18 +422,24 @@ def merge_into_main_sample(tiki_books: list):
         existing_books = []
 
     existing_titles = {b.get("title", "").strip().lower() for b in existing_books}
+    existing_ids = {b.get("tiki_id") for b in existing_books if b.get("tiki_id") is not None}
+    next_id = _next_book_id(existing_books)
     added_count = 0
 
     for tb in tiki_books:
         title = tb.get("title", "").strip().lower()
-        if title and title not in existing_titles:
+        # FIX: dedup cả theo tiki_id (2 ấn bản trùng tên khác ID vẫn lọt trước đây chỉ check tên
+        # ở merge, trong khi lúc cào đã check cả 2).
+        if title and title not in existing_titles and tb.get("tiki_id") not in existing_ids:
+            # FIX: chỉ cấp ID cho sách mới — code cũ đánh lại toàn bộ BK0001..BKxxxx mỗi lần merge
+            # làm veteran ID đổi chủ: saved_books/wishlist/giỏ hàng trỏ sang sách khác, Chroma lệch.
+            tb["id"] = f"BK{next_id:04d}"
+            next_id += 1
             existing_books.append(tb)
             existing_titles.add(title)
+            if tb.get("tiki_id") is not None:
+                existing_ids.add(tb["tiki_id"])
             added_count += 1
-
-    # Đánh lại ID thống nhất chuẩn khoa học: BK0001 -> BKxxxx
-    for i, b in enumerate(existing_books, start=1):
-        b["id"] = f"BK{i:04d}"
 
     final_payload = {
         "metadata": {
@@ -406,8 +451,7 @@ def merge_into_main_sample(tiki_books: list):
         "data": existing_books,
     }
 
-    with open(main_file, "w", encoding="utf-8") as f:
-        json.dump(final_payload, f, ensure_ascii=False, indent=2)
+    _atomic_write_json(main_file, final_payload)
 
     # Lưu bản JSONL của toàn bộ database
     main_jsonl = os.path.join(db_dir, "sample.jsonl")

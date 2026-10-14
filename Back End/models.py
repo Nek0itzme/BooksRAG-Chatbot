@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code]
+[AI-Assisted Code] Prompt #01 — Mô hình dữ liệu Pydantic
 models.py — Định nghĩa cấu trúc dữ liệu Pydantic cho API (FastAPI Schemas)
 Dành cho đề tài NCKH: "Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG"
 
@@ -84,11 +84,11 @@ class BookResult(BaseModel):
     target_audience: str
     
     # ── Các trường điểm số định lượng của thuật toán Hybrid Scoring ──────────
-    score_semantic: float = Field(0.0, description="Điểm tương đồng ngữ nghĩa (Dense Cosine + Sparse Lexical)")
-    score_ranking: float = Field(0.0, description="Điểm xếp hạng thương mại (50% Sao + 30% Doanh số + 20% Review)")
-    score_total: float = Field(0.0, description="Điểm tổng hợp cuối cùng: ALPHA * Semantic + (1-ALPHA) * Ranking")
-    score_hype: float = Field(0.0, description="Điểm bao hàm Hyperbolic Poincaré Ball Entailment Cone (HyPE Score)")
-    reason: str = Field("", description="Lý do ngắn gọn vì sao cuốn sách được hệ thống đề xuất")
+    score_semantic: float = Field(default=0.0, description="Điểm tương đồng ngữ nghĩa (Dense Cosine + Sparse Lexical)")
+    score_ranking: float = Field(default=0.0, description="Điểm xếp hạng thương mại (50% Sao + 30% Doanh số + 20% Review)")
+    score_total: float = Field(default=0.0, description="Điểm tổng hợp cuối cùng: ALPHA * Semantic + (1-ALPHA) * Ranking")
+    score_hype: float = Field(default=0.0, description="Điểm bao hàm Hyperbolic Poincaré Ball Entailment Cone (HyPE Score)")
+    reason: str = Field(default="", description="Lý do ngắn gọn vì sao cuốn sách được hệ thống đề xuất")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

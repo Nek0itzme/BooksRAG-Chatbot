@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-[AI-Assisted Code] Prompt #06 — Performance Optimization:
+[AI-Assisted Code] Prompt #06 — Performance Optimization: Single Combined Call
+Performance Optimization:
   FIX #1: Gộp parse_intent + generate_answer thành 1 Gemini call duy nhất → Giảm ~50% latency (~10s → ~5s)
   FIX #2: Retry + Exponential Backoff + API Key Rotation → Giảm error rate khi bị rate limit (84% → ~5%)
 gemini_client.py — Tương tác với API Google Gemini (Xử lý đa phương thức Văn bản & Ảnh)
@@ -40,9 +41,17 @@ if not _valid_keys:
     raise RuntimeError("Không tìm thấy GEMINI_API_KEY hợp lệ trong file .env. Vui lòng cấu hình ít nhất 1 khóa API.")
 
 _key_cycle = itertools.cycle(_valid_keys)
-_clients: Dict[str, genai.Client] = {k: genai.Client(api_key=k) for k in _valid_keys}
+# FIX: timeout HTTP 60s cho mọi request Gemini — SDK mặc định chờ gần như vô hạn nên 1 request
+# kẹt sẽ treo luôn thread pool của /chat và Vision (9 lần retry càng nhân thảm họa lên).
+_clients: Dict[str, genai.Client] = {
+    k: genai.Client(api_key=k, http_options={"timeout": 60_000}) for k in _valid_keys
+}
 _current_key: str = _valid_keys[0]
 _key_lock = threading.Lock()
+# FIX: itertools.cycle bắt đầu từ phần tử đầu tiên, nên phải tiến 1 bước ngay khi
+# khởi tạo — nếu không lần _rotate_key() đầu tiên sẽ trả về chính key hiện tại
+# (xoay mà không đổi key, request retry vẫn dính đúng key vừa bị rate-limit).
+next(_key_cycle)
 
 
 def _get_client() -> genai.Client:
@@ -60,12 +69,24 @@ def _rotate_key() -> None:
 def _clean_json(raw: str) -> str:
     """Làm sạch các ký tự bao quanh dạng Markdown ```json ... ``` để chuẩn hóa chuỗi JSON."""
     raw = raw.strip()
+    # FIX: Gemini thường kèm lời chào/kết luận ngoài khối JSON. Trước đây chỉ strip
+    # ``` ở đầu/cuối chuỗi nên json.loads hay nổ khi có text thừa → rơi vào fallback
+    # dù model đã trả đúng JSON. Ưu tiên bóc khối ```json...``` hoặc {...} đầu tiên.
+    fence = re.search(r"```(?:json)?\s*(\{[\s\S]*\})\s*```", raw)
+    if fence:
+        return fence.group(1).strip()
+    if raw.startswith("{") or raw.startswith("["):
+        return raw
+    brace_start = raw.find("{")
+    brace_end = raw.rfind("}")
+    if brace_start != -1 and brace_end > brace_start:
+        return raw[brace_start:brace_end + 1].strip()
     raw = re.sub(r"^```(?:json)?\s*", "", raw)
     raw = re.sub(r"\s*```$", "", raw)
     return raw.strip()
 
 
-def _call_gemini(prompt: str, model: str = None) -> str:
+def _call_gemini(prompt: str, model: Optional[str] = None) -> str:
     """
     GỌI MÔ HÌNH GOOGLE GEMINI KÈM CƠ CHẾ TỰ ĐỘNG PHỤC HỒI LỖI (FAULT-TOLERANT EXECUTION).
     
@@ -92,8 +113,9 @@ def _call_gemini(prompt: str, model: str = None) -> str:
             err_str = str(e).lower()
             is_rate = any(x in err_str for x in ["429", "quota", "resource_exhausted", "rate", "limit"])
             is_server = any(x in err_str for x in ["500", "503", "unavailable", "internal"])
+            is_conn = any(x in err_str for x in ["connection", "timeout", "reset", "econnreset", "eof"])
 
-            if is_rate or is_server:
+            if is_rate or is_server or is_conn:
                 if len(_valid_keys) > 1:
                     _rotate_key()
                 wait = RETRY_BASE_DELAY * (2 ** attempt)
@@ -185,9 +207,9 @@ def combined_gemini_call(
     message: str,
     top_books: List[dict],
     query_type_hint: str = "general",
-    author_recs: List[dict] = None,
-    session_history: List[dict] = None,
-    fallback_intent: dict = None,
+    author_recs: Optional[List[dict]] = None,
+    session_history: Optional[List[dict]] = None,
+    fallback_intent: Optional[dict] = None,
 ) -> Dict[str, Any]:
     """
     THỰC THI GỌI GEMINI KẾT HỢP (COMBINED INTENT & SYNTHESIS CALL).
@@ -244,7 +266,9 @@ def combined_gemini_call(
         result = json.loads(cleaned)
 
         intent = result.get("intent", {})
-        if not intent.get("budget_max"):
+        # FIX: dùng `is None` thay vì falsy — trước đây budget_max=0 (user muốn miễn phí /
+        # model trả 0) bị ép thành DEFAULT_BUDGET 10 triệu, lọc sai ngân sách.
+        if intent.get("budget_max") is None:
             intent["budget_max"] = DEFAULT_BUDGET
         answer = result.get("answer", "").strip()
 
@@ -273,7 +297,7 @@ def combined_gemini_call(
         return {"intent": intent, "answer": answer}
 
 
-def _fallback_answer(top_books: List[dict], author_recs: List[dict] = None) -> str:
+def _fallback_answer(top_books: List[dict], author_recs: Optional[List[dict]] = None) -> str:
     """CÂU TRẢ LỜI KHUÔN MẪU DỰ PHÒNG KHI MÔ HÌNH LLM TẠM THỜI MẤT KẾT NỐI."""
     if not top_books:
         return (
@@ -298,7 +322,7 @@ def _fallback_answer(top_books: List[dict], author_recs: List[dict] = None) -> s
     return "\n\n".join(lines)
 
 
-def parse_intent(message: str, session_history: List[dict] = None) -> dict:
+def parse_intent(message: str, session_history: Optional[List[dict]] = None) -> dict:
     """HÀM PHÂN TÍCH Ý ĐỊNH ĐỘC LẬP (DÙNG KHI CẦN XÁC ĐỊNH TÁC GIẢ TRƯỚC)."""
     history_text = ""
     if session_history:
@@ -330,7 +354,8 @@ def parse_intent(message: str, session_history: List[dict] = None) -> dict:
         raw = _call_gemini(prompt)
         cleaned = _clean_json(raw)
         result = json.loads(cleaned)
-        if not result.get("budget_max"):
+        # FIX: xem chú thích ở combined_gemini_call — giữ budget 0 nếu model trả về.
+        if result.get("budget_max") is None:
             result["budget_max"] = DEFAULT_BUDGET
         return result
     except Exception as e:
@@ -355,8 +380,8 @@ def generate_answer(
     user_message: str,
     top_books: List[dict],
     intent: dict,
-    author_recs: List[dict] = None,
-    session_history: List[dict] = None,
+    author_recs: Optional[List[dict]] = None,
+    session_history: Optional[List[dict]] = None,
 ) -> str:
     """HÀM TƯƠNG THÍCH NGƯỢC (WRAPPER FUNCTION)."""
     result = combined_gemini_call(
