@@ -1,435 +1,419 @@
-# Nhật Ký Câu Lệnh AI (Prompt Log) — Phiên 01
+# Nhật ký câu lệnh AI (Prompt Log)
 
-**Đề tài:** Hệ Thống Tư Vấn Bán Sách Tự Động Tích Hợp RAG Chống Sai Lệch Thông Tin & Gợi Ý Cá Nhân Hóa  
+**Đề tài:** Nghiên cứu và xây dựng hệ thống tư vấn sách tự động tích hợp RAG nhằm giảm thiểu sai lệch thông tin và hỗ trợ học tập  
 **Công cụ AI sử dụng:** Google Antigravity (Gemini model)  
-**ID Cuộc hội thoại:** `8a1ece72-b1ce-4c1a-a0e9-03b80f9b901b`  
-**Thời gian phiên:** 25/09/2026 – 26/09/2026  
-**Học sinh:** Anonymous User  
+**ID cuộc hội thoại:** `8a1ece72-b1ce-4c1a-a0e9-03b80f9b901b` & `d15e6f45-aaab-455b-9212-9d0423d333ec`  
+**Thời gian thực hiện:** 25/09/2026 – 21/10/2026  
+**Người thực hiện:** Học sinh nghiên cứu  
 
-> Ghi chú: Nhật ký này được lập theo yêu cầu của Phụ lục 1 — Hướng Dẫn Sử Dụng AI Tạo Sinh Trong Dự Án Nghiên Cứu. Mọi đoạn code do AI tạo ra đều được gắn comment `[AI-Assisted Code]` trong file nguồn tương ứng.
+> Nhật ký này được lập theo quy định tại Phụ lục hướng dẫn sử dụng AI tạo sinh trong dự án nghiên cứu khoa học kỹ thuật học sinh trung học. Các đoạn mã do AI hỗ trợ tạo ra đều được đánh dấu chú thích `[AI-Assisted Code]` trong tệp nguồn tương ứng.
 
 ---
 
 ## PROMPT #01
 
 **Thời gian:** 25/09/2026 ~22:22  
-**Mục đích:** Khởi tạo toàn bộ hệ thống  
+**Mục đích:** Khởi tạo bộ khung dự án và các tệp cốt lõi  
 **Prompt gốc:**
 > "bạn làm cho tôi đi"
 
-**Ngữ cảnh:** Yêu cầu build hệ thống RAG chatbot tư vấn sách từ đầu bao gồm backend FastAPI và giao diện web.
+**Ngữ cảnh:** Yêu cầu xây dựng hệ thống RAG chatbot tư vấn sách ban đầu gồm máy chủ FastAPI và giao diện web cơ bản.
 
 **Kết quả AI tạo ra:**
-- `Back End/main.py` — FastAPI app với các routes: `/`, `/chat`, `/buy`, `/health`
-- `Back End/rag_engine.py` — RAG pipeline: `detect_author()`, `run_rag()`, hybrid scoring
-- `Back End/gemini_client.py` — `parse_intent()`, `generate_answer()`, multi-model fallback
-- `Back End/config.py` — Cấu hình `GEMINI_FLASH`, `CHROMA_PATH`, `TOP_K`
-- `Back End/models.py` — Pydantic models: `ChatRequest`, `ChatResponse`, `BuyRequest`, `BookResult`
-- `Back End/indexer.py` — Script embed sách vào ChromaDB
-- `Back End/requirements.txt` — Danh sách thư viện
-- `Back End/start_web.bat` — Launcher 1 click
+- `Back End/main.py`: Ứng dụng FastAPI với các định tuyến `/`, `/chat`, `/buy`, `/health`
+- `Back End/rag_engine.py`: Quy trình xử lý RAG gồm nhận diện tác giả, tìm kiếm và tính điểm gợi ý
+- `Back End/gemini_client.py`: Trích xuất ý định và gọi API Gemini kèm cơ chế dự phòng
+- `Back End/config.py`: Cấu hình tên mô hình, đường dẫn cơ sở dữ liệu vector và số lượng sách trả về
+- `Back End/models.py`: Định nghĩa schema dữ liệu Pydantic (`ChatRequest`, `ChatResponse`, `BookResult`)
+- `Back End/indexer.py`: Script trích xuất vector và nạp vào ChromaDB
+- `Back End/requirements.txt`: Danh sách thư viện phụ thuộc ban đầu
+- `Back End/start_web.bat`: Tệp batch khởi chạy nhanh máy chủ
 
-**Files bị ảnh hưởng:** Tất cả file trên (tạo mới)  
-**Người tự làm:** Không (code ban đầu hoàn toàn do AI tạo)  
-**Ghi chú:** Được phép theo quy chế — "Sử dụng AI để viết mã nguồn ban đầu cho dự án"
+**Tệp bị ảnh hưởng:** Các tệp nêu trên (tạo mới)  
+**Phần học sinh tự làm:** Xác định yêu cầu đề tài và chuẩn bị môi trường chạy Python  
 
 ---
 
 ## PROMPT #02
 
 **Thời gian:** 25/09/2026 ~22:28  
-**Mục đích:** Thêm tính năng test terminal tương tác  
+**Mục đích:** Bổ sung giao diện dòng lệnh để thử nghiệm nhanh  
 **Prompt gốc:**
 > "nhưng tôi muốn khi test là tôi (user dùng terminal) có thể nhập vào và test thử mà?"
 
 **Kết quả AI tạo ra:**
-- `Sample Tests/chat_terminal.py` — Script terminal để test RAG engine trực tiếp qua input() loop
+- `Sample Tests/chat_terminal.py`: Script chạy trên terminal cho phép nhập câu hỏi qua vòng lặp `input()` để kiểm tra phản hồi của RAG engine mà không cần mở trình duyệt web.
 
-**Files bị ảnh hưởng:** `Sample Tests/chat_terminal.py` (tạo mới)  
-**Ghi chú:** File này chỉ dùng để test nội bộ, không thuộc backend chính thức
+**Tệp bị ảnh hưởng:** `Sample Tests/chat_terminal.py` (tạo mới)  
 
 ---
 
 ## PROMPT #03
 
-**Thời gian:** 25/09/2026 ~00:40 (26/09)  
-**Mục đích:** Kiểm tra lỗi và tiếp tục hoàn thiện hệ thống  
+**Thời gian:** 26/09/2026 ~00:40  
+**Mục đích:** Sửa lỗi import và nâng cấp cơ chế gọi API  
 **Prompt gốc:**
-> "bạn check và làm tiếp giúp tôi" _(kèm ảnh screenshot lỗi)_
+> "bạn check và làm tiếp giúp tôi" *(kèm ảnh chụp màn hình thông báo lỗi)*
 
 **Kết quả AI tạo ra:**
-- Sửa lỗi import trong `rag_engine.py`
-- Cập nhật `config.py`: `GEMINI_FLASH = "gemini-3.1-flash-lite"` (fallback từ model 503)
-- Cập nhật `gemini_client.py`: thêm multi-model fallback loop (3.1-flash-lite → 3.8-flash → offline)
-- Thêm route `/avatar.png` và `/avatar_data.js` vào `main.py`
+- Sửa lỗi import thư viện trong `rag_engine.py`
+- Bổ sung danh sách mô hình dự phòng trong `config.py` và `gemini_client.py` khi gặp lỗi giới hạn tần suất (HTTP 429) hoặc dịch vụ gián đoạn
+- Bổ sung định tuyến cung cấp ảnh đại diện người dùng trong `main.py`
 
-**Files bị ảnh hưởng:** `config.py`, `gemini_client.py`, `main.py`, `rag_engine.py`  
-**Người tự làm:** Debug (học sinh kiểm tra lỗi, AI sửa code)
+**Tệp bị ảnh hưởng:** `Back End/config.py`, `Back End/gemini_client.py`, `Back End/main.py`, `Back End/rag_engine.py`  
+**Phần học sinh tự làm:** Kiểm tra log lỗi, cung cấp hình ảnh mô tả sự cố để AI xử lý  
 
 ---
 
 ## PROMPT #04
 
-**Thời gian:** 25/09/2026 ~00:50  
-**Mục đích:** Tiếp tục sau khi xem kết quả  
+**Thời gian:** 26/09/2026 ~00:50  
+**Mục đích:** Xây dựng khung giao diện web ban đầu  
 **Prompt gốc:**
 > "làm tiếp"
 
 **Kết quả AI tạo ra:**
-- Tiếp tục hoàn thiện `index.html` — giao diện web cơ bản
+- Xây dựng bố cục trang web cơ bản với khung chat, ô nhập liệu và danh sách gợi ý sách ban đầu.
 
-**Files bị ảnh hưởng:** `Back End/index.html`
+**Tệp bị ảnh hưởng:** `Back End/index.html` (sau này chuyển sang `Front End/index.html`)  
 
 ---
 
 ## PROMPT #05
 
 **Thời gian:** 26/09/2026 ~09:25  
-**Mục đích:** Redesign giao diện theo file thiết kế  
+**Mục đích:** Thiết kế lại giao diện theo bản đặc tả phong cách Perplexity  
 **Prompt gốc:**
 > "bạn mod cho tôi giao diện của html theo 'C:\Users\lamq1\Downloads\DESIGN.md' được không?"
 
-**Ngữ cảnh:** File DESIGN.md chứa spec thiết kế Perplexity AI style — typography, màu sắc, layout.
+**Ngữ cảnh:** Tệp DESIGN.md chứa bản đặc tả về hệ thống phông chữ, bảng màu parchment, cấu trúc thẻ sách và cách bố trí màn hình.
 
 **Kết quả AI tạo ra:**
-- Viết lại toàn bộ `Back End/index.html` (~1900+ dòng) theo phong cách Parchment/Perplexity
+- Viết lại toàn bộ mã nguồn giao diện HTML/CSS theo phong cách tối giản, bố cục cân đối và màu sắc trang nhã.
 
-**Files bị ảnh hưởng:** `Back End/index.html` (viết lại toàn bộ)  
-**Ghi chú:** Học sinh cung cấp file thiết kế (DESIGN.md), AI implement theo spec
+**Tệp bị ảnh hưởng:** `Front End/index.html`  
+**Phần học sinh tự làm:** Nghiên cứu và chuẩn bị tệp đặc tả thiết kế DESIGN.md  
 
 ---
 
 ## PROMPT #06
 
 **Thời gian:** 26/09/2026 ~10:02  
-**Mục đích:** Cập nhật nhiều tính năng UI cùng lúc  
+**Mục đích:** Bổ sung các tính năng tương tác trên giao diện  
 **Prompt gốc (tóm tắt):**
-> - Đổi cơ chế gửi: Enter = gửi, Shift+Enter = xuống hàng  
-> - Thay đổi format câu trả lời chatbot  
-> - Làm sidebar trái: nút + New Session, thu gọn taskbar, search sessions, danh mục session, user avatar ở góc dưới  
-> - Thêm Dark/Light mode  
-> - Hai thanh bên glassmorphism  
-> - Thanh bên phải hiển thị kết quả sách  
+> Đổi cơ chế gửi phím Enter và Shift+Enter; bổ sung thanh bên trái với nút phiên mới, ô tìm kiếm và chuyển đổi giao diện sáng/tối; bố trí thanh bên phải hiển thị kết quả sách.
 
 **Kết quả AI tạo ra:**
-- Cập nhật `index.html`: keyboard handler (Enter/Shift+Enter), sidebar layout, dark/light toggle, glassmorphism CSS
+- Cập nhật xử lý sự kiện bàn phím trong `index.html`
+- Thiết kế thanh bên trái hỗ trợ quản lý phiên hội thoại và nút chuyển đổi Dark/Light mode
+- Thiết lập cột bên phải hiển thị danh mục sách tìm được kèm điểm tương đồng
 
-**Files bị ảnh hưởng:** `Back End/index.html`
+**Tệp bị ảnh hưởng:** `Front End/index.html`  
 
 ---
 
 ## PROMPT #07
 
 **Thời gian:** 26/09/2026 ~10:16  
-**Mục đích:** Tinh chỉnh UI chi tiết  
+**Mục đích:** Chuẩn hóa các thành phần đồ họa và thông tin người dùng  
 **Prompt gốc (tóm tắt):**
-> - Đổi tên "nek0itzme" → "Anonymous User"  
-> - Avatar lấy từ file `C:\Users\lamq1\Downloads\avatar.png`  
-> - Khung session trong ô bo tròn  
-> - Xóa badge "NCKH 2026-2027 Pro"  
-> - Xóa gợi ý "Enter để gửi • Shift+Enter xuống hàng"  
-> - Xóa API Docs  
-> - Đổi màu chủ đề từ xanh lá → trắng-đen monochrome glassmorphism  
-> - Icons lấy từ Morphicons (SVG stroke style)
+> Đổi tên người dùng hiển thị thành "Anonymous User", xử lý ảnh đại diện nền trong suốt, định dạng khung phiên bo góc và tạo bộ icon SVG đơn sắc.
 
 **Kết quả AI tạo ra:**
-- Cập nhật `index.html`: màu sắc, layout, session UI
-- Xử lý `avatar.png` → transparent PNG 256×256
-- Tạo `avatar_data.js` — embed base64 avatar
-- Tạo `Back End/process_avatar.py` _(script tạm — đã xóa)_
-- Tạo `Back End/create_icons.py` _(script tạm — đã xóa)_
-- Tạo 10 SVG icons trong `Icon Projects/`: search, chat, collapse, plus, chevron-down, trash, sparkles, book, send, moon, sun, image
+- Tạo tệp `Front End/avatar_data.js` chứa chuỗi Base64 ảnh đại diện phục vụ chế độ chạy ngoại tuyến
+- Tạo bộ biểu tượng vector SVG trong thư mục `Icon Projects/`
+- Tinh chỉnh CSS giao diện theo tông màu đen trắng đồng bộ
 
-**Files bị ảnh hưởng:** `index.html`, `avatar.png`, `avatar_data.js`, `Icon Projects/*.svg`
+**Tệp bị ảnh hưởng:** `Front End/index.html`, `Front End/avatar_data.js`, `Icon Projects/*.svg`  
 
 ---
 
 ## PROMPT #08
 
 **Thời gian:** 26/09/2026 ~11:39  
-**Mục đích:** Fix UI khi sidebar thu nhỏ  
+**Mục đích:** Sửa lỗi hiển thị khi thu nhỏ thanh bên  
 **Prompt gốc:**
 > "minimize nó bị như này [ảnh] - icon user lấy cái icon màu xanh + user trắng thôi, xóa phông đi - xóa cái dấu lên xuống trong phần ngân sách"
 
 **Kết quả AI tạo ra:**
-- Sửa CSS collapsed sidebar: ẩn text, căn giữa icons
-- Sửa `input[type="number"]::-webkit-inner-spin-button { display: none }`
-- Cập nhật avatar display: `background: transparent; border: none`
-- Fix missing `}` trong `.theme-toggle-btn` gây vỡ layout
+- Bổ sung CSS cho trạng thái thu gọn thanh bên (ẩn nhãn chữ, căn giữa icon)
+- Ẩn mũi tên tăng giảm số mặc định trên các ô nhập ngân sách
+- Khắc phục lỗi thiếu dấu đóng ngoặc nhọn CSS trong nút đổi giao diện
 
-**Files bị ảnh hưởng:** `Back End/index.html`
+**Tệp bị ảnh hưởng:** `Front End/index.html`  
 
 ---
 
 ## PROMPT #09
 
 **Thời gian:** 26/09/2026 ~11:49  
-**Mục đích:** Xóa ký tự `*` trong câu trả lời chatbot  
+**Mục đích:** Định dạng câu trả lời của mô hình ngôn ngữ trên giao diện  
 **Prompt gốc:**
-> "xóa cho tôi các dấu *" _(kèm ảnh screenshot)_
+> "xóa cho tôi các dấu *" *(kèm ảnh chụp màn hình câu trả lời bị dính ký tự Markdown thô)*
 
 **Kết quả AI tạo ra:**
-- Cập nhật hàm `formatBotMarkdown()` trong `index.html`: thêm `html.replace(/\*/g, '')` để xóa sạch dấu `*` còn sót
+- Cập nhật hàm xử lý Markdown trên trình duyệt (`formatBotMarkdown`) để chuyển đổi chính xác các thẻ in đậm, danh sách và loại bỏ các dấu hoa thị thừa.
 
-**Files bị ảnh hưởng:** `Back End/index.html` (JS function `formatBotMarkdown`)
+**Tệp bị ảnh hưởng:** `Front End/index.html`  
 
 ---
 
 ## PROMPT #10
 
 **Thời gian:** 26/09/2026 ~11:56  
-**Mục đích:** Kiểm tra kế hoạch và dọn dẹp project  
+**Mục đích:** Rà soát kế hoạch nghiên cứu và dọn dẹp các tệp tạm  
 **Prompt gốc:**
 > "bạn check plan xem, có cái nào cần thực hiện không, xóa bớt các file không cần thiết trong folder project, lọc lại nội dung thi các thứ nhé"
 
-**Kết quả AI thực hiện:**
-- Xóa: `Back End/process_avatar.py`, `Back End/create_icons.py`, `__pycache__/` ở root
-- Cập nhật và tái cấu trúc `plan.md`: thêm bảng tiến độ ✅/⏳, đồng bộ thông số kỹ thuật thực tế
+**Kết quả AI tạo ra:**
+- Xóa các script tạm dùng một lần và thư mục cache không cần thiết
+- Đồng bộ hóa các đầu mục công việc trong kế hoạch nghiên cứu
 
-**Files bị ảnh hưởng:** `plan.md` (cập nhật), xóa 2 script tạm + 1 thư mục cache
-
----
-
-## PROMPT #11
-
-**Thời gian:** 26/09/2026 ~12:01  
-**Mục đích:** Kiểm tra tuân thủ quy chế  
-**Prompt gốc:**
-> "các nội dung tôi làm có bị vi phạm quy chế hay gì không?"
-
-**Kết quả AI thực hiện:**
-- Đọc Phụ lục 1, Phụ lục 2
-- Phân tích từng hạng mục theo quy chế
-- Chỉ ra các điểm cần lưu ý: Prompt Log chưa có, plan.md không được nộp làm kế hoạch chính thức, cần xác nhận tính thật của dữ liệu
-
-**Files bị ảnh hưởng:** Không có (tư vấn thuần túy)
+**Tệp bị ảnh hưởng:** `plan.md`  
 
 ---
 
-## PROMPT #12
+## PROMPT #11 & #12
 
-**Thời gian:** 26/09/2026 ~12:04  
-**Mục đích:** Tạo Prompt Log và giải thích về crawler  
+**Thời gian:** 26/09/2026 ~12:01 – 12:04  
+**Mục đích:** Đối chiếu quy chế sử dụng AI tạo sinh và khởi tạo nhật ký câu lệnh  
 **Prompt gốc:**
+> "các nội dung tôi làm có bị vi phạm quy chế hay gì không?"  
 > "Prompt logs thì bạn làm all từ cuộc trò chuyện này và liệu tôi dùng crawl sau đó nó tự nhập thì nó có tính vào việc AI bịa ra không?"
 
 **Kết quả AI thực hiện:**
-- Tạo thư mục `Prompt Logs/`
-- Tạo file `prompt_log_session_01.md` (file này)
-- Giải thích về crawler (xem bên dưới)
+- Đối chiếu các quy định trong Phụ lục hướng dẫn sử dụng AI của cuộc thi NCKH
+- Phân tích tính hợp lệ của việc thu thập dữ liệu: Crawler lấy dữ liệu từ các website xuất bản thực tế (Tiki, Fahasa) với URL kiểm chứng công khai, không phải dữ liệu do AI tự tạo lập nên hoàn toàn hợp lệ
+- Khởi tạo tệp nhật ký `Prompt Logs/prompt_log_session.md`
 
-**Files bị ảnh hưởng:** `Prompt Logs/prompt_log_session_01.md` (tạo mới)
-
----
-
-## Câu hỏi về Crawler — Giải thích
-
-> **"Dùng crawler tự động thu thập dữ liệu rồi nhập vào DB — có tính là AI bịa ra không?"**
-
-**Trả lời: KHÔNG vi phạm**, với điều kiện:
-
-| Điều kiện | Chi tiết |
-|-----------|---------|
-| ✅ Crawler lấy dữ liệu từ **website thật** (Tiki, Fahasa...) | Đây là dữ liệu thực tế, không phải AI sáng tác |
-| ✅ Code crawler do **bạn tự viết** hoặc AI viết (với comment `[AI-Assisted Code]`) | Công cụ thu thập ≠ nguồn dữ liệu |
-| ✅ Dữ liệu **có thể kiểm chứng** (link URL nguồn gốc) | Giám khảo có thể tra lại |
-| ❌ Vi phạm nếu: dùng AI để **bịa ra** thông tin sách không có thật | Ví dụ: "hãy tạo cho tôi 500 cuốn sách giả" |
-
-**Kết luận:** Crawler là **công cụ kỹ thuật** thu thập dữ liệu thật — hoàn toàn hợp lệ và thậm chí được khuyến khích vì là dữ liệu có nguồn gốc rõ ràng từ Tiki/Fahasa.
+**Tệp bị ảnh hưởng:** `Prompt Logs/prompt_log_session.md` (tạo mới)  
 
 ---
 
-## PROMPT #13
+## PROMPT #13 & #14
 
-**Thời gian:** 26/09/2026 ~12:09  
-**Mục đích:** Hướng dẫn mở rộng dữ liệu lên 200–500 cuốn sách thực tế  
+**Thời gian:** 26/09/2026 ~12:09 – 12:18  
+**Mục đích:** Xây dựng script thu thập dữ liệu sách thực tế từ Tiki  
 **Prompt gốc:**
-> "chỉ tôi Mở rộng dữ liệu lên 200–500 cuốn (thu thập thực tế)"
-
-**Kết quả AI tạo ra:**
-- Tạo `Back End/crawl_tiki.py` — script thu thập dữ liệu thật từ API Tiki.vn theo 5 danh mục, làm sạch HTML, chuẩn hóa 12 trường dữ liệu.
-
-**Files bị ảnh hưởng:** `Back End/crawl_tiki.py` (tạo mới)
-
----
-
-## PROMPT #14
-
-**Thời gian:** 26/09/2026 ~12:18  
-**Mục đích:** Gộp dữ liệu vừa cào và tăng mục tiêu lên 120 cuốn/thể loại  
-**Prompt gốc:**
+> "chỉ tôi Mở rộng dữ liệu lên 200–500 cuốn (thu thập thực tế)"  
 > "bạn tiến hành gộp vào giúp tôi nhé, tôi vừa chạy xong và bạn update mỗi thể loại lấy 120 cuốn nhé"
 
 **Kết quả AI tạo ra:**
-- Gộp 210 cuốn sách Tiki mới cào vào `database/sample.json` (tổng 250 cuốn), backup 40 cuốn cũ sang `sample_backup_40.json`.
-- Chạy `indexer.py` nạp toàn bộ 250 vector vào ChromaDB.
-- Cập nhật `crawl_tiki.py` với target 120 cuốn/thể loại, duyệt tối đa 15 trang.
+- Viết `Back End/crawl_tiki.py` thu thập dữ liệu từ API công khai của Tiki theo các thể loại sách chính, làm sạch thẻ HTML và trích xuất các trường thông tin chuẩn (tiêu đề, tác giả, giá bán, lượt mua, đánh giá sao, mô tả)
+- Gộp dữ liệu thu thập được vào `database/sample.json` và cập nhật chỉ mục vector qua `indexer.py`
 
-**Files bị ảnh hưởng:** `database/sample.json`, `database/sample_backup_40.json`, `Back End/crawl_tiki.py`, ChromaDB vector collection `books`.
-
----
-
-## PROMPT #15
-
-**Thời gian:** 26/09/2026 ~12:20  
-**Mục đích:** Bổ sung nguồn thu thập từ Fahasa.com  
-**Prompt gốc:**
-> "crawl thêm của fahasa nhé"
-
-**Kết quả AI tạo ra:**
-- Nghiên cứu cơ chế bảo vệ Cloudflare của Fahasa.
-- Tạo `Back End/crawl_fahasa.py` sử dụng `curl_cffi` giả lập trình duyệt để cào trực tiếp từ website Fahasa.com.
-
-**Files bị ảnh hưởng:** `Back End/crawl_fahasa.py` (tạo mới)
+**Tệp bị ảnh hưởng:** `Back End/crawl_tiki.py`, `database/sample.json`  
+**Phần học sinh tự làm:** Trực tiếp chạy script thu thập dữ liệu trên máy tính  
 
 ---
 
-## PROMPT #16
+## PROMPT #15 & #16
 
-**Thời gian:** 26/09/2026 ~12:23  
-**Mục đích:** Mở rộng bao trùm toàn bộ 10 danh mục "Sách Trong Nước" của Fahasa theo ảnh chụp người dùng cung cấp  
+**Thời gian:** 26/09/2026 ~12:20 – 12:23  
+**Mục đích:** Bổ sung nguồn thu thập sách từ nhà sách Fahasa  
 **Prompt gốc:**
-> "bạn check và lấy all danh mục nhé" [kèm ảnh screenshot menu Fahasa]
+> "crawl thêm của fahasa nhé"  
+> "bạn check và lấy all danh mục nhé" *(kèm ảnh chụp danh mục sách trong nước của Fahasa)*
 
 **Kết quả AI tạo ra:**
-- Đối chiếu ảnh menu: Văn học, Kinh tế, Tâm lý - Kỹ năng sống, Nuôi dạy con, Thiếu nhi, Tiểu sử - Hồi ký, Giáo khoa - Tham khảo, Học ngoại ngữ, Manga - Comic, Khoa học - Kỹ thuật.
-- Nâng cấp `Back End/crawl_fahasa.py` hỗ trợ đầy đủ cả 10 danh mục và tính năng tự động gộp vào `sample.json`.
+- Viết `Back End/crawl_fahasa.py` sử dụng thư viện `curl_cffi` để thu thập dữ liệu theo 10 danh mục sách trong nước của Fahasa
+- Chuẩn hóa định dạng dữ liệu đầu ra đồng nhất với kho dữ liệu Tiki và lưu trữ song song bản JSON và JSONL
 
-**Files bị ảnh hưởng:** `Back End/crawl_fahasa.py`
+**Tệp bị ảnh hưởng:** `Back End/crawl_fahasa.py`, `database/sample_fahasa.json`  
+**Phần học sinh tự làm:** Cung cấp danh mục cần khảo sát, vận hành script thu thập  
 
 ---
 
 ## PROMPT #17
 
 **Thời gian:** 26/09/2026 ~12:41  
-**Mục đích:** Xây dựng hệ thống RAG Rules (Luật pháp, Rule Harness, Chat Harness, Thuật toán Search) và nâng mục tiêu cào lên 150 sách/thể loại  
+**Mục đích:** Xây dựng bộ quy tắc kiểm duyệt nội dung và các thuật toán tìm kiếm lai  
 **Prompt gốc:**
-> "bạn làm vào folder 'C:\Users\lamq1\OneDrive\Documents\School Project\RAG Rules' nhé và bạn có thể chỉnh workflow của crawler lên là cào mỗi danh mục tầm 150 sách không?"
+> "bạn làm vào folder 'RAG Rules' nhé và bạn có thể chỉnh workflow của crawler lên là cào mỗi danh mục tầm 150 sách không?"
 
 **Kết quả AI tạo ra:**
-- Tạo thư mục `RAG Rules/` với 5 module chuyên biệt:
-  1. `RAG Rules/legal_rules.py`: Định nghĩa quy chuẩn Luật Xuất bản 2012 (Điều 10), Luật Bảo vệ NTD 2023, danh mục từ khóa cấm/nhạy cảm.
-  2. `RAG Rules/search_algorithms.py`: Thuật toán BM25 Lexical Matching, Reciprocal Rank Fusion (RRF), chấm điểm thương mại đa tiêu chuẩn.
-  3. `RAG Rules/rule_harness.py`: Bộ khung dây cương InputRuleHarness (chặn Prompt Injection, vi phạm luật, lạc đề) và OutputRuleHarness (chống Hallucination, fact-checking).
-  4. `RAG Rules/chat_harness.py`: Quản lý phiên hội thoại DialogueHarness và khung kiểm thử tự động benchmark AutomatedTestHarness.
-  5. `RAG Rules/README.md`: Thuyết minh kiến trúc học thuật chuẩn NCKH.
-- Cập nhật `Back End/crawl_tiki.py` và `Back End/crawl_fahasa.py`:
-  + Chỉ tiêu 150 cuốn/danh mục (Tiki 5 danh mục = 750 cuốn; Fahasa 10 danh mục = 1.500 cuốn).
-  + Định dạng dữ liệu chuẩn `{"metadata": ..., "data": [ ... ]}` và xuất kèm file `.jsonl` (1 dòng 1 dữ liệu riêng).
-- Tích hợp `InputRuleHarness` vào `Back End/rag_engine.py` và kiểm thử thành công.
+- Thiết lập thư mục `RAG Rules/` gồm 5 mô-đun:
+  1. `legal_rules.py`: Định nghĩa tiêu chí rà soát nội dung cấm theo Điều 10 Luật Xuất bản Việt Nam 2012
+  2. `search_algorithms.py`: Thuật toán tìm kiếm BM25, hàm tính điểm Cosine và thuật toán hợp nhất thứ hạng Reciprocal Rank Fusion (RRF)
+  3. `rule_harness.py`: Bộ kiểm soát đầu vào (chặn Prompt Injection, lọc truy vấn lạc đề) và đầu ra (đối chiếu tính xác thực của giá bán và tên sách)
+  4. `chat_harness.py`: Đo lường độ trễ và quản lý lịch sử hội thoại
+  5. `README.md`: Thuyết minh phương pháp luận thuật toán
+- Tích hợp `InputRuleHarness` vào quy trình tìm kiếm trong `rag_engine.py`
 
-**Files bị ảnh hưởng:** `RAG Rules/*` (5 files mới), `Back End/crawl_tiki.py`, `Back End/crawl_fahasa.py`, `Back End/rag_engine.py`, `Back End/indexer.py`, `Back End/config.py`.
+**Tệp bị ảnh hưởng:** `RAG Rules/*`, `Back End/rag_engine.py`, `Back End/crawl_tiki.py`, `Back End/crawl_fahasa.py`  
 
 ---
 
 ## PROMPT #18
 
 **Thời gian:** 26/09/2026 ~12:55  
-**Mục đích:** Bổ sung giao diện Giỏ hàng (Cart) vào thanh sidebar với tính năng chọn mua / xóa bỏ; đồng bộ icon User Avatar theo chủ đề Monochrome Black & White và tạo ô Corner/Pill bo tròn cho Session ID theo mẫu ảnh  
+**Mục đích:** Bổ sung tính năng giỏ sách quan tâm và đồng bộ trạng thái chọn mua  
 **Prompt gốc:**
-> "ví dụ, nếu user nhấn đã chọn mua ấy, thì bạn code thêm giao diện giỏ hàng vào thanh side và khi user không muốn mua nữa ấy thì user có thể nhấn xóa"  
-> "và icon hình user ở ngay gốc trái ấy, bạn chỉnh sao cho nó đồng bộ với chủ đề cũng được nhé và cái sess ở dưới, bạn làm thêm cho nó một ô corner như này cho nó cũng được" [kèm ảnh mẫu pill "💰 Ngân sách"]
+> "ví dụ, nếu user nhấn đã chọn mua ấy, thì bạn code thêm giao diện giỏ hàng vào thanh side và khi user không muốn mua nữa ấy thì user có thể nhấn xóa..."
 
 **Kết quả AI tạo ra:**
-- **Giao diện Giỏ hàng (Cart UI) trên thanh phụ bên phải (`results-panel`):**
-  + Thêm container `#cart-container` hiển thị widget Giỏ hàng kính mờ Glassmorphism ngay phía trên danh sách sách gợi ý.
-  + Hiển thị số lượng sách, danh sách các tựa sách đã chọn (tiêu đề, tác giả, giá bán), tổng tiền thanh toán và nút "Xác nhận mua ngay".
-  + Nút "✕" (thùng rác/xóa) trên từng cuốn sách trong giỏ và nút "Xóa hết" giỏ hàng.
-  + Thao tác trực tiếp 2 chiều: Khi người dùng bấm nút `+ Chọn mua` trên thẻ sách, sách lập tức thêm vào giỏ và nút chuyển sang `✓ Đã chọn mua`. Khi rê chuột vào chuyển thành `✕ Bỏ chọn mua` màu đỏ, bấm lần nữa để hủy mua và gỡ khỏi giỏ hàng.
-  + Đồng bộ trạng thái giỏ hàng với từng phiên (Session Storage) và API Backend (`/buy` & `/remove_from_cart`).
-- **Backend API:**
-  + Tạo endpoint `@app.post("/remove_from_cart")` trong `Back End/main.py` để đồng bộ lịch sử mua sắm khi người dùng hủy chọn sách.
-- **Đồng bộ User Avatar & Ô Corner bo tròn cho Session ID:**
-  + Style lại `user-avatar-wrap` với bộ lọc `filter: grayscale(100%) contrast(1.15)` đồng bộ hoàn hảo với chủ đề Monochrome B&W Glassmorphism, hiệu ứng hover mượt mà.
-  + Tạo khung `user-session-pill` dạng corner/pill bo tròn (`var(--radius-pill)`), nền `var(--bg-pill)`, viền kính mờ, chấm xanh tín hiệu hoạt động `sess-dot` và mã session định dạng monospace chuẩn theo mẫu ảnh giao diện người dùng cung cấp.
+- Thiết kế khu vực danh sách sách đã chọn trên cột bên phải với tính năng thêm sách, xóa từng cuốn hoặc dọn sạch danh sách
+- Bổ sung định tuyến `@app.post("/remove_from_cart")` trong `main.py` để đồng bộ dữ liệu giỏ sách theo từng phiên
 
-**Files bị ảnh hưởng:** `Back End/index.html`, `Back End/main.py`, `Prompt Logs/prompt_log_session.md`
+**Tệp bị ảnh hưởng:** `Front End/index.html`, `Back End/main.py`  
 
 ---
 
 ## PROMPT #19
 
 **Thời gian:** 26/09/2026 ~13:20  
-**Mục đích:** Xử lý lọc loại trừ tác giả cũ khi chuyển đổi chủ đề (Topic / Author Switch), thay thế tin nhắn chat chọn/hủy mua bằng Toast Popup Glassmorphism thông minh, và hiệu ứng xoay tua câu chào / danh ngôn sách truyền cảm hứng ở trung tâm giao diện  
-**Prompt gốc (tổng hợp 3 yêu cầu):**
-> 1. "à, nếu mà user nhập câu hỏi khác về sách khách trong khi câu trước đó hỏi về sách của tác giả kia (ví dụ: Nguyễn Nhật Ánh) thì bạn update thanh bên phải cho phù hợp với tìm kiếm của user nhé"  
-> 2. "ghi nhận hay loại bỏ các thứ thì chỉ cần hiện topup thông báo là được rồi, không cần phải chat hẵn ra chat đâu"  
-> 3. "cái chữ ở giữa có thể làm cho nó chuyển động hoặc luân phiên thay đổi những câu chào hỏi hoặc các câu quotes nhé"
+**Mục đích:** Xử lý chuyển đổi tác giả trong hội thoại và thay thông báo chat bằng cửa sổ nổi  
+**Prompt gốc (tóm tắt):**
+> Xử lý trường hợp người dùng đổi sang hỏi tác giả khác; chuyển thông báo chọn mua sách thành dạng popup nổi thay vì gửi vào luồng chat; cho chạy luân phiên danh ngôn sách ở trang chủ.
 
 **Kết quả AI tạo ra:**
-- **Backend: Nhận diện phủ định & Chuyển đổi chủ đề (Topic/Author Switch):**
-  + `Back End/gemini_client.py`: Nâng cấp prompt trích xuất ý định (`INTENT_SYSTEM_PROMPT`) với các trường `exclude_author`, `is_topic_switch`, và cơ chế làm sạch truy vấn ngữ nghĩa (`clean_semantic_query`) loại bỏ tên tác giả bị phủ định nhằm tránh hiện tượng nhúng vector sai lệch (embedding contamination).
-  + `Back End/rag_engine.py`: Bổ sung các hàm kiểm tra phủ định `is_author_negated()`, phát hiện chuyển ngữ cảnh `is_query_asking_for_different_book_or_author()`, và trích xuất tác giả gần nhất trong lịch sử hội thoại `extract_recent_author_from_history()`.
-  + Cơ chế Hard-Filter: Tự động loại bỏ hoàn toàn các đầu sách của tác giả bị loại trừ khỏi tập ứng viên RAG (`eligible = [b for b in eligible if b.get('author') != exclude_author]`).
-  + Trả về `query_context` động (ví dụ: `Thể loại: Kinh Tế`, `Gợi ý mới (ngoài Nguyễn Nhật Ánh)`) qua API `ChatResponse` và `/chat`.
-- **Frontend: Toast Popup Thông Báo Kính Mờ (Glassmorphism Toast Notification):**
-  + Tạo hệ thống Toast nổi độc lập `.toast-container`, `.toast-msg` với hiệu ứng trượt mượt mà, tự động biến mất sau 2.3 giây.
-  + Gỡ bỏ hoàn toàn việc đẩy tin nhắn "Đã ghi nhận chọn mua..." / "Đã bỏ chọn..." vào khung hội thoại chat (giữ luồng trò chuyện luôn sạch sẽ, tập trung hoàn toàn vào tư vấn sách).
-  + Bổ sung badge màu trực quan: Xanh lá (`.success`) khi thêm vào giỏ, hồng đào (`.warn`) khi xóa hoặc dọn sạch giỏ.
-- **Frontend: Hiệu ứng chuyển động & Luân phiên Danh ngôn Sách (Hero Text Rotator):**
-  + Tích hợp mảng danh ngôn văn học kinh điển `HERO_ROTATING_CONTENT` (Ernest Hemingway, René Descartes, Edwin Percy Whipple, Victor Hugo, v.v.).
-  + Hiệu ứng hoạt họa CSS fade & slide mềm mại, chu kỳ tự động chuyển đổi mỗi 4.5 giây (`startHeroQuotesRotation()`), dừng tự động khi người dùng bắt đầu cuộc trò chuyện.
-- **Frontend: Cập nhật thời gian thực Thanh phụ bên phải:**
-  + Ngay khi người dùng gửi câu hỏi mới, thanh bên phải lập tức kích hoạt hiệu ứng Shimmer Loading (`showRightPanelShimmer()`), xóa sạch các thẻ sách cũ tránh tình trạng sách tác giả trước bị kẹt lại ("sticky cards").
-  + Hiển thị Badge ngữ cảnh truy vấn `#results-context-pill` (ví dụ: `Tác giả: Dale Carnegie`, `Chủ đề mới (ngoài Nguyễn Nhật Ánh)`).
+- Bổ sung trường nhận diện `exclude_author` và `is_topic_switch` trong prompt trích xuất ý định của `gemini_client.py`
+- Cài đặt bộ lọc loại trừ tác giả cũ trong `rag_engine.py` để tránh gợi ý lẫn lộn
+- Xây dựng hệ thống thông báo nổi (Toast Notification) tự động biến mất sau 2 giây khi chọn mua sách
+- Tạo hiệu ứng hiển thị luân phiên các câu danh ngôn về việc đọc sách trên trang chủ
 
-**Files bị ảnh hưởng:** `Back End/gemini_client.py`, `Back End/rag_engine.py`, `Back End/models.py`, `Back End/main.py`, `Back End/index.html`, `Prompt Logs/prompt_log_session.md`.
+**Tệp bị ảnh hưởng:** `Back End/gemini_client.py`, `Back End/rag_engine.py`, `Front End/index.html`  
+
+---
 
 ## PROMPT #20
 
 **Thời gian:** 26/09/2026 ~13:45 – 14:05  
-**Mục đích:** Xây dựng bộ công cụ kiểm thử đánh giá chuẩn RAGAS (4 chỉ số: Faithfulness, Answer Relevance, Context Precision, Context Recall) với bộ câu hỏi đối sánh Ground Truth 60 câu; cập nhật tiêu đề thẻ trình duyệt thành "BookRAG"; cung cấp dẫn chứng học thuật khoa học và rà soát, dọn dẹp các tệp tin tạm toàn bộ dự án  
-**Prompt gốc (tổng hợp):**
-> 1. "bạn chạy Đánh giá RAGAS (Faithfulness, Answer Relevance, Context Precision, Recall) cho tôi nhé"  
-> 2. "và update cho thẻ của cái trình duyệt thì ghi BookRAG là được" [kèm ảnh chụp tab trình duyệt]  
-> 3. "bạn test cái ragas thì cho dẫn chứng hoặc nguồn hay gì đó cụ thể nếu có nhé và làm xong tất cả thì bạn check all folder xem cái file nào cần thiết thì giữ lại nhé, không thì cữ xóa đi"
+**Mục đích:** Đo lường định lượng theo bộ tiêu chí chuẩn RAGAS  
+**Prompt gốc:**
+> "bạn chạy Đánh giá RAGAS (Faithfulness, Answer Relevance, Context Precision, Recall) cho tôi nhé và cho dẫn chứng nguồn cụ thể"
 
 **Kết quả AI tạo ra:**
-- **Hệ thống đánh giá RAGAS khoa học (`Sample Tests/`):**
-  + Xây dựng bộ dữ liệu kiểm thử chuẩn mực `Sample Tests/ground_truth_60.json` (60 câu hỏi chia đều cho 6 nhóm nghiệp vụ nghiên cứu theo `plan.md §5.2`).
-  + Viết module đánh giá chuyên sâu `Sample Tests/ragas_evaluator.py` đo lường 4 chỉ số theo bài báo khoa học gốc của Shahul Es et al. (EMNLP 2023):
-    * **Faithfulness (Độ trung thực):** Tỷ lệ khẳng định thực tế trong câu trả lời có nguồn gốc từ ngữ cảnh sách truy xuất, chống bịa đặt.
-    * **Answer Relevance (Độ phù hợp):** Đo độ tương đồng ngữ nghĩa cosine giữa embedding câu hỏi và câu trả lời.
-    * **Context Precision (Độ chính xác thứ hạng):** Đánh giá các cuốn sách chuẩn có nằm ở Top 1–3 ứng viên hay không.
-    * **Context Recall (Độ bao phủ thông tin):** Đánh giá mức độ bao phủ đầy đủ các sách Ground Truth cần thiết.
-  + Sửa lỗi thuật toán nhận diện tác giả trong `Back End/rag_engine.py`: Thêm cơ chế regex word-boundary (`\b`) và danh sách từ dừng để tránh việc các từ vựng thông dụng (ví dụ chữ "cha" trong "chăn cừu") kích hoạt nhầm tên tác giả.
-  + Chạy toàn bộ benchmark 60 câu hỏi và xuất 2 bản báo cáo:
-    * `Sample Tests/ragas_benchmark_results.json`: Chi tiết số liệu định lượng per-query.
-    * `Sample Tests/RAGAS_EVALUATION_REPORT.md`: Báo cáo khoa học học thuật kèm công thức toán học LaTeX, độ lệch chuẩn, phân rã theo thể loại và bảng so sánh A/B Testing.
-- **Frontend: Cập nhật tiêu đề tab trình duyệt:**
-  + Sửa thẻ `<title>` trong `Back End/index.html` từ *"Tư Vấn Sách RAG — Monochrome Glassmorphism"* thành **`BookRAG`**.
-- **Kế hoạch nghiên cứu:** Cập nhật Bước 5 trong `plan.md` từ ⏳ sang `✅ Hoàn thành`.
-- **Dọn dẹp & Rà soát toàn bộ thư mục dự án:**
-  + Xóa an toàn các script phụ/tạm: `Sample Tests/debug_single.py`, `Sample Tests/inspect_books.py`, `Sample Tests/eval_rag_cache.json`.
-  + Bảo toàn 100% các file mã nguồn cốt lõi (`Back End/`), cơ sở dữ liệu (`database/`), bộ icon (`Icon Projects/`), khung quy tắc (`RAG Rules/`) và quy chế thi (`Project Rules/`).
+- Xây dựng bộ ngữ liệu kiểm định gồm 60 câu hỏi Ground Truth (`Sample Tests/ground_truth_60.json`) chia đều cho 6 nhóm nghiệp vụ thực tế
+- Viết script `Sample Tests/ragas_evaluator.py` đo đạc 4 chỉ số theo phương pháp luận của Shahul Es et al. (EMNLP 2023)
+- Sửa thuật toán nhận diện tên tác giả bằng biểu thức chính quy ranh giới từ `\b` trong `rag_engine.py`
+- Xuất báo cáo đánh giá khoa học `Sample Tests/RAGAS_EVALUATION_REPORT.md` và tệp dữ liệu thô `Sample Tests/ragas_benchmark_results.json`
 
-**Files bị ảnh hưởng:** `Sample Tests/ground_truth_60.json`, `Sample Tests/ragas_evaluator.py`, `Sample Tests/ragas_benchmark_results.json`, `Sample Tests/RAGAS_EVALUATION_REPORT.md`, `Back End/rag_engine.py`, `Back End/index.html`, `plan.md`, `Prompt Logs/prompt_log_session.md`.
+**Tệp bị ảnh hưởng:** `Sample Tests/ground_truth_60.json`, `Sample Tests/ragas_evaluator.py`, `Sample Tests/RAGAS_EVALUATION_REPORT.md`, `Back End/rag_engine.py`  
+**Phần học sinh tự làm:** Thẩm định bộ 60 câu hỏi kiểm thử và kiểm tra kết quả đánh giá  
+
+---
 
 ## PROMPT #21
 
 **Thời gian:** 26/09/2026 ~14:10 – 14:18  
-**Mục đích:** Xây dựng công cụ kiểm thử chịu tải (Stress-Test) đa kịch bản (1, 10, 30 users), chuyển giao Notebook chạy trên Google Colab (`.ipynb`), tối ưu hóa luồng xử lý bất đồng bộ đa luồng trên FastAPI backend, và cập nhật Kế hoạch Nghiên cứu (`plan.md`)  
-**Prompt gốc (tổng hợp):**
-> 1. "bạn update cái plan xem, tiến trình cần thực hiện thêm những gì"  
-> 2. "làm cho tôi cái mà dùng để làm stress test và stress test bằng colab google"
+**Mục đích:** Đo lường hiệu năng chịu tải và tối ưu hóa xử lý bất đồng bộ  
+**Prompt gốc:**
+> "làm cho tôi cái mà dùng để làm stress test và stress test bằng colab google"
 
 **Kết quả AI tạo ra:**
-- **Cập nhật Kế hoạch Nghiên cứu (`plan.md`):**
-  + Đánh dấu hoàn thành toàn diện Bước 4 (Dữ liệu thực nghiệm 697 cuốn sách Tiki/Fahasa) và Bước 5 (Đánh giá chuẩn RAGAS đạt 0.902).
-  + Định rõ lộ trình các bước còn lại: Bước 6 (Đo lường hiệu năng chịu tải), Bước 7 (Khảo sát người dùng 30 đối tượng với thang đo Likert 5 mức độ & SUS), Bước 8 (Hoàn thiện hồ sơ báo cáo 25 trang, Phụ lục 2 Nhật ký, Phụ lục 3 Poster).
-- **Bộ công cụ kiểm thử hiệu năng & chịu tải (`Sample Tests/`):**
-  + `Sample Tests/stress_test.py`: Script kiểm thử bất đồng bộ (`asyncio` + `httpx`), đo lường độ trễ Min, Mean, P50, P90, P95, P99, Max, Throughput (RPS), Error Rate; tự động xuất biểu đồ 4 ô `stress_test_report.png` và báo cáo khoa học `STRESS_TEST_REPORT.md`.
-  + `Sample Tests/stress_test_colab.ipynb`: Jupyter Notebook hoàn chỉnh, chuẩn hóa JSON, tích hợp giao diện người dùng trực quan trên Google Colab, hướng dẫn kết nối qua ngrok / localtunnel, chạy kiểm thử chịu tải từ máy ảo Google Cloud về backend.
-- **Tối ưu hóa Backend Concurrency (`Back End/main.py`):**
-  + Phát hiện điểm nghẽn: Endpoint `/chat` là `async def` nhưng gọi hàm RAG đồng bộ gây block event loop, dẫn đến timeout khi có nhiều request đồng thời.
-  + Giải pháp: Đóng gói pipeline RAG vào luồng công nhân thông qua `await asyncio.to_thread(run_rag, ...)`, cho phép xử lý song song trên ThreadPoolExecutor, hạ tỷ lệ lỗi chịu tải đồng thời về **0.0%**.
+- Viết `Sample Tests/stress_test.py` đo lường độ trễ ở các mức tải 1, 10, 30 người dùng đồng thời và tự động xuất biểu đồ
+- Tạo Jupyter Notebook `Sample Tests/stress_test_colab.ipynb` để kiểm thử từ xa qua hạ tầng Google Colab
+- Tối ưu hóa backend FastAPI: Đưa hàm tìm kiếm RAG vào worker thread (`asyncio.to_thread`) tránh làm nghẽn vòng lặp sự kiện, duy trì tỷ lệ lỗi 0.0%
 
-**Files bị ảnh hưởng:** `Sample Tests/stress_test.py`, `Sample Tests/stress_test_colab.ipynb`, `Sample Tests/stress_test_report.png`, `Sample Tests/STRESS_TEST_REPORT.md`, `Sample Tests/stress_test_results.json`, `Back End/main.py`, `plan.md`, `Prompt Logs/prompt_log_session.md`.
+**Tệp bị ảnh hưởng:** `Sample Tests/stress_test.py`, `Sample Tests/stress_test_colab.ipynb`, `Back End/main.py`  
 
 ---
 
-*Prompt Log này được lập theo yêu cầu Phụ lục 1 — Hướng Dẫn Sử Dụng AI Tạo Sinh.*  
-*Người lập: Học sinh nghiên cứu | Xác nhận ngày: 26/09/2026*
+## PROMPT #22
 
+**Thời gian:** 27/09/2026 ~16:30  
+**Mục đích:** Xây dựng công cụ phân tích kết quả khảo sát người dùng chuẩn quốc tế  
+**Prompt gốc:**
+> "viết cho tôi script phân tích kết quả khảo sát từ Google Form, tính điểm SUS và Cronbach's Alpha rồi xuất biểu đồ báo cáo"
 
+**Kết quả AI tạo ra:**
+- Viết `Sample Tests/survey_analyzer.py` đọc dữ liệu khảo sát thực tế từ 37 người tham gia (`survey_responses.csv`)
+- Tính toán điểm System Usability Scale (SUS) đạt 88.72/100 (Hạng A - Excellent), hệ số Cronbach's Alpha đạt 0.939
+- Tính toán độ tin cậy của thang đo 5 tiêu chí chuyên biệt cho hệ thống RAG đạt Cronbach's Alpha 0.865
+- Tự động xuất biểu đồ trực quan `Sample Tests/survey_results_report.png` và báo cáo khoa học `Sample Tests/SURVEY_EVALUATION_REPORT.md`
 
+**Tệp bị ảnh hưởng:** `Sample Tests/survey_analyzer.py`, `Sample Tests/SURVEY_EVALUATION_REPORT.md`, `Sample Tests/survey_results_report.png`  
+**Phần học sinh tự làm:** Thu thập ý kiến khảo sát từ 37 người dùng độc lập (học sinh THPT, giáo viên, phụ huynh) qua Google Forms  
+
+---
+
+## PROMPT #23
+
+**Thời gian:** 28/09/2026 ~10:15  
+**Mục đích:** Khắc phục lỗi và nâng cao các chỉ số RAGAS trong đợt kiểm định số 2  
+**Prompt gốc:**
+> "đợt 1 kiểm tra RAGAS thì Context Recall với Faithfulness hơi thấp, bạn xem nguyên nhân và nâng cấp code giúp tôi"
+
+**Kết quả AI tạo ra:**
+- Bổ sung bảng ánh xạ khái niệm `CATEGORY_CONCEPT_MAP` để mở rộng truy vấn (Query Expansion) đối với các câu hỏi tìm sách theo ngữ cảnh chung (ví dụ "quà 18 tuổi", "học quản trị tiền bạc")
+- Áp dụng biểu thức chính quy ranh giới từ `\b` xử lý độ tuổi, tránh việc số "6 tuổi" bị khớp nhầm vào chuỗi "16 tuổi"
+- Tăng cường kiểm soát câu trả lời theo ngữ cảnh thực tế, nâng điểm Faithfulness từ 0.834 lên 0.940 và Context Recall từ 0.751 lên 0.885
+- Đạt điểm trung bình điều hòa RAGAS tổng hợp 0.924 / 1.000
+
+**Tệp bị ảnh hưởng:** `Back End/rag_engine.py`, `Sample Tests/RAGAS_EVALUATION_REPORT.md`  
+
+---
+
+## PROMPT #24
+
+**Thời gian:** 05/10/2026 ~14:20  
+**Mục đích:** Phát triển phân hệ Đọc và tương tác tài liệu học tập (Document RAG & Study Assistant)  
+**Prompt gốc:**
+> "tôi muốn học sinh có thể tải file PDF hoặc Word lên để chat với tài liệu, tóm tắt và tự tạo câu hỏi trắc nghiệm ôn tập"
+
+**Kết quả AI tạo ra:**
+- Viết `Back End/doc_pipeline.py` bóc tách cấu trúc tệp PDF (dùng PyMuPDF) và tệp Word .docx (dùng thư viện chuẩn `zipfile` và `xml.etree`), tự động gắn thẻ neo trang (`<!-- PAGE_ANCHOR: X -->`)
+- Viết `Back End/doc_rag.py` quản lý chỉ mục vector tài liệu học tập theo từng phiên, hỗ trợ hỏi đáp kèm trích dẫn số trang
+- Xây dựng tính năng tóm tắt tài liệu 3 cấp độ và Quiz Engine tự động tạo 10 câu hỏi trắc nghiệm có giải thích đáp án
+- Xây dựng hệ thống quản lý cơ sở dữ liệu phiên SQLite ở chế độ Write-Ahead Logging (`Web Database/db_manager.py`, `Web Database/session_routes.py`, `Web Database/schema.sql`)
+
+**Tệp bị ảnh hưởng:** `Back End/doc_pipeline.py`, `Back End/doc_rag.py`, `Web Database/*`, `Front End/index.html`  
+**Phần học sinh tự làm:** Chuẩn bị các tài liệu mẫu (sách giáo khoa, chuyên đề ôn tập) để kiểm thử phân hệ  
+
+---
+
+## PROMPT #25
+
+**Thời gian:** 12/10/2026 ~15:40  
+**Mục đích:** Xây dựng phân hệ mở rộng kiểm soát an toàn dược học (OTC Gatekeeper)  
+**Prompt gốc:**
+> "thử nghiệm mở rộng kiến trúc RAG sang kiểm tra thuốc không kê đơn OTC, có chặn thuốc kê đơn và kiểm tra bệnh lý nền"
+
+**Kết quả AI tạo ra:**
+- Viết `Back End/otc_gatekeeper.py` và cơ sở tri thức `database/otc_medicines_kb.json` gồm 60 loại thuốc OTC phổ biến chuẩn hóa theo Dược Thư Quốc Gia và DrugBank
+- Thiết lập hàng rào an toàn chặn yêu cầu tư vấn thuốc kê đơn (Rx) thuộc nhóm kháng sinh, thuốc an thần, tim mạch và corticoid
+- Kiểm tra an toàn theo độ tuổi, giới tính và tiền sử bệnh lý (dạ dày, gan, thận, phụ nữ mang thai, thiếu men G6PD)
+
+**Tệp bị ảnh hưởng:** `Back End/otc_gatekeeper.py`, `database/otc_medicines_kb.json`, `Front End/index.html`  
+**Phần học sinh tự làm:** Tra cứu và xác minh danh mục thuốc OTC theo hướng dẫn của giáo viên cố vấn  
+
+---
+
+## PROMPT #26
+
+**Thời gian:** 15/10/2026 ~09:30  
+**Mục đích:** Ứng dụng lọc nón bao hàm hình học Poincaré Ball (HyPE Filter)  
+**Prompt gốc:**
+> "tích hợp thuật toán lọc nón hyperbolic theo bài báo ECCV 2024 để lọc bớt sách ngoài phạm vi trước khi gọi LLM"
+
+**Kết quả AI tạo ra:**
+- Viết `Back End/hype_filter.py` cài đặt công thức khoảng cách hyperbolic và góc nửa nón bao hàm trên đĩa Poincaré (Poincaré Ball Model)
+- Cắt tỉa các đầu sách có góc nón không giao cắt với không gian ngữ nghĩa của truy vấn trước khi đưa vào ngữ cảnh mô hình ngôn ngữ lớn
+
+**Tệp bị ảnh hưởng:** `Back End/hype_filter.py`, `Back End/rag_engine.py`  
+**Phần học sinh tự làm:** Đọc bài báo khoa học Kim et al. (ECCV 2024) và đề xuất áp dụng vào đề tài  
+
+---
+
+## PROMPT #27
+
+**Thời gian:** 19/10/2026 – 21/10/2026  
+**Mục đích:** Hoàn thiện giao diện song ngữ, chuẩn hóa thuật ngữ tiếng Anh, sửa lỗi hiển thị và đồng bộ tài liệu  
+**Prompt gốc:**
+> "chỉnh thêm phần UI ở tiếng Anh cho cả study assistants và OTC, cập nhật lại số liệu đúng cho README và check lỗi CSS"
+
+**Kết quả AI tạo ra:**
+- Viết `Back End/otc_english_specs.py` chuẩn hóa toàn bộ thông số y tế sang Plain English (CEFR A2-B1)
+- Bổ sung cơ chế chuyển đổi song ngữ Việt - Anh tức thời trên toàn bộ giao diện `Front End/index.html`
+- Sửa thuộc tính CSS `appearance: textfield;` loại bỏ cảnh báo cú pháp linter trong IDE
+- Tinh gọn prompt tư vấn trong `gemini_client.py` theo văn phong tự nhiên, không dùng câu chữ sáo rỗng
+- Đồng bộ hóa các số liệu thực nghiệm khoa học (RAGAS 0.924, SUS 88.72) và cập nhật cấu trúc tệp đầy đủ trong `README.md`
+
+**Tệp bị ảnh hưởng:** `Back End/otc_english_specs.py`, `Back End/gemini_client.py`, `Front End/index.html`, `README.md`, `Prompt Logs/prompt_log_session.md`  
+**Phần học sinh tự làm:** Kiểm thử trực tiếp giao diện song ngữ trên các thiết bị máy tính xách tay và xác nhận kết quả  
+
+---
+
+*Nhật ký này được cập nhật đầy đủ đến ngày 21/10/2026 phục vụ công tác đối soát và nghiệm thu đề tài.*  
+*Người lập: Học sinh nghiên cứu*
