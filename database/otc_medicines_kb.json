@@ -8,11 +8,22 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
     "mechanism_of_action": "Ức chế tổng hợp prostaglandin tại hệ thần kinh trung ương và ức chế ngoại biên tín hiệu truyền cảm thụ đau.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Sốt", "Sốt cao", "Đau đầu", "Đau nhức cơ thể", "Đau răng"],
+    "webmd_symptoms": [
+      "Sốt",
+      "Sốt cao",
+      "Đau đầu",
+      "Đau nhức cơ thể",
+      "Đau răng"
+    ],
     "min_age": 12,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 842)",
     "category": "Thuốc giảm đau - hạ sốt không kê đơn (OTC)",
-    "common_symptoms": ["Sốt cao", "Đau đầu", "Đau răng", "Đau nhức cơ bắp"],
+    "common_symptoms": [
+      "Sốt cao",
+      "Đau đầu",
+      "Đau răng",
+      "Đau nhức cơ bắp"
+    ],
     "contraindications": [
       "Người suy giảm chức năng gan nặng",
       "Người thiếu hụt men G6PD",
@@ -33,11 +44,21 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB01427",
     "mechanism_of_action": "Kháng khuẩn thực vật ức chế Shigella, E. Coli; ức chế độc tố tả và giảm bài tiết dịch ruột.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Tiêu chảy", "Đau quặn bụng", "Đi ngoài phân lỏng", "Nhiễm khuẩn ruột"],
+    "webmd_symptoms": [
+      "Tiêu chảy",
+      "Đau quặn bụng",
+      "Đi ngoài phân lỏng",
+      "Nhiễm khuẩn ruột"
+    ],
     "min_age": 2,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 315)",
     "category": "Thuốc trị tiêu chảy không kê đơn (OTC)",
-    "common_symptoms": ["Tiêu chảy", "Đau bụng", "Rối loạn tiêu hóa", "Viêm ruột nhẹ"],
+    "common_symptoms": [
+      "Tiêu chảy",
+      "Đau bụng",
+      "Rối loạn tiêu hóa",
+      "Viêm ruột nhẹ"
+    ],
     "contraindications": [
       "Phụ nữ có thai (kích thích co bóp tử cung gây sảy thai)",
       "Trẻ sơ sinh thiếu hụt men G6PD"
@@ -56,11 +77,21 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB00126",
     "mechanism_of_action": "Cofactor phản ứng hydroxyl hóa sinh tổng hợp collagen, carnitine và chống oxy hóa dọn dẹp gốc tự do.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Mệt mỏi", "Giảm đề kháng", "Chảy máu chân răng", "Phục hồi sức khỏe"],
+    "webmd_symptoms": [
+      "Mệt mỏi",
+      "Giảm đề kháng",
+      "Chảy máu chân răng",
+      "Phục hồi sức khỏe"
+    ],
     "min_age": 6,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1207)",
     "category": "Vitamin bổ sung không kê đơn (OTC)",
-    "common_symptoms": ["Tăng đề kháng", "Mệt mỏi", "Chảy máu chân răng", "Phục hồi sau ốm"],
+    "common_symptoms": [
+      "Tăng đề kháng",
+      "Mệt mỏi",
+      "Chảy máu chân răng",
+      "Phục hồi sau ốm"
+    ],
     "contraindications": [
       "Người có tiền sử sỏi thận oxalat",
       "Người thiếu men G6PD (nguy cơ tan máu liều cao)",
@@ -81,11 +112,22 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB13978",
     "mechanism_of_action": "Phản ứng với acid dịch vị tạo lớp màng bọt gel alginate nhớt trung tính nổi trên đỉnh dịch vị ngăn trào ngược.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Ợ chua", "Ợ nóng", "Đau rát ngực", "Trào ngược dạ dày", "Khó tiêu"],
+    "webmd_symptoms": [
+      "Ợ chua",
+      "Ợ nóng",
+      "Đau rát ngực",
+      "Trào ngược dạ dày",
+      "Khó tiêu"
+    ],
     "min_age": 12,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 512)",
     "category": "Thuốc kháng acid & chống trào ngược dạ dày (OTC)",
-    "common_symptoms": ["Ợ chua", "Ợ nóng", "Trào ngược dạ dày thực quản", "Đau rát thượng vị"],
+    "common_symptoms": [
+      "Ợ chua",
+      "Ợ nóng",
+      "Trào ngược dạ dày thực quản",
+      "Đau rát thượng vị"
+    ],
     "contraindications": [
       "Người suy tim nặng hoặc tăng huyết áp cần ăn kiêng muối nghiêm ngặt (do chứa Natri)",
       "Người tăng calci máu hoặc sỏi thận calci"
@@ -104,11 +146,23 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
     "mechanism_of_action": "Tác động kép: Paracetamol giảm đau hạ sốt trung ương kết hợp Caffeine đối vận thụ thể adenosine làm co mạch não.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Đau đầu dữ dội", "Đau nửa đầu", "Đau răng", "Đau bụng kinh", "Sốt nhức"],
+    "webmd_symptoms": [
+      "Đau đầu dữ dội",
+      "Đau nửa đầu",
+      "Đau răng",
+      "Đau bụng kinh",
+      "Sốt nhức"
+    ],
     "min_age": 12,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 844)",
     "category": "Thuốc giảm đau hạ sốt tăng cường không kê đơn (OTC)",
-    "common_symptoms": ["Đau đầu dữ dội", "Đau nửa đầu", "Đau răng", "Đau bụng kinh", "Sốt"],
+    "common_symptoms": [
+      "Đau đầu dữ dội",
+      "Đau nửa đầu",
+      "Đau răng",
+      "Đau bụng kinh",
+      "Sốt"
+    ],
     "contraindications": [
       "Người suy gan nặng",
       "Người rối loạn nhịp tim nhanh, mất ngủ kinh niên",
@@ -130,11 +184,20 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB11589",
     "mechanism_of_action": "Cấu trúc phiến silicat nhôm magnesi đa lớp có khả năng bao phủ niêm mạc ruột và gắn kết độc tố vi khuẩn.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Tiêu chảy", "Đầy hơi", "Chướng bụng", "Rối loạn đường ruột"],
+    "webmd_symptoms": [
+      "Tiêu chảy",
+      "Đầy hơi",
+      "Chướng bụng",
+      "Rối loạn đường ruột"
+    ],
     "min_age": 2,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 418)",
     "category": "Thuốc bao phủ niêm mạc & cầm tiêu chảy không kê đơn (OTC)",
-    "common_symptoms": ["Tiêu chảy cấp và mạn tính", "Đau bụng đi ngoài", "Đầy hơi chướng bụng"],
+    "common_symptoms": [
+      "Tiêu chảy cấp và mạn tính",
+      "Đau bụng đi ngoài",
+      "Đầy hơi chướng bụng"
+    ],
     "contraindications": [
       "Người tắc ruột cơ học",
       "Người dị ứng với Diosmectite"
@@ -153,11 +216,22 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB03852",
     "mechanism_of_action": "Kích thích niêm mạc phế quản tăng bài tiết dịch lỏng, sát trùng nhẹ đường thở và làm dịu phản xạ ho.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Ho có đờm", "Đau họng", "Rát cổ", "Khản giọng", "Cảm lạnh"],
+    "webmd_symptoms": [
+      "Ho có đờm",
+      "Đau họng",
+      "Rát cổ",
+      "Khản giọng",
+      "Cảm lạnh"
+    ],
     "min_age": 3,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 480)",
     "category": "Thuốc ho thảo dược long đờm không kê đơn (OTC)",
-    "common_symptoms": ["Ho có đờm", "Ho do cảm lạnh", "Đau rát họng", "Khản tiếng"],
+    "common_symptoms": [
+      "Ho có đờm",
+      "Ho do cảm lạnh",
+      "Đau rát họng",
+      "Khản tiếng"
+    ],
     "contraindications": [
       "Trẻ em dưới 30 tháng tuổi hoặc trẻ có tiền sử co giật do sốt cao",
       "Người hen suyễn, suy hô hấp",
@@ -177,11 +251,23 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
     "mechanism_of_action": "Phối hợp: Giảm đau hạ sốt (Paracetamol) + Co mạch giảm sung huyết mũi (Phenylephrine) + Kháng histamin H1 chống dị ứng (Chlorpheniramine).",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Sổ mũi", "Nghẹt mũi", "Hắt hơi", "Cảm cúm", "Sốt kèm chảy mũi"],
+    "webmd_symptoms": [
+      "Sổ mũi",
+      "Nghẹt mũi",
+      "Hắt hơi",
+      "Cảm cúm",
+      "Sốt kèm chảy mũi"
+    ],
     "min_age": 12,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 382)",
     "category": "Thuốc trị cảm cúm, sổ mũi không kê đơn (OTC)",
-    "common_symptoms": ["Nghẹt mũi", "Sổ mũi", "Hắt hơi", "Sốt kèm nhức đầu", "Đau họng"],
+    "common_symptoms": [
+      "Nghẹt mũi",
+      "Sổ mũi",
+      "Hắt hơi",
+      "Sốt kèm nhức đầu",
+      "Đau họng"
+    ],
     "contraindications": [
       "Người tăng huyết áp nặng, bệnh mạch vành tim",
       "Người u tuyến tiền liệt, bí tiểu",
@@ -203,11 +289,22 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB01050",
     "mechanism_of_action": "Ức chế không chọn lọc enzyme cyclooxygenase COX-1 và COX-2, ức chế sinh tổng hợp prostaglandin gây viêm.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Đau nhức xương khớp", "Đau răng", "Đau bụng kinh", "Viêm đau cơ"],
+    "webmd_symptoms": [
+      "Đau nhức xương khớp",
+      "Đau răng",
+      "Đau bụng kinh",
+      "Viêm đau cơ"
+    ],
     "min_age": 12,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 650)",
     "category": "Thuốc kháng viêm hạ sốt giảm đau không steroid (NSAID)",
-    "common_symptoms": ["Đau cơ bắp", "Đau răng", "Đau lưng", "Đau bụng kinh", "Viêm sưng khớp"],
+    "common_symptoms": [
+      "Đau cơ bắp",
+      "Đau răng",
+      "Đau lưng",
+      "Đau bụng kinh",
+      "Viêm sưng khớp"
+    ],
     "contraindications": [
       "Người viêm loét dạ dày tá tràng tiến triển hoặc xuất huyết tiêu hóa",
       "Phụ nữ mang thai 3 tháng cuối (nguy cơ đóng sớm ống động mạch thai nhi)",
@@ -228,11 +325,22 @@
     "drugbank_url": "https://go.drugbank.com/drugs/DB00455",
     "mechanism_of_action": "Thuốc kháng histamin 3 vòng thế hệ 2 tác dụng kéo dài, đối kháng chọn lọc thụ thể H1 ngoại biên, không qua hàng rào máu não nên không gây buồn ngủ.",
     "webmd_ref": "https://symptoms.webmd.com/",
-    "webmd_symptoms": ["Mẩn ngứa", "Mề đay", "Dị ứng thời tiết", "Viêm mũi dị ứng", "Ngứa mắt"],
+    "webmd_symptoms": [
+      "Mẩn ngứa",
+      "Mề đay",
+      "Dị ứng thời tiết",
+      "Viêm mũi dị ứng",
+      "Ngứa mắt"
+    ],
     "min_age": 6,
     "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 720)",
     "category": "Thuốc chống dị ứng mẩn ngứa không kê đơn (OTC)",
-    "common_symptoms": ["Mẩn ngứa dị ứng", "Mề đay tự phát", "Hắt hơi ngứa mũi", "Viêm kết mạc dị ứng"],
+    "common_symptoms": [
+      "Mẩn ngứa dị ứng",
+      "Mề đay tự phát",
+      "Hắt hơi ngứa mũi",
+      "Viêm kết mạc dị ứng"
+    ],
     "contraindications": [
       "Người dị ứng hoặc quá mẫn với Loratadine hoặc Desloratadine",
       "Người suy gan nặng (cần dùng liều cách nhật)"
@@ -241,5 +349,1639 @@
       "Ketoconazole, Erythromycin, Cimetidine (làm tăng nồng độ loratadine trong huyết tương nhưng ít biểu hiện lâm sàng)"
     ],
     "safe_usage_note": "Chỉ cần uống 1 viên (10mg) mỗi ngày một lần. Không gây buồn ngủ ở liều điều trị thông thường."
+  },
+  {
+    "drug_id": "OTC_11",
+    "trade_name": "Efferalgan 500mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Paracetamol 500mg (viên sủi)",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Dạng viên sủi hòa tan nhanh trong nước giúp Paracetamol hấp thu qua dạ dày nhanh hơn viên nén, ức chế tổng hợp prostaglandin ở thần kinh trung ương.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Sốt",
+      "Hạ sốt nhanh",
+      "Đau đầu",
+      "Đau răng",
+      "Đau mình mẩy"
+    ],
+    "min_age": 7,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 842)",
+    "category": "Thuốc giảm đau hạ sốt dạng sủi không kê đơn (OTC)",
+    "common_symptoms": [
+      "Sốt do cảm cúm",
+      "Đau đầu",
+      "Đau họng",
+      "Đau cơ khớp nhẹ"
+    ],
+    "contraindications": [
+      "Người suy gan nặng hoặc viêm gan cấp",
+      "Người thiếu hụt men G6PD",
+      "Người đang ăn kiêng muối nghiêm ngặt (viên sủi chứa lượng đáng kể Natri)"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia (tăng nguy cơ độc gan cấp tính)",
+      "Thuốc khác có chứa paracetamol (nguy cơ quá liều)"
+    ],
+    "safe_usage_note": "Hòa tan hoàn toàn 1 viên vào cốc nước đầy (150-200ml) trước khi uống. Cách nhau 4-6 giờ giữa 2 liều, không quá 3g/ngày."
+  },
+  {
+    "drug_id": "OTC_12",
+    "trade_name": "Panadol Cảm Cúm (Xanh Lá)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Paracetamol 500mg, Caffeine 25mg, Phenylephrine HCl 5mg",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Tác động đa mục tiêu: Paracetamol hạ sốt giảm đau, Caffeine hỗ trợ tỉnh táo tăng tác dụng giảm đau, Phenylephrine kích thích alpha-1 adrenergic làm co mạch niêm mạc mũi giảm sung huyết.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Nghẹt mũi",
+      "Sốt kèm cảm lạnh",
+      "Đau đầu",
+      "Đau nhức toàn thân",
+      "Chảy nước mũi"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 845)",
+    "category": "Thuốc trị cảm cúm nghẹt mũi không kê đơn (OTC)",
+    "common_symptoms": [
+      "Nghẹt mũi do cảm",
+      "Sốt kèm đau nhức cơ",
+      "Đau đầu do viêm xoang",
+      "Cảm lạnh"
+    ],
+    "contraindications": [
+      "Người tăng huyết áp nặng hoặc bệnh mạch vành",
+      "Người cường giáp chưa kiểm soát",
+      "Người mắc bệnh Glaucoma góc hẹp",
+      "Người suy gan nặng"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế MAO (trong vòng 14 ngày, nguy cơ cơn tăng huyết áp kịch phát)",
+      "Các thuốc kích thích thần kinh khác và đồ uống chứa nhiều caffein"
+    ],
+    "safe_usage_note": "Người lớn uống 1-2 viên mỗi 4-6 giờ khi cần, tối đa 8 viên/ngày. Không dùng liên tục quá 7 ngày nếu không đỡ."
+  },
+  {
+    "drug_id": "OTC_13",
+    "trade_name": "Tiffy Dey",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Paracetamol 500mg, Chlorpheniramine maleate 2mg, Phenylephrine HCl 10mg",
+    "drugbank_id": "DB00316",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00316",
+    "mechanism_of_action": "Bộ ba hoạt chất: Paracetamol giảm đau hạ nhiệt; Chlorpheniramine kháng histamin H1 giảm ngứa mũi hắt hơi chảy nước mắt; Phenylephrine co mạch giảm phù nề cuống mũi.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Hắt hơi liên tục",
+      "Sổ mũi",
+      "Nghẹt mũi",
+      "Sốt nhẹ kèm đau đầu",
+      "Ngứa cổ họng"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 383)",
+    "category": "Thuốc cảm cúm kháng dị ứng không kê đơn (OTC)",
+    "common_symptoms": [
+      "Hắt hơi",
+      "Sổ mũi",
+      "Nghẹt mũi",
+      "Sốt kèm nhức mình",
+      "Viêm mũi dị ứng cấp"
+    ],
+    "contraindications": [
+      "Người phì đại tiền liệt tuyến, ứ nước tiểu",
+      "Người tăng nhãn áp góc đóng",
+      "Người suy gan nặng",
+      "Trẻ sơ sinh hoặc trẻ đẻ non"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia và thuốc ngủ (tăng mạnh nguy cơ buồn ngủ lú lẫn và suy hô hấp)",
+      "Thuốc chống trầm cảm ba vòng hoặc IMAO"
+    ],
+    "safe_usage_note": "Gây buồn ngủ rõ rệt. Tuyệt đối không lái xe, leo cao hay điều khiển máy móc sau khi uống."
+  },
+  {
+    "drug_id": "OTC_14",
+    "trade_name": "Cetirizine 10mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Cetirizine dihydrochloride 10mg",
+    "drugbank_id": "DB00537",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00537",
+    "mechanism_of_action": "Thuốc kháng histamin H1 thế hệ 2 có tính chọn lọc cao ở ngoại biên, ức chế giải phóng các chất trung gian hóa học gây dị ứng ở giai đoạn muộn.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Dị ứng phấn hoa",
+      "Mề đay ngứa ngáy",
+      "Viêm kết mạc dị ứng",
+      "Ngứa da dị ứng",
+      "Chảy nước mắt mũi"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 354)",
+    "category": "Thuốc kháng histamin chống dị ứng không kê đơn (OTC)",
+    "common_symptoms": [
+      "Mề đay mạn tính vô căn",
+      "Viêm mũi dị ứng theo mùa",
+      "Ngứa da do côn trùng cắn hoặc dị ứng thức ăn nhẹ"
+    ],
+    "contraindications": [
+      "Người suy thận giai đoạn cuối (độ thanh thải creatinin < 10ml/phút)",
+      "Người mẫn cảm với cetirizine hoặc hydroxyzin"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia (có thể làm tăng tác dụng ức chế thần kinh trung ương nhẹ)",
+      "Theophylline (làm giảm nhẹ độ thanh thải của cetirizine)"
+    ],
+    "safe_usage_note": "Uống 1 viên duy nhất (10mg) mỗi ngày một lần. Uống cùng hoặc ngoài bữa ăn."
+  },
+  {
+    "drug_id": "OTC_15",
+    "trade_name": "Telfast HD 60mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Fexofenadine hydrochloride 60mg",
+    "drugbank_id": "DB00814",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00814",
+    "mechanism_of_action": "Kháng thụ thể histamin H1 thế hệ 2 không qua hàng rào máu não, hoàn toàn không gắn vào thụ thể cholinergic hay adrenergic, không gây buồn ngủ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Viêm mũi dị ứng",
+      "Mẩn đỏ ngứa",
+      "Chảy nước mũi trong",
+      "Ngứa vòm họng",
+      "Mề đay mẩn ngứa"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 502)",
+    "category": "Thuốc chống dị ứng thế hệ mới không gây buồn ngủ (OTC)",
+    "common_symptoms": [
+      "Viêm mũi dị ứng quanh năm",
+      "Mề đay tự phát mạn tính",
+      "Ngứa đỏ da do tiếp xúc dị nguyên"
+    ],
+    "contraindications": [
+      "Người có tiền sử mẫn cảm với Fexofenadine",
+      "Người suy thận nặng cần giảm liều theo chỉ dẫn y tế"
+    ],
+    "dangerous_interactions": [
+      "Thuốc kháng acid chứa nhôm hoặc magnesi gel (uống cách ít nhất 2 giờ vì làm giảm sinh khả dụng Fexofenadine)",
+      "Nước ép bưởi chùm, cam, táo (làm giảm hấp thu thuốc)"
+    ],
+    "safe_usage_note": "Uống 1 viên (60mg) x 2 lần/ngày với nước lọc. Không uống chung với nước hoa quả."
+  },
+  {
+    "drug_id": "OTC_16",
+    "trade_name": "Clorpheniramin 4mg",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Chlorpheniramine maleate 4mg",
+    "drugbank_id": "DB00332",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00332",
+    "mechanism_of_action": "Kháng histamin H1 thế hệ 1 qua hàng rào máu não gây an thần buồn ngủ, cạnh tranh vị trí gắn histamin trên tế bào đích và có hoạt tính kháng muscarinic.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Sổ mũi nhiều",
+      "Hắt hơi ngứa mũi",
+      "Ngứa mắt đỏ mắt dị ứng",
+      "Mề đay ngứa về đêm"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 371)",
+    "category": "Thuốc kháng histamin giảm dị ứng thế hệ 1 (OTC)",
+    "common_symptoms": [
+      "Chảy nước mũi nhiều do cảm hoặc lạnh",
+      "Dị ứng mề đay ngứa ngáy khó ngủ",
+      "Ngứa cổ họng"
+    ],
+    "contraindications": [
+      "Người mắc Glaucoma góc hẹp",
+      "Người u xơ tiền liệt tuyến gây bí tiểu",
+      "Cơn hen phế quản cấp",
+      "Phụ nữ đang cho con bú và trẻ sơ sinh"
+    ],
+    "dangerous_interactions": [
+      "Thuốc an thần, thuốc ngủ, rượu (tăng nguy cơ ức chế thần kinh trung ương quá mức)",
+      "Thuốc ức chế MAO (kéo dài và tăng tác dụng kháng cholinergic)"
+    ],
+    "safe_usage_note": "Gây ngủ mạnh và khô miệng. Thích hợp uống buổi tối trước khi đi ngủ."
+  },
+  {
+    "drug_id": "OTC_17",
+    "trade_name": "Acemuc 200mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Acetylcysteine 200mg",
+    "drugbank_id": "DB00945",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00945",
+    "mechanism_of_action": "Nhóm sulfhydryl tự do (-SH) bẻ gãy các cầu nối disulfide (-S-S-) trong chuỗi mucoprotein và DNA của chất nhầy phế quản, làm tiêu và loãng dịch đờm đặc.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ho có đờm đặc",
+      "Vướng đờm cổ họng",
+      "Khó khạc đờm",
+      "Đờm quánh nhầy trong phế quản"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 218)",
+    "category": "Thuốc tiêu nhầy long đờm phế quản không kê đơn (OTC)",
+    "common_symptoms": [
+      "Ho đờm đặc quánh",
+      "Viêm phế quản cấp có đờm",
+      "Khó thở do đờm tắc nghẽn đường thở"
+    ],
+    "contraindications": [
+      "Người có tiền sử hen phế quản (nguy cơ gây co thắt phế quản cấp)",
+      "Trẻ em dưới 2 tuổi",
+      "Người loét dạ dày tá tràng tiến triển"
+    ],
+    "dangerous_interactions": [
+      "Không phối hợp với thuốc chống ho ức chế phản xạ ho (gây ứ đọng dịch nhầy trong phổi)",
+      "Kháng sinh nhóm Tetracyclin (cần uống cách nhau ít nhất 2 giờ)"
+    ],
+    "safe_usage_note": "Uống sau ăn cùng nhiều nước ấm để hỗ trợ làm loãng đờm. Người lớn uống 1 gói x 3 lần/ngày."
+  },
+  {
+    "drug_id": "OTC_18",
+    "trade_name": "Bisolvon 8mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Bromhexine hydrochloride 8mg",
+    "drugbank_id": "DB00851",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00851",
+    "mechanism_of_action": "Tăng cường bài tiết dịch thanh dịch phế quản, hoạt hóa thủy phân các sợi mucopolysaccharide acid làm dịch đờm loãng bớt và dễ tống ra ngoài theo nhịp ho.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ho khạc đờm khó",
+      "Đờm dính đặc",
+      "Viêm đường hô hấp tiết đờm"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 325)",
+    "category": "Thuốc long đờm tiêu dịch nhầy đường hô hấp (OTC)",
+    "common_symptoms": [
+      "Ho có đờm dính chặt",
+      "Viêm khí phế quản cấp và mạn tính",
+      "Đờm nhầy tích tụ"
+    ],
+    "contraindications": [
+      "Người loét dạ dày tá tràng (có thể phá hủy hàng rào chất nhầy dạ dày)",
+      "Người quá mẫn với Bromhexine"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế phản xạ ho như Dextromethorphan (gây tắc nghẽn phế quản do ứ đờm)"
+    ],
+    "safe_usage_note": "Người lớn uống 1 viên (8mg) x 3 lần/ngày sau khi ăn. Uống cùng nhiều nước."
+  },
+  {
+    "drug_id": "OTC_19",
+    "trade_name": "Siro Ho Prospan 100ml",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Cao khô lá thường xuân (Hederae helicis folii extractum) 0.7g/100ml",
+    "drugbank_id": "DB14187",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB14187",
+    "mechanism_of_action": "Saponin trong lá thường xuân kích thích niêm mạc dạ dày qua phản xạ phó giao cảm làm tăng tiết dịch nhầy đường thở, đồng thời làm giãn cơ trơn phế quản giúp dịu cơn co thắt.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ho kích ứng",
+      "Ho có đờm",
+      "Rát cổ họng",
+      "Co thắt phế quản nhẹ"
+    ],
+    "min_age": 1,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1140)",
+    "category": "Siro ho thảo dược tiêu nhầy chống co thắt (OTC)",
+    "common_symptoms": [
+      "Ho do cảm lạnh",
+      "Viêm phế quản mạn tính",
+      "Ho có đờm nhớt ở trẻ em và người lớn"
+    ],
+    "contraindications": [
+      "Người bất dung nạp đường fructose di truyền",
+      "Phụ nữ mang thai hoặc đang cho con bú (chưa đủ dữ liệu an toàn)"
+    ],
+    "dangerous_interactions": [
+      "Chưa ghi nhận tương tác nguy hiểm với thuốc khác"
+    ],
+    "safe_usage_note": "Lắc kỹ chai trước khi dùng. Dùng cốc đong kèm theo để chia liều chính xác."
+  },
+  {
+    "drug_id": "OTC_20",
+    "trade_name": "Dextromethorphan 15mg",
+    "source_pharmacy": "Pharmacity / Long Châu",
+    "active_ingredient": "Dextromethorphan hydrobromide 15mg",
+    "drugbank_id": "DB00863",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00863",
+    "mechanism_of_action": "Tác động chọn lọc lên trung tâm ho ở hành não làm nâng ngưỡng kích thích phản xạ ho, cắt cơn ho khan nhanh chóng mà không gây ức chế hô hấp ở liều điều trị.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ho khan",
+      "Ho ngứa cổ",
+      "Ho dai dẳng kích ứng",
+      "Ho mất ngủ ban đêm"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 412)",
+    "category": "Thuốc ức chế phản xạ ho cắt cơn ho khan (OTC)",
+    "common_symptoms": [
+      "Ho khan kích ứng",
+      "Ho do cảm cúm giai đoạn đầu",
+      "Ho khan làm gián đoạn giấc ngủ"
+    ],
+    "contraindications": [
+      "Người ho có đờm đặc quánh (cắt cơn ho sẽ làm ứ đọng đờm gây suy hô hấp hoặc viêm phổi)",
+      "Người bệnh hen suyễn, suy hô hấp",
+      "Người đang dùng thuốc ức chế enzyme MAO"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế tái hấp thu chọn lọc serotonin (SSRI) như Fluoxetine, Paroxetine (nguy cơ hội chứng serotonin)",
+      "Rượu bia (tăng tác dụng an thần)"
+    ],
+    "safe_usage_note": "Chỉ dùng cho ho khan, không dùng cho ho có đờm. Người lớn uống 1 viên mỗi 6-8 giờ khi có cơn ho."
+  },
+  {
+    "drug_id": "OTC_21",
+    "trade_name": "Siro Ho Bảo Thanh 125ml",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Ô mai, Xuyên bối mẫu, Tỳ bà diệp, Sa sâm, Cát cánh, Viễn chí, Mật ong",
+    "drugbank_id": "DB10744",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB10744",
+    "mechanism_of_action": "Kế thừa bài thuốc cổ phương Xuyên bối tỳ bà cao: bổ phế hóa đờm, thanh nhiệt, làm dịu niêm mạc họng bị tổn thương và giảm ho tự nhiên.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ho gió",
+      "Ho khan",
+      "Ho có đờm",
+      "Khản tiếng mất giọng",
+      "Đau rát cổ họng"
+    ],
+    "min_age": 1,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1290)",
+    "category": "Thuốc ho đông dược bổ phế hóa đờm (OTC)",
+    "common_symptoms": [
+      "Ho gió",
+      "Ho khan dai dẳng lâu ngày",
+      "Ho có đờm do viêm họng",
+      "Khản giọng do nói nhiều"
+    ],
+    "contraindications": [
+      "Người bệnh tiểu đường nặng (siro chứa đường tự nhiên và mật ong)",
+      "Trẻ dưới 1 tuổi (nguy cơ nhiễm bào tử Clostridium botulinum từ mật ong)"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc bất lợi đã được ghi nhận"
+    ],
+    "safe_usage_note": "Uống từ từ từng ngụm nhỏ để siro thấm đều niêm mạc họng. Pha thêm chút nước ấm nếu thấy ngọt đậm."
+  },
+  {
+    "drug_id": "OTC_22",
+    "trade_name": "Viên Ngậm Strepsils Cool",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "2,4-Dichlorobenzyl alcohol 1.2mg, Amylmetacresol 0.6mg, Menthol",
+    "drugbank_id": "DB06786",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB06786",
+    "mechanism_of_action": "Sát khuẩn tại chỗ vùng khoang miệng hầu họng, ức chế vi khuẩn và virus gây viêm họng, kết hợp menthol làm the mát dịu đau rát cổ lập tức.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau họng",
+      "Rát cổ họng",
+      "Nuốt đau",
+      "Khô họng ngứa cổ",
+      "Viêm họng nhẹ"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1030)",
+    "category": "Viên ngậm sát trùng giảm đau họng tại chỗ (OTC)",
+    "common_symptoms": [
+      "Đau rát họng khi nuốt",
+      "Khô rát cổ họng do máy lạnh",
+      "Ngứa họng khó chịu"
+    ],
+    "contraindications": [
+      "Trẻ em dưới 6 tuổi (nguy cơ hóc dị vật đường thở)",
+      "Người dị ứng với bất kỳ thành phần nào của thuốc"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác nguy hiểm lâm sàng khi dùng đường ngậm tại chỗ"
+    ],
+    "safe_usage_note": "Ngậm tan từ từ trong miệng, mỗi 2-3 giờ ngậm 1 viên khi đau họng. Tối đa 12 viên/ngày."
+  },
+  {
+    "drug_id": "OTC_23",
+    "trade_name": "Otrivin 0.05% (Thuốc Nhỏ Mũi Trẻ Em)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Xylometazoline hydrochloride 0.05%",
+    "drugbank_id": "DB01115",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01115",
+    "mechanism_of_action": "Chất chủ vận thụ thể alpha-adrenergic tại mao mạch niêm mạc mũi gây co mạch tại chỗ, giảm phù nề xung huyết và khai thông đường thở nhanh chóng trong vài phút.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Nghẹt mũi ở trẻ em",
+      "Tắc mũi khó thở",
+      "Sung huyết xoang",
+      "Chảy mũi nghẹt đặc"
+    ],
+    "min_age": 1,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1245)",
+    "category": "Thuốc co mạch chống nghẹt mũi tại chỗ cho trẻ em (OTC)",
+    "common_symptoms": [
+      "Nghẹt mũi do cảm lạnh",
+      "Viêm xoang sung huyết",
+      "Khó thở khi ngủ do tắc mũi"
+    ],
+    "contraindications": [
+      "Trẻ sơ sinh dưới 1 tuổi",
+      "Người viêm mũi teo (viêm mũi khô)",
+      "Người phẫu thuật xuyên xương bướm cắt bỏ tuyến yên",
+      "Người mắc Glaucoma góc đóng"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế MAO hoặc thuốc chống trầm cảm ba vòng (nguy cơ tăng huyết áp)"
+    ],
+    "safe_usage_note": "Nhỏ 1-2 giọt mỗi bên mũi, 1-2 lần/ngày. Tuyệt đối không dùng quá 5-7 ngày liên tục để tránh viêm mũi dội ngược (Rhinitis medicamentosa)."
+  },
+  {
+    "drug_id": "OTC_24",
+    "trade_name": "Otrivin 0.1% (Xịt Mũi Người Lớn)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Xylometazoline hydrochloride 0.1%",
+    "drugbank_id": "DB01115",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01115",
+    "mechanism_of_action": "Co các tiểu động mạch niêm mạc mũi làm thông thoáng lỗ thông xoang và vòi nhĩ, giảm sưng nề mô cuốn mũi tức thì sau 2 phút.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Nghẹt mũi nặng",
+      "Viêm xoang cấp",
+      "Nghẹt mũi do dị ứng",
+      "Cảm cúm tắc mũi"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1245)",
+    "category": "Thuốc xịt mũi co mạch giảm nghẹt tức thì người lớn (OTC)",
+    "common_symptoms": [
+      "Nghẹt cứng mũi không thở được",
+      "Viêm mũi xoang cấp tính",
+      "Sung huyết niêm mạc mũi"
+    ],
+    "contraindications": [
+      "Trẻ em dưới 12 tuổi (dùng hàm lượng 0.05%)",
+      "Người bệnh tăng huyết áp nặng, bệnh mạch vành",
+      "Viêm mũi teo khô",
+      "Tăng nhãn áp góc đóng"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế MAO và thuốc chống trầm cảm 3 vòng"
+    ],
+    "safe_usage_note": "Xịt 1 nhát vào mỗi bên mũi, ngày 2-3 lần. Không xịt liên tục quá 7 ngày để tránh bị lệ thuộc thuốc gây nghẹt mũi mạn tính."
+  },
+  {
+    "drug_id": "OTC_25",
+    "trade_name": "Nước Xịt Mũi Xisat",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Nước biển sâu đẳng trương chứa muối và khoáng chất tự nhiên (Cu2+, Zn2+)",
+    "drugbank_id": "DB09153",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09153",
+    "mechanism_of_action": "Rửa trôi bụi bẩn, chất nhầy đặc quánh và dị nguyên khỏi hốc mũi, phục hồi độ ẩm sinh lý tự nhiên cho niêm mạc mũi.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Khô rát mũi",
+      "Bụi bẩn nghẹt mũi",
+      "Chảy nước mũi sinh lý",
+      "Vệ sinh mũi hàng ngày"
+    ],
+    "min_age": 1,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 810)",
+    "category": "Dung dịch vệ sinh và làm sạch khoang mũi đẳng trương (OTC)",
+    "common_symptoms": [
+      "Khô niêm mạc mũi do phòng máy lạnh",
+      "Bụi bẩn bám dính hốc mũi",
+      "Phòng ngừa viêm mũi xoang"
+    ],
+    "contraindications": [
+      "Không có chống chỉ định đặc thù, rất an toàn"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc bất lợi"
+    ],
+    "safe_usage_note": "Xịt 3-5 lần mỗi ngày vào hai bên mũi, có thể dùng an toàn lâu dài mỗi ngày."
+  },
+  {
+    "drug_id": "OTC_26",
+    "trade_name": "Natri Clorid 0.9% (Nước Muối Sinh Lý)",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Natri clorid 0.9% (NaCl đẳng trương)",
+    "drugbank_id": "DB09153",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09153",
+    "mechanism_of_action": "Dung dịch đẳng trương với áp suất thẩm thấu tương đương dịch cơ thể, làm sạch cơ học, rửa trôi dị vật vi khuẩn ở mắt và niêm mạc mũi dịu nhẹ không gây rát buốt.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Cộm mắt",
+      "Bụi vào mắt",
+      "Khô mắt",
+      "Nghẹt mũi sơ sinh",
+      "Rửa mắt mũi hàng ngày"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 812)",
+    "category": "Dung dịch nhỏ mắt mũi sinh lý an toàn cho mọi lứa tuổi (OTC)",
+    "common_symptoms": [
+      "Bụi bay vào mắt",
+      "Khô mỏi mắt",
+      "Nghẹt dỉ mũi ở trẻ sơ sinh và trẻ nhỏ"
+    ],
+    "contraindications": [
+      "Không có chống chỉ định, an toàn cho trẻ sơ sinh và phụ nữ mang thai"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác"
+    ],
+    "safe_usage_note": "Nhỏ 1-3 giọt mỗi bên mắt/mũi khi cần. Lọ mở nắp chỉ nên dùng trong vòng 15-30 ngày."
+  },
+  {
+    "drug_id": "OTC_27",
+    "trade_name": "Oresol 245 (Bù Nước Điện Giải)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Glucose khan 2.7g, Natri clorid 0.52g, Kali clorid 0.3g, Natri citrat 0.58g",
+    "drugbank_id": "DB09153",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09153",
+    "mechanism_of_action": "Theo công thức thẩm thấu thấp WHO (245 mOsm/L): Đồng vận chuyển glucose và natri qua niêm mạc ruột làm tăng hấp thu nước và các ion điện giải chống mất nước tử vong.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Mất nước do tiêu chảy",
+      "Sốt cao mất nước",
+      "Nôn ói nhiều",
+      "Mệt lả do mất mồ hôi",
+      "Say nắng"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 828)",
+    "category": "Thuốc bù nước và cân bằng điện giải thẩm thấu thấp (OTC)",
+    "common_symptoms": [
+      "Tiêu chảy cấp mất nước",
+      "Nôn mửa",
+      "Sốt cao kéo dài",
+      "Mất nước do chơi thể thao nặng"
+    ],
+    "contraindications": [
+      "Người vô niệu hoặc thiểu niệu nặng (suy thận cấp)",
+      "Người thủng ruột hoặc tắc ruột cơ học",
+      "Người nôn mửa liên tục không giữ được nước"
+    ],
+    "dangerous_interactions": [
+      "Không pha với sữa, nước ngọt có ga hoặc nước trái cây (làm sai áp suất thẩm thấu gây tiêu chảy nặng hơn)"
+    ],
+    "safe_usage_note": "Bắt buộc pha đúng dung tích nước đun sôi để nguội ghi trên gói (thường 200ml). Tuyệt đối không pha quá đặc gây sốc thẩm thấu nguy hiểm."
+  },
+  {
+    "drug_id": "OTC_28",
+    "trade_name": "Enterogermina (Hỗn Dịch Uống)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Bào tử Bacillus clausii kháng đa kháng sinh 2 tỷ CFU/5ml",
+    "drugbank_id": "DB06776",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB06776",
+    "mechanism_of_action": "Bào tử sống chịu được acid dạ dày vào đến ruột phát triển thành vi khuẩn có lợi, tái lập cân bằng hệ vi sinh đường ruột và tiết các enzyme hỗ trợ tiêu hóa.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Rối loạn tiêu hóa",
+      "Tiêu chảy do kháng sinh",
+      "Phân sống",
+      "Đầy hơi chướng bụng"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 310)",
+    "category": "Men vi sinh vi khuẩn có lợi đường ruột (OTC)",
+    "common_symptoms": [
+      "Loạn khuẩn ruột sau dùng kháng sinh",
+      "Đi ngoài phân sống",
+      "Ăn không tiêu đầy bụng"
+    ],
+    "contraindications": [
+      "Người có tiền sử mẫn cảm với bào tử Bacillus clausii",
+      "Người suy giảm miễn dịch nặng cần thận trọng"
+    ],
+    "dangerous_interactions": [
+      "Uống cách kháng sinh ít nhất 2 giờ để tránh kháng sinh làm giảm hiệu quả của men vi sinh"
+    ],
+    "safe_usage_note": "Lắc kỹ ống trước khi bẻ. Uống trực tiếp hoặc pha vào nước lọc, sữa, nước trà. Dùng 1-2 ống/ngày."
+  },
+  {
+    "drug_id": "OTC_29",
+    "trade_name": "Cốm Vi Sinh Bio-acimin Gold",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Lactobacillus, Bacillus subtilis, Streptococcus faecalis, Kẽm, Vitamin nhóm B",
+    "drugbank_id": "DB06776",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB06776",
+    "mechanism_of_action": "Bổ sung đa chủng probiotic kết hợp prebiotic FOS và vi chất giúp ức chế hại khuẩn đường ruột, kích thích ăn ngon miệng và tăng hấp thu dưỡng chất.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Biếng ăn",
+      "Kém hấp thu",
+      "Phân sống lỏng",
+      "Táo bón hoặc tiêu chảy thất thường"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 312)",
+    "category": "Cốm vi sinh bổ sung lợi khuẩn và vi chất dinh dưỡng (OTC)",
+    "common_symptoms": [
+      "Trẻ biếng ăn tiêu hóa kém",
+      "Rối loạn tiêu hóa sau ốm",
+      "Đầy bụng khó tiêu"
+    ],
+    "contraindications": [
+      "Mẫn cảm với các chủng men vi sinh trong sản phẩm"
+    ],
+    "dangerous_interactions": [
+      "Uống cách kháng sinh 2 tiếng"
+    ],
+    "safe_usage_note": "Pha với nước nguội hoặc sữa ấm dưới 40 độ C (nhiệt độ cao sẽ làm chết men vi sinh sống)."
+  },
+  {
+    "drug_id": "OTC_30",
+    "trade_name": "Phosphalugel (Gói Chữ P)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Nhôm phosphat dạng gel keo 20% (12.38g)",
+    "drugbank_id": "DB01053",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01053",
+    "mechanism_of_action": "Gel nhôm phosphat trung hòa acid dạ dày đưa pH về vùng đệm 3.0-3.5 mà không gây hiện tượng tăng tiết acid dội ngược, tạo lớp màng bảo vệ niêm mạc ổ loét.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau rát dạ dày",
+      "Cồn cào xót ruột",
+      "Ợ chua rát thượng vị",
+      "Viêm dạ dày cấp"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 824)",
+    "category": "Thuốc kháng acid dạ dày dạng gel bảo vệ niêm mạc (OTC)",
+    "common_symptoms": [
+      "Đau dạ dày lúc đói hoặc sau ăn",
+      "Ợ chua nóng rát",
+      "Viêm loét dạ dày tá tràng nhẹ"
+    ],
+    "contraindications": [
+      "Người suy thận nặng (nguy cơ tích lũy nhôm trong cơ thể)",
+      "Người mẫn cảm với nhôm"
+    ],
+    "dangerous_interactions": [
+      "Làm giảm hấp thu nhiều thuốc (sắt, tetracyclin, quinolon) -> phải uống cách xa ít nhất 2 giờ"
+    ],
+    "safe_usage_note": "Uống khi có cơn đau dạ dày hoặc uống sau ăn 1-2 giờ. Có thể uống nguyên chất hoặc pha chút nước."
+  },
+  {
+    "drug_id": "OTC_31",
+    "trade_name": "Yumangel (Gói Chữ Y)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Almagate 1.0g",
+    "drugbank_id": "DB13958",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB13958",
+    "mechanism_of_action": "Almagate có cấu trúc mạng lưới tinh thể phân tử trung hòa nhanh HCl dịch vị, ức chế hoạt tính enzyme pepsin và hấp phụ acid mật bảo vệ biểu mô niêm mạc dạ dày thực quản.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Trào ngược acid",
+      "Nóng rát thực quản",
+      "Ợ hơi chua",
+      "Đau tức vùng thượng vị"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 236)",
+    "category": "Thuốc dạ dày chữ Y kháng acid giảm trào ngược (OTC)",
+    "common_symptoms": [
+      "Ợ chua nóng rát ngực",
+      "Trào ngược dạ dày thực quản GERD",
+      "Đau dạ dày do tăng acid"
+    ],
+    "contraindications": [
+      "Người suy thận nặng",
+      "Người mẫn cảm với hợp chất nhôm/magnesi"
+    ],
+    "dangerous_interactions": [
+      "Kháng sinh nhóm Tetracyclin, ciprofloxacin, thuốc sắt (uống cách nhau 1-2 tiếng)"
+    ],
+    "safe_usage_note": "Uống 1 gói giữa các bữa ăn (sau ăn 1-2 giờ) hoặc trước khi đi ngủ. Người lớn 1 gói x 3-4 lần/ngày."
+  },
+  {
+    "drug_id": "OTC_32",
+    "trade_name": "Kremil-S",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Nhôm hydroxyd 178mg, Magnesi hydroxyd 233mg, Simethicone 30mg",
+    "drugbank_id": "DB01053",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01053",
+    "mechanism_of_action": "Sự kết hợp hoàn hảo giữa nhôm (gây táo bón) và magnesi (gây nhuận tràng) giúp cân bằng tiêu hóa, cộng thêm simethicone làm vỡ bóng khí giảm đầy hơi chướng bụng.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đầy hơi chướng bụng dạ dày",
+      "Ợ chua",
+      "Căng tức bụng",
+      "Đau quặn dạ dày do khí"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 690)",
+    "category": "Thuốc kháng acid kết hợp chống đầy hơi sình bụng (OTC)",
+    "common_symptoms": [
+      "Chướng bụng đầy hơi khó tiêu",
+      "Ợ chua kèm ợ hơi liên tục",
+      "Đau rát dạ dày"
+    ],
+    "contraindications": [
+      "Người suy thận nặng",
+      "Người giảm phosphat máu"
+    ],
+    "dangerous_interactions": [
+      "Thuốc kháng sinh nhóm quinolon và tetracyclin"
+    ],
+    "safe_usage_note": "Nhai kỹ viên thuốc trước khi nuốt, uống sau bữa ăn 1 giờ và trước khi đi ngủ."
+  },
+  {
+    "drug_id": "OTC_33",
+    "trade_name": "Motilium-M 10mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Domperidone maleate 10mg",
+    "drugbank_id": "DB01184",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01184",
+    "mechanism_of_action": "Đối kháng chọn lọc thụ thể dopaminergic ngoại biên D2, thúc đẩy nhu động co bóp môn vị và tăng trương lực cơ vòng thực quản dưới, giúp thức ăn nhanh chóng tống xuống ruột non.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Buồn nôn",
+      "Nôn mửa",
+      "Chậm tiêu tức bụng sau ăn",
+      "Ợ dịch chua do ứ đọng dạ dày"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 435)",
+    "category": "Thuốc chống nôn và điều hòa nhu động tiêu hóa (OTC)",
+    "common_symptoms": [
+      "Buồn nôn và nôn ói",
+      "Khó tiêu chậm làm rỗng dạ dày",
+      "Cảm giác nặng nề đầy trướng sau ăn"
+    ],
+    "contraindications": [
+      "Người xuất huyết đường tiêu hóa, tắc ruột cơ học hoặc thủng ruột",
+      "Người có tiền sử kéo dài khoảng QT tim hoặc rối loạn nhịp tim",
+      "Người suy gan trung bình và nặng",
+      "U tuyến yên tiết prolactin"
+    ],
+    "dangerous_interactions": [
+      "Ketoconazole, Erythromycin, Clarithromycin (gây kéo dài khoảng QT nguy hiểm)",
+      "Thuốc chống loạn nhịp tim"
+    ],
+    "safe_usage_note": "Nên uống trước bữa ăn 15-30 phút để thuốc phát huy tác dụng kịp thời khi ăn. Không dùng quá 3 viên/ngày và không quá 7 ngày."
+  },
+  {
+    "drug_id": "OTC_34",
+    "trade_name": "Loperamid 2mg",
+    "source_pharmacy": "Pharmacity / Long Châu",
+    "active_ingredient": "Loperamide hydrochloride 2mg",
+    "drugbank_id": "DB00977",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00977",
+    "mechanism_of_action": "Gắn vào thụ thể opiate ở thành ruột, ức chế phóng thích acetylcholine và prostaglandin làm chậm nhu động co bóp ruột, kéo dài thời gian lưu chuyển phân để tăng tái hấp thu nước.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Tiêu chảy cấp",
+      "Đi ngoài nhiều lần mất kiểm soát",
+      "Phân toàn nước"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 718)",
+    "category": "Thuốc làm giảm nhu động cầm tiêu chảy cấp (OTC)",
+    "common_symptoms": [
+      "Tiêu chảy cấp không biến chứng",
+      "Tiêu chảy khi đi du lịch (Traveller's diarrhea)"
+    ],
+    "contraindications": [
+      "Trẻ em dưới 12 tuổi (nguy cơ liệt ruột và tử vong)",
+      "Tiêu chảy do nhiễm khuẩn có sốt cao hoặc đi ngoài phân có máu/chất nhầy (lỵ trực trùng, Salmonella)",
+      "Viêm loét đại tràng cấp, tắc ruột"
+    ],
+    "dangerous_interactions": [
+      "Thuốc ức chế P-glycoprotein như Quinidine, Ritonavir (tăng nồng độ loperamide trong máu)"
+    ],
+    "safe_usage_note": "Uống khởi đầu 2 viên (4mg), sau đó mỗi lần đi phân lỏng uống thêm 1 viên (2mg). Tối đa không quá 8mg (4 viên)/ngày. Ngừng ngay khi phân thành khuôn."
+  },
+  {
+    "drug_id": "OTC_35",
+    "trade_name": "Duphalac Siro (Gói 15ml)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Lactulose 66.7g/100ml (10g lactulose trong 15ml)",
+    "drugbank_id": "DB00581",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00581",
+    "mechanism_of_action": "Lactulose là disaccharide tổng hợp không bị phân giải ở ruột non, khi xuống đại tràng bị vi khuẩn phân giải thành acid hữu cơ làm tăng áp suất thẩm thấu hút nước làm mềm phân và kích thích nhu động đại tràng.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Táo bón lâu ngày",
+      "Phân khô cứng",
+      "Đau rát khi đi cầu",
+      "Trĩ táo bón"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 701)",
+    "category": "Thuốc nhuận tràng thẩm thấu làm mềm phân an toàn (OTC)",
+    "common_symptoms": [
+      "Táo bón mạn tính",
+      "Phân rắn khó đi ở người già và trẻ nhỏ",
+      "Táo bón ở bệnh nhân trĩ"
+    ],
+    "contraindications": [
+      "Người bệnh Galactose máu bẩm sinh",
+      "Tắc ruột cơ học, thủng tiêu hóa",
+      "Đau bụng cấp tính không rõ nguyên nhân"
+    ],
+    "dangerous_interactions": [
+      "Thuốc kháng acid dịch vị (có thể làm giảm tác dụng acid hóa đại tràng của lactulose)"
+    ],
+    "safe_usage_note": "Uống 1 lần vào buổi sáng sau ăn hoặc chia 2 lần/ngày. Thường có tác dụng sau 24-48 giờ điều trị."
+  },
+  {
+    "drug_id": "OTC_36",
+    "trade_name": "Bisacodyl 5mg",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Bisacodyl 5mg",
+    "drugbank_id": "DB01259",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01259",
+    "mechanism_of_action": "Thuốc nhuận tràng kích thích tiếp xúc trực tiếp tác động lên đám rối thần kinh nội tại thành đại tràng, kích thích phản xạ co bóp nhu động tống phân ra ngoài sau 6-10 giờ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Táo bón cấp",
+      "Nhiều ngày không đi đại tiện",
+      "Bụng ậm ạch do phân ứ đọng"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 320)",
+    "category": "Thuốc nhuận tràng kích thích nhu động đại tràng (OTC)",
+    "common_symptoms": [
+      "Táo bón khó đi phân",
+      "Chuẩn bị làm sạch ruột trước nội soi"
+    ],
+    "contraindications": [
+      "Tắc ruột, viêm ruột thừa cấp tính",
+      "Chảy máu trực tràng, đau bụng cấp chưa rõ căn nguyên",
+      "Mất nước nặng"
+    ],
+    "dangerous_interactions": [
+      "Sữa và thuốc kháng acid (làm tan sớm lớp bao kháng acid của viên thuốc gây kích ứng dạ dày dữ dội -> uống cách nhau tối thiểu 1 giờ)"
+    ],
+    "safe_usage_note": "Uống nguyên viên vào buổi tối trước khi đi ngủ, không được nhai hoặc bẻ vỡ viên thuốc."
+  },
+  {
+    "drug_id": "OTC_37",
+    "trade_name": "Sorbitol 5g",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Sorbitol 5g (dạng bột pha uống)",
+    "drugbank_id": "DB01407",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01407",
+    "mechanism_of_action": "Kích thích bài tiết cholecystokinin-pancreozymin làm co bóp túi mật và bài tiết dịch tụy; đồng thời tạo áp suất thẩm thấu hút nước vào lòng ruột kích thích nhu động.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Khó tiêu do ăn nhiều dầu mỡ",
+      "Táo bón",
+      "Chướng bụng ậm ạch"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1025)",
+    "category": "Thuốc hỗ trợ tiêu hóa mật và nhuận tràng thẩm thấu (OTC)",
+    "common_symptoms": [
+      "Khó tiêu chậm tiêu sau bữa cỗ nhiều dầu mỡ",
+      "Táo bón nhẹ"
+    ],
+    "contraindications": [
+      "Viêm đại tràng thực thể, bệnh Crohn, viêm loét đại trực tràng",
+      "Tắc ống dẫn mật",
+      "Không dung nạp fructose di truyền"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc nguy hiểm"
+    ],
+    "safe_usage_note": "Pha 1 gói vào nửa cốc nước (khoảng 100ml), uống trước bữa ăn 10 phút (nếu khó tiêu) hoặc uống buổi sáng đói (nếu táo bón)."
+  },
+  {
+    "drug_id": "OTC_38",
+    "trade_name": "Espumisan (Simethicone 40mg)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Simethicone 40mg (viên nang mềm)",
+    "drugbank_id": "DB00207",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00207",
+    "mechanism_of_action": "Làm thay đổi sức căng bề mặt của các bóng bọt khí tích tụ trong ống tiêu hóa, làm các bọt khí vỡ ra kết tụ lại và thoát ra ngoài tự nhiên qua đường trung tiện hoặc ợ hơi.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đầy hơi",
+      "Chướng bụng",
+      "Óc ách bụng sau ăn",
+      "Sình bụng do nuốt hơi"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 995)",
+    "category": "Thuốc phá bọt khí điều trị chứng đầy hơi chướng bụng (OTC)",
+    "common_symptoms": [
+      "Bụng căng tức ậm ạch nhiều hơi",
+      "Đầy hơi sau khi ăn",
+      "Nuốt nhiều không khí"
+    ],
+    "contraindications": [
+      "Dị ứng với Simethicone",
+      "Nghi ngờ tắc ruột cơ học"
+    ],
+    "dangerous_interactions": [
+      "Levothyroxine (Simethicone có thể làm giảm hấp thu levothyroxine, uống cách xa ít nhất 4 giờ)"
+    ],
+    "safe_usage_note": "Uống 2 viên x 3-4 lần/ngày trong hoặc sau bữa ăn và trước khi đi ngủ."
+  },
+  {
+    "drug_id": "OTC_39",
+    "trade_name": "Neopeptine Viên Nang",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Alpha-amylase 100mg, Papain 100mg, Simethicone 30mg",
+    "drugbank_id": "DB11342",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB11342",
+    "mechanism_of_action": "Bổ sung các enzyme tiêu hóa ngoại sinh: Alpha-amylase thủy phân tinh bột thành đường đơn, Papain phân cắt protein thịt cá, Simethicone phá tan bọt khí trong lòng ruột.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Ăn không tiêu",
+      "Đầy trướng bụng",
+      "Cảm giác nặng bụng sau bữa tiệc",
+      "Ợ hơi chua"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 780)",
+    "category": "Enzyme men tiêu hóa tinh bột và đạm (OTC)",
+    "common_symptoms": [
+      "Khó tiêu do ăn quá no",
+      "Chậm tiêu hóa protein thịt",
+      "Đầy bụng sau bữa ăn"
+    ],
+    "contraindications": [
+      "Viêm tụy cấp tính hoặc đợt cấp của viêm tụy mạn",
+      "Mẫn cảm với enzyme nguồn gốc nấm hoặc đu đủ"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc nguy hiểm"
+    ],
+    "safe_usage_note": "Uống 1 viên ngay sau mỗi bữa ăn chính cùng một ít nước."
+  },
+  {
+    "drug_id": "OTC_40",
+    "trade_name": "Aspirin pH8 500mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Acid acetylsalicylic 500mg",
+    "drugbank_id": "DB00945",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00945",
+    "mechanism_of_action": "Ức chế không hồi phục enzym cyclooxygenase (COX-1 và COX-2), ngăn chặn sinh tổng hợp prostaglandin gây viêm đau và thromboxane A2 gây ngưng tập tiểu cầu. Bao phim pH8 chỉ tan ở ruột non giúp giảm bớt kích ứng dạ dày.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau cơ",
+      "Đau khớp viêm",
+      "Đau đầu",
+      "Sốt cao"
+    ],
+    "min_age": 16,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 264)",
+    "category": "Thuốc giảm đau hạ sốt kháng viêm không steroid (NSAID)",
+    "common_symptoms": [
+      "Viêm khớp thoái hóa đau nhức",
+      "Đau cơ bắp sau chấn thương nhẹ",
+      "Đau đầu"
+    ],
+    "contraindications": [
+      "Trẻ em và thanh thiếu niên dưới 16 tuổi (nguy cơ Hội chứng Reye tử vong do tổn thương gan não)",
+      "Người loét dạ dày tá tràng tiến triển hoặc tiền sử xuất huyết dạ dày",
+      "Người có cơ địa chảy máu hoặc giảm tiểu cầu",
+      "Người hen suyễn (nguy cơ co thắt phế quản cấp tính nặng)"
+    ],
+    "dangerous_interactions": [
+      "Thuốc chống đông máu (Warfarin, Heparin, NOACs) - tăng nguy cơ xuất huyết gây tử vong",
+      "Các thuốc NSAID khác hoặc Corticoid"
+    ],
+    "safe_usage_note": "Uống cả viên sau bữa ăn no với nhiều nước, không bẻ vỡ viên thuốc để lớp màng bảo vệ tan đúng trong ruột."
+  },
+  {
+    "drug_id": "OTC_41",
+    "trade_name": "Nautamine (Thuốc Say Tàu Xe)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Diphenhydramine diacefylline 90mg",
+    "drugbank_id": "DB00541",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00541",
+    "mechanism_of_action": "Kháng histamin H1 đồng thời có tác dụng kháng cholinergic trung ương mạnh, ức chế các thụ thể dẫn truyền kích thích tiền đình ở tai trong và trung tâm nôn ở não.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Say xe",
+      "Chóng mặt nôn nao",
+      "Nôn mửa khi đi tàu xe máy bay",
+      "Đau đầu hoa mắt khi di chuyển"
+    ],
+    "min_age": 8,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 420)",
+    "category": "Thuốc chống say tàu xe và nôn nao tiền đình (OTC)",
+    "common_symptoms": [
+      "Chóng mặt buồn nôn khi đi ô tô, tàu thuyền, máy bay"
+    ],
+    "contraindications": [
+      "Người bệnh Glaucoma góc đóng",
+      "Người bí tiểu do u tuyến tiền liệt",
+      "Trẻ em dưới 2 tuổi"
+    ],
+    "dangerous_interactions": [
+      "Rượu bia (gây buồn ngủ mê man cực kỳ nguy hiểm)",
+      "Các thuốc chống trầm cảm hoặc an thần"
+    ],
+    "safe_usage_note": "Uống 1 viên trước khi khởi hành ít nhất 30 phút. Thuốc gây buồn ngủ mạnh, không dùng khi lái xe."
+  },
+  {
+    "drug_id": "OTC_42",
+    "trade_name": "Salonpas Cao Dán / Gel",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Methyl salicylate 10%, Menthol 3%, Vitamin E",
+    "drugbank_id": "DB09543",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09543",
+    "mechanism_of_action": "Methyl salicylate hấp thu qua da ức chế tổng hợp prostaglandin tại chỗ kết hợp Menthol gây cảm giác ấm nóng đánh lừa cảm thụ thần kinh đau (phản xạ đối kháng phân tán cảm giác đau).",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau mỏi vai gáy",
+      "Đau lưng mỏi gối",
+      "Căng cơ bắp",
+      "Bầm tím bong gân nhẹ"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 740)",
+    "category": "Miếng dán và gel giảm đau kháng viêm tại chỗ ngoài da (OTC)",
+    "common_symptoms": [
+      "Mỏi cơ sau tập luyện thể thao",
+      "Đau lưng vai gáy do ngồi văn phòng lâu",
+      "Bong gân bầm tím"
+    ],
+    "contraindications": [
+      "Không dán/bôi lên vết thương hở, da trầy xước, niêm mạc hoặc vùng da bị chàm bỏng",
+      "Người dị ứng với salicylate hoặc NSAID"
+    ],
+    "dangerous_interactions": [
+      "Dán diện rộng liên tục có thể tăng nguy cơ tương tác với thuốc chống đông Warfarin"
+    ],
+    "safe_usage_note": "Lau sạch vùng da trước khi dán. Không dán quá 3-4 lần/ngày và không để miếng dán quá 8 giờ trên da."
+  },
+  {
+    "drug_id": "OTC_43",
+    "trade_name": "Voltaren Emulgel 20g",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Diclofenac diethylamine 1.16%",
+    "drugbank_id": "DB01440",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01440",
+    "mechanism_of_action": "Thuốc kháng viêm không steroid (NSAID) dạng nhũ tương gel thẩm thấu sâu qua da vào các mô dưới da và ổ khớp, ức chế enzyme COX giảm viêm và phù nề tại chỗ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Viêm đau khớp",
+      "Sưng đau gân cơ",
+      "Bong gân trật khớp",
+      "Đau nhức thoái hóa khớp"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 415)",
+    "category": "Gel bôi kháng viêm giảm đau cơ xương khớp ngoài da (OTC)",
+    "common_symptoms": [
+      "Chấn thương mô mềm do thể thao",
+      "Viêm bao gân, viêm quanh khớp",
+      "Thoái hóa khớp ngón tay/đầu gối"
+    ],
+    "contraindications": [
+      "Vết thương hở, nhiễm trùng da, vết bỏng",
+      "Người có tiền sử hen suyễn, nổi mề đay do dùng Aspirin/NSAID",
+      "Phụ nữ có thai 3 tháng cuối"
+    ],
+    "dangerous_interactions": [
+      "Hấp thu toàn thân rất thấp nhưng cần tránh bôi diện tích quá lớn khi đang dùng thuốc chống đông máu"
+    ],
+    "safe_usage_note": "Bôi một lượng gel cỡ quả anh đào lên vùng da bị đau xoa nhẹ nhàng 3-4 lần/ngày. Rửa sạch tay sau khi bôi."
+  },
+  {
+    "drug_id": "OTC_44",
+    "trade_name": "Povidine 10% (Cồn Đỏ Sát Trùng)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Povidone-Iodine 10%",
+    "drugbank_id": "DB06786",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB06786",
+    "mechanism_of_action": "Phức hợp hữu cơ giải phóng chậm iod tự do dính vào màng tế bào vi khuẩn, oxy hóa protein và enzyme thiết yếu của vi khuẩn gram (+), gram (-), nấm và virus.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Sát trùng vết thương",
+      "Vết rách da",
+      "Vết trầy xước chảy máu",
+      "Sát khuẩn nấm da"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 880)",
+    "category": "Dung dịch sát khuẩn ngoài da phổ rộng không rát buốt (OTC)",
+    "common_symptoms": [
+      "Vết đứt tay",
+      "Trầy xước da khi ngã xe",
+      "Sát khuẩn vùng da trước tiêm hoặc tiểu phẫu nhỏ"
+    ],
+    "contraindications": [
+      "Người rối loạn chức năng tuyến giáp (cường giáp, bướu cổ)",
+      "Trẻ sơ sinh dưới 1 tháng tuổi",
+      "Phụ nữ mang thai hoặc cho con bú dùng diện rộng kéo dài"
+    ],
+    "dangerous_interactions": [
+      "Không dùng chung với các chế phẩm chứa thủy ngân (tạo thành muối thủy ngân iodua cực độc gây loét da)"
+    ],
+    "safe_usage_note": "Bôi trực tiếp dung dịch nguyên chất lên vùng da bị tổn thương 1-2 lần/ngày. Không uống, chỉ dùng ngoài da."
+  },
+  {
+    "drug_id": "OTC_45",
+    "trade_name": "Nước Oxy Già 3%",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Hydrogen peroxide 3% (H2O2 10 thể tích)",
+    "drugbank_id": "DB03541",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB03541",
+    "mechanism_of_action": "Khi tiếp xúc với enzym catalase có trong máu và mô tổn thương, giải phóng oxy đơn nguyên tử sủi bọt đẩy bụi đất mảnh vụn ra khỏi vết thương và tiêu diệt vi khuẩn kỵ khí.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Vết thương dính cát bẩn",
+      "Vết đâm dính đất",
+      "Rửa ráy tai sủi bọt"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 820)",
+    "category": "Dung dịch sủi bọt rửa sạch cơ học vết thương hở (OTC)",
+    "common_symptoms": [
+      "Vết thương nhiễm đất cát bẩn cần làm sạch tức thì"
+    ],
+    "contraindications": [
+      "Không nhỏ vào các hốc kín của cơ thể (nguy cơ thuyên tắc khí)",
+      "Không bôi liên tục lên vết thương đang lên mô hạt da non (làm chết tế bào hạt kéo dài thời gian lành sẹo)"
+    ],
+    "dangerous_interactions": [
+      "Không pha trộn với các chất oxy hóa khác hoặc cồn y tế cùng lúc"
+    ],
+    "safe_usage_note": "Chỉ dùng để làm sạch vết thương mới dính bẩn trong 1-2 ngày đầu. Khi vết thương đã sạch mô hạt thì ngừng dùng."
+  },
+  {
+    "drug_id": "OTC_46",
+    "trade_name": "Cồn 70 Độ Y Tế",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Ethanol 70% v/v",
+    "drugbank_id": "DB00898",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00898",
+    "mechanism_of_action": "Ở nồng độ 70%, rượu ethanol thẩm thấu tối ưu qua màng vi khuẩn và làm biến tính đông vón protein tế bào chất; nồng độ 90% làm đông vón vỏ quá nhanh ngăn cản cồn thấm sâu.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Sát khuẩn tay",
+      "Sát trùng dụng cụ y tế",
+      "Sát khuẩn da lành trước khi tiêm"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 390)",
+    "category": "Dung dịch sát trùng da lành và dụng cụ y tế (OTC)",
+    "common_symptoms": [
+      "Vệ sinh sát khuẩn tay nhanh",
+      "Vệ sinh kẹp nhiệt độ, dụng cụ sơ cứu"
+    ],
+    "contraindications": [
+      "Tuyệt đối không đổ trực tiếp cồn lên vết thương hở toác, vết rách sâu (gây xót dữ dội và hủy hoại tế bào mô hạt)",
+      "Người dị ứng cồn"
+    ],
+    "dangerous_interactions": [
+      "Dung dịch dễ bắt cháy, để xa nguồn nhiệt và tia lửa"
+    ],
+    "safe_usage_note": "Chỉ dùng ngoài da trên vùng da lành hoặc khử khuẩn tay/dụng cụ. Không được uống."
+  },
+  {
+    "drug_id": "OTC_47",
+    "trade_name": "Bepanthen Balm 30g",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Dexpanthenol (Tiền Vitamin B5) 5%",
+    "drugbank_id": "DB09357",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09357",
+    "mechanism_of_action": "Dexpanthenol chuyển hóa trong da thành Coenzyme A kích thích phân bào, tái tạo nhanh biểu mô da tổn thương; dạng mỡ chứa mỡ cừu Lanolin tạo lớp màng thoáng khí khóa ẩm chống hăm.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Hăm tã ở trẻ nhỏ",
+      "Nứt đầu ti mẹ cho con bú",
+      "Khô nứt nẻ da",
+      "Bỏng nắng nhẹ rát da"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 410)",
+    "category": "Mỡ bôi phục hồi tái tạo da và chống hăm lành tính (OTC)",
+    "common_symptoms": [
+      "Hăm tã đỏ ửng vùng mông bẹn của bé",
+      "Nứt cổ gà đầu ti ở mẹ",
+      "Khô tróc vảy da mùa đông"
+    ],
+    "contraindications": [
+      "Người mẫn cảm với dexpanthenol hoặc mỡ cừu lanolin"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc nguy hiểm"
+    ],
+    "safe_usage_note": "Bôi một lớp mỏng lên vùng da sạch khô sau mỗi lần thay tã hoặc sau khi tắm. Đối với mẹ bôi đầu ti: lau sạch trước khi cho bé bú lại."
+  },
+  {
+    "drug_id": "OTC_48",
+    "trade_name": "Canesten Cream 1%",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Clotrimazole 1%",
+    "drugbank_id": "DB00257",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00257",
+    "mechanism_of_action": "Kháng nấm nhóm azole ức chế sinh tổng hợp ergosterol thành màng tế bào nấm, làm rối loạn tính thấm khiến nấm bị ly giải và tiêu diệt.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Nấm kẽ chân",
+      "Nước ăn chân",
+      "Nấm da hắc lào",
+      "Nấm bẹn ngứa rát",
+      "Lang ben"
+    ],
+    "min_age": 3,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 375)",
+    "category": "Kem bôi trị nấm da ngoài da phổ rộng (OTC)",
+    "common_symptoms": [
+      "Nước ăn chân (nấm kẽ chân)",
+      "Hắc lào lát đồng tiền ngứa ngáy",
+      "Lang ben loang lổ",
+      "Nấm bẹn"
+    ],
+    "contraindications": [
+      "Người quá mẫn với clotrimazole hoặc các thuốc kháng nấm azole khác"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác toàn thân đáng kể khi bôi ngoài da đúng cách"
+    ],
+    "safe_usage_note": "Rửa sạch và lau khô vùng da bị nấm, thoa nhẹ lớp kem mỏng 2-3 lần/ngày. Tiếp tục bôi thêm 2 tuần sau khi hết hẳn triệu chứng để tránh tái phát."
+  },
+  {
+    "drug_id": "OTC_49",
+    "trade_name": "Nizoral Cream 2%",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Ketoconazole 2%",
+    "drugbank_id": "DB01025",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01025",
+    "mechanism_of_action": "Ketoconazole có phổ kháng nấm rộng và hoạt tính chống nấm men Malassezia (Pityrosporum) rất mạnh, ức chế enzyme 14-alpha-demethylase phá vỡ màng tế bào vi nấm.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Gàu da đầu",
+      "Viêm da tiết bã nhờn",
+      "Lang ben",
+      "Nấm thân nấm móng nhẹ"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 680)",
+    "category": "Kem bôi trị vi nấm và viêm da tiết bã (OTC)",
+    "common_symptoms": [
+      "Tróc vảy đỏ ngứa do viêm da tiết bã",
+      "Lang ben từng mảng trên ngực lưng",
+      "Nấm kẽ tay chân"
+    ],
+    "contraindications": [
+      "Người mẫn cảm với Ketoconazole hoặc tá dược",
+      "Không bôi vào mắt"
+    ],
+    "dangerous_interactions": [
+      "Dùng ngoài da hầu như không hấp thu vào máu, an toàn"
+    ],
+    "safe_usage_note": "Thoa 1-2 lần/ngày lên vùng da bị nhiễm nấm và vùng da xung quanh. Liệu trình thường kéo dài từ 2-4 tuần."
+  },
+  {
+    "drug_id": "OTC_50",
+    "trade_name": "Mỡ Tra Mắt Tetracyclin 1%",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Tetracycline hydrochloride 1%",
+    "drugbank_id": "DB00759",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00759",
+    "mechanism_of_action": "Kháng sinh kìm khuẩn phổ rộng ức chế gắn kết aminoacyl-tRNA vào tiểu đơn vị 30S ribosome vi khuẩn, dạng mỡ tra mắt OTC dùng điều trị nhiễm trùng nông tại chỗ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau mắt đỏ",
+      "Gỉ mắt vàng dính",
+      "Lẹo mắt",
+      "Viêm bờ mi mắt"
+    ],
+    "min_age": 8,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1070)",
+    "category": "Thuốc mỡ tra mắt điều trị nhiễm khuẩn bề mặt mắt (OTC)",
+    "common_symptoms": [
+      "Lẹo mắt sưng đỏ",
+      "Viêm bờ mi mắt đóng vảy",
+      "Đau mắt đỏ kèm dử vàng"
+    ],
+    "contraindications": [
+      "Người dị ứng với kháng sinh nhóm Tetracyclin",
+      "Phụ nữ mang thai và trẻ em dưới 8 tuổi (nguy cơ biến màu vàng răng vĩnh viễn nếu hấp thu toàn thân)"
+    ],
+    "dangerous_interactions": [
+      "Hạn chế dùng chung các thuốc nhỏ mắt khác cùng lúc (nên nhỏ cách nhau 15 phút)"
+    ],
+    "safe_usage_note": "Tra một dải thuốc mỡ dài khoảng 1cm vào cùng đồ mi dưới mắt 2-3 lần/ngày. Mắt có thể mờ tạm thời sau khi tra do tính nhớt của mỡ."
+  },
+  {
+    "drug_id": "OTC_51",
+    "trade_name": "Kamistad-Gel N (Trị Nhiệt Miệng)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Dịch chiết hoa cúc (Chamomile extract) 185mg, Lidocaine hydrochloride 20mg",
+    "drugbank_id": "DB00281",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00281",
+    "mechanism_of_action": "Tác động kép: Lidocaine gây tê bề mặt niêm mạc chặn kênh Natri làm tê liệt dẫn truyền đau tại ổ loét tức thì; dịch chiết hoa cúc kháng viêm sát trùng làm vết loét nhanh lành.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Nhiệt miệng",
+      "Loét miệng đau rát",
+      "Trầy xước do niềng răng",
+      "Đau nướu lợi răng khôn"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 670)",
+    "category": "Gel gây tê và kháng viêm trị nhiệt loét niêm mạc miệng (OTC)",
+    "common_symptoms": [
+      "Vết nhiệt miệng loét trắng đau rát khi ăn",
+      "Đau nướu do đeo hàm giả hoặc mắc cài niềng răng"
+    ],
+    "contraindications": [
+      "Mẫn cảm với Lidocaine hoặc các chất gây tê nhóm amid",
+      "Mẫn cảm với hoa cúc họ Asteraceae"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc bất lợi khi bôi tại chỗ đúng liều"
+    ],
+    "safe_usage_note": "Lấy một lượng nhỏ cỡ hạt đậu chấm nhẹ nhàng lên vết loét nhiệt miệng 3 lần/ngày. Tốt nhất bôi sau bữa ăn hoặc trước khi ngủ."
+  },
+  {
+    "drug_id": "OTC_52",
+    "trade_name": "V.Rohto Kháng Khuẩn (Nhỏ Mắt)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Sulfamethoxazole natri 400mg, Dipotassium glycyrrhizinate 10mg, Chlorpheniramine maleate 2mg",
+    "drugbank_id": "DB09153",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB09153",
+    "mechanism_of_action": "Sulfamethoxazole ức chế tổng hợp acid folic của vi khuẩn tại kết mạc; Glycyrrhizinate kháng viêm tự nhiên; Chlorpheniramine chống kích ứng ngứa mắt.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Mắt đỏ ngứa",
+      "Dử mắt",
+      "Cộm rát mắt sau khi bơi",
+      "Viêm kết mạc nhẹ"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1210)",
+    "category": "Dung dịch nhỏ mắt kháng khuẩn giảm viêm ngứa (OTC)",
+    "common_symptoms": [
+      "Đỏ mắt sau khi đi bơi",
+      "Cộm ngứa mắt do khói bụi",
+      "Viêm kết mạc nhẹ có gỉ mắt"
+    ],
+    "contraindications": [
+      "Người dị ứng với kháng sinh nhóm Sulfamid",
+      "Người bị Glaucoma (tăng nhãn áp)"
+    ],
+    "dangerous_interactions": [
+      "Tránh nhỏ chung với các thuốc nhỏ mắt khác trong cùng một thời điểm"
+    ],
+    "safe_usage_note": "Nhỏ 2-3 giọt mỗi bên mắt, ngày 5-6 lần. Không chạm đầu lọ thuốc vào mi mắt hay lông mi."
+  },
+  {
+    "drug_id": "OTC_53",
+    "trade_name": "Systane Ultra (Nước Mắt Nhân Tạo)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Polyethylene glycol 400 0.4%, Propylene glycol 0.3%, HP-Guar",
+    "drugbank_id": "DB11075",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB11075",
+    "mechanism_of_action": "Hệ thống polymer thông minh HP-Guar liên kết với ion borat tạo mạng gel đàn hồi mô phỏng lớp mucin tự nhiên, bám giữ màng phim nước mắt lâu trên bề mặt giác mạc bảo vệ chống khô mắt.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Khô rát mắt",
+      "Mỏi mắt do nhìn máy tính",
+      "Cộm xốn mắt",
+      "Chảy nước mắt sống do khô mắt"
+    ],
+    "min_age": 0,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1045)",
+    "category": "Nước mắt nhân tạo bôi trơn và dưỡng ẩm giác mạc cao cấp (OTC)",
+    "common_symptoms": [
+      "Khô mỏi mắt ở nhân viên văn phòng",
+      "Cộm rát sau phẫu thuật Lasik",
+      "Khô mắt do kính áp tròng"
+    ],
+    "contraindications": [
+      "Mẫn cảm với bất kỳ thành phần nào của thuốc"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc bất lợi"
+    ],
+    "safe_usage_note": "Lắc kỹ lọ thuốc trước khi dùng. Nhỏ 1-2 giọt vào mắt bất cứ khi nào thấy khô mỏi mắt."
+  },
+  {
+    "drug_id": "OTC_54",
+    "trade_name": "Berocca Performance (Viên Sủi)",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Vitamin nhóm B (B1, B2, B3, B5, B6, B8, B9, B12), Vitamin C 500mg, Calci, Magnesi, Kẽm",
+    "drugbank_id": "DB00126",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00126",
+    "mechanism_of_action": "Phức hợp vitamin B tan trong nước đóng vai trò coenzyme chuyển hóa năng lượng ATP tế bào, kết hợp vitamin C chống oxy hóa và các khoáng chất tăng cường dẫn truyền thần kinh.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Mệt mỏi kiệt sức",
+      "Căng thẳng trí óc stress",
+      "Suy nhược sau ốm",
+      "Kém tập trung"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1205)",
+    "category": "Viên sủi bổ sung đa vi chất và giải tỏa căng thẳng thần kinh (OTC)",
+    "common_symptoms": [
+      "Mệt mỏi suy nhược cơ thể",
+      "Căng thẳng thi cử công việc áp lực",
+      "Cần hồi phục thể lực nhanh"
+    ],
+    "contraindications": [
+      "Người suy thận nặng",
+      "Người tăng calci máu hoặc tăng magnesi máu",
+      "Người có tiền sử sỏi thận oxalat (do Vitamin C liều cao)"
+    ],
+    "dangerous_interactions": [
+      "Levodopa (Vitamin B6 làm giảm tác dụng điều trị Parkinson của Levodopa)"
+    ],
+    "safe_usage_note": "Thả 1 viên sủi vào ly nước 200ml, uống vào buổi sáng sau ăn. Nước tiểu có thể có màu vàng tươi tự nhiên do bài tiết Vitamin B2."
+  },
+  {
+    "drug_id": "OTC_55",
+    "trade_name": "Dầu Cá Omega 3 1000mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Dầu cá tự nhiên 1000mg (chứa EPA 180mg, DHA 120mg)",
+    "drugbank_id": "DB14002",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB14002",
+    "mechanism_of_action": "Acid béo không no chuỗi dài thiết yếu tích hợp vào màng phospholipid tế bào võng mạc và não bộ, hạ nồng độ triglyceride máu và chống phản ứng viêm nội mạc mạch máu.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Mỏi mắt khô mắt",
+      "Mỡ máu cao",
+      "Giảm trí nhớ",
+      "Bảo vệ tim mạch"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 805)",
+    "category": "Viên nang dầu cá bổ mắt và hỗ trợ tim mạch (OTC)",
+    "common_symptoms": [
+      "Mỏi mắt khô mắt do làm việc máy tính lâu",
+      "Phòng ngừa xơ vữa động mạch",
+      "Hỗ trợ tuần hoàn"
+    ],
+    "contraindications": [
+      "Người dị ứng với cá hoặc hải sản",
+      "Người đang chảy máu cấp tính hoặc chuẩn bị phẫu thuật lớn"
+    ],
+    "dangerous_interactions": [
+      "Thuốc chống đông máu (Aspirin, Warfarin) - dùng liều cao omega-3 có thể kéo dài nhẹ thời gian chảy máu"
+    ],
+    "safe_usage_note": "Uống 1-2 viên/ngày ngay sau bữa ăn có dầu mỡ để tăng tối đa hiệu quả hấp thu acid béo."
+  },
+  {
+    "drug_id": "OTC_56",
+    "trade_name": "Hoạt Huyết Dưỡng Não Ginkgo Biloba 120mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Cao khô lá Ginkgo biloba chuẩn hóa (Flavonoid glycosides 24%, Terpenoid lactones 6%)",
+    "drugbank_id": "DB13876",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB13876",
+    "mechanism_of_action": "Ginkgolide và Bilobalide ức chế yếu tố hoạt hóa tiểu cầu (PAF), giãn mạch não tăng lưu lượng tuần hoàn máu vi mạch, quét sạch gốc tự do bảo vệ tế bào thần kinh chống thiếu máu cục bộ.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Đau đầu chóng mặt",
+      "Ù tai hoa mắt",
+      "Mất ngủ tiền đình",
+      "Hay quên suy giảm trí nhớ"
+    ],
+    "min_age": 12,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 528)",
+    "category": "Thuốc tăng cường tuần hoàn máu não thảo dược (OTC)",
+    "common_symptoms": [
+      "Rối loạn tiền đình chóng mặt hoa mắt",
+      "Thiểu năng tuần hoàn não đau đầu ù tai",
+      "Suy giảm trí nhớ ở người lớn tuổi"
+    ],
+    "contraindications": [
+      "Người đang có xuất huyết (chảy máu cam, rong kinh, xuất huyết tiêu hóa)",
+      "Người chuẩn bị phẫu thuật (phải ngưng thuốc trước 2 tuần)",
+      "Phụ nữ có thai"
+    ],
+    "dangerous_interactions": [
+      "Thuốc chống đông máu (Warfarin, Heparin), thuốc chống kết tập tiểu cầu (Aspirin, Clopidogrel) - làm tăng nguy cơ chảy máu"
+    ],
+    "safe_usage_note": "Uống 1 viên (120mg) x 1-2 lần/ngày sau bữa ăn với một cốc nước đầy."
+  },
+  {
+    "drug_id": "OTC_57",
+    "trade_name": "Calci D3 Nano",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Calci carbonat nano 500mg, Vitamin D3 (Cholecalciferol) 200IU, Magnesi 50mg",
+    "drugbank_id": "DB00137",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00137",
+    "mechanism_of_action": "Calci là thành phần cấu tạo chính của xương răng, Vitamin D3 kích thích thụ thể tại ruột làm tăng hấp thu calci vào máu và điều hòa quá trình khoáng hóa xương.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Loãng xương",
+      "Chuột rút ban đêm",
+      "Đau nhức xương khớp",
+      "Tê buồn chân tay thiếu calci"
+    ],
+    "min_age": 6,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 340)",
+    "category": "Thuốc bổ sung khoáng chất canxi và vitamin D chống loãng xương (OTC)",
+    "common_symptoms": [
+      "Chuột rút cơ bắp",
+      "Phòng ngừa loãng xương tuổi trung niên",
+      "Tăng nhu cầu canxi ở phụ nữ mang thai"
+    ],
+    "contraindications": [
+      "Người tăng calci máu hoặc tăng calci niệu",
+      "Người sỏi thận calci hoặc suy thận nặng",
+      "Người u ác tính tiêu xương"
+    ],
+    "dangerous_interactions": [
+      "Kháng sinh Tetracyclin, Quinolon, thuốc Sắt (uống cách nhau tối thiểu 2-3 giờ do tạo phức chelate không tan)"
+    ],
+    "safe_usage_note": "Uống vào buổi sáng hoặc trưa sau ăn với nhiều nước. Tránh uống vào buổi tối để hạn chế lắng cặn tạo sỏi thận."
+  },
+  {
+    "drug_id": "OTC_58",
+    "trade_name": "Kẽm Gluconate 10mg",
+    "source_pharmacy": "Pharmacity / An Khang",
+    "active_ingredient": "Zinc gluconate 70mg (tương đương Kẽm nguyên tố 10mg)",
+    "drugbank_id": "DB01454",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB01454",
+    "mechanism_of_action": "Kẽm là đồng yếu tố xúc tác cho hơn 300 enzyme sinh học, kích hoạt tế bào lympho T miễn dịch, phục hồi liên kết tế bào biểu mô ruột bị tổn thương trong tiêu chảy.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Tiêu chảy kéo dài",
+      "Rụng tóc móng yếu",
+      "Vết thương chậm lành",
+      "Kém ăn suy giảm miễn dịch"
+    ],
+    "min_age": 2,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 695)",
+    "category": "Khoáng chất kẽm phục hồi niêm mạc ruột và tăng đề kháng (OTC)",
+    "common_symptoms": [
+      "Phục hồi niêm mạc ruột sau tiêu chảy cấp ở trẻ",
+      "Móng tay giòn dễ gãy có đốm trắng",
+      "Đề kháng kém"
+    ],
+    "contraindications": [
+      "Người quá mẫn với muối kẽm",
+      "Người suy thận nặng"
+    ],
+    "dangerous_interactions": [
+      "Kháng sinh nhóm Quinolon, Tetracyclin và viên bổ sung Sắt (làm giảm hấp thu lẫn nhau, uống cách 2-3 giờ)"
+    ],
+    "safe_usage_note": "Uống sau bữa ăn 30 phút để tránh cảm giác cồn cào buồn nôn nhẹ ở dạ dày."
+  },
+  {
+    "drug_id": "OTC_59",
+    "trade_name": "Daflon 500mg",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Phần flavonoid tinh chế vi hạt 500mg (chứa Diosmin 450mg, Hesperidin 50mg)",
+    "drugbank_id": "DB08995",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB08995",
+    "mechanism_of_action": "Tác động trợ tĩnh mạch và bảo vệ mạch: Kéo dài tác dụng co mạch của noradrenaline trên thành tĩnh mạch làm tăng trương lực, giảm ứ trệ mao mạch và tăng dẫn lưu bạch huyết.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Trĩ đau rát",
+      "Chảy máu trĩ khi đi cầu",
+      "Búi trĩ sưng phồng",
+      "Nặng chân phù chân suy tĩnh mạch"
+    ],
+    "min_age": 18,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 416)",
+    "category": "Thuốc trợ tĩnh mạch điều trị cơn trĩ cấp và suy tĩnh mạch (OTC)",
+    "common_symptoms": [
+      "Đợt trĩ cấp sưng đau rát hậu môn",
+      "Chảy máu tươi khi rặn đại tiện",
+      "Suy giãn tĩnh mạch chi dưới phù nặng chân"
+    ],
+    "contraindications": [
+      "Người quá mẫn với Diosmin hoặc Hesperidin",
+      "Phụ nữ cho con bú (khuyên không nên dùng vì thiếu dữ liệu bài tiết qua sữa)"
+    ],
+    "dangerous_interactions": [
+      "Không có tương tác thuốc nguy hiểm lâm sàng đã được báo cáo"
+    ],
+    "safe_usage_note": "Cơn trĩ cấp: Uống 6 viên/ngày chia 2 lần trong 4 ngày đầu, sau đó 4 viên/ngày trong 3 ngày tiếp theo. Uống trong bữa ăn."
+  },
+  {
+    "drug_id": "OTC_60",
+    "trade_name": "Xịt Chống Muỗi Remos Mentholatum",
+    "source_pharmacy": "Long Châu / Pharmacity",
+    "active_ingredient": "Diethyltoluamide (DEET) 15%, Tinh dầu hoa oải hương, Aloe Vera",
+    "drugbank_id": "DB00344",
+    "drugbank_url": "https://go.drugbank.com/drugs/DB00344",
+    "mechanism_of_action": "DEET ức chế thụ thể 1-octen-3-ol trên râu của muỗi và côn trùng, làm muỗi mất khả năng định vị hơi thở khí CO2 và mùi cơ thể người.",
+    "webmd_ref": "https://symptoms.webmd.com/",
+    "webmd_symptoms": [
+      "Muỗi đốt",
+      "Côn trùng cắn",
+      "Phòng ngừa sốt xuất huyết",
+      "Ngứa do muỗi chích"
+    ],
+    "min_age": 4,
+    "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 910)",
+    "category": "Dung dịch xịt xua đuổi côn trùng và phòng muỗi đốt ngoài da (OTC)",
+    "common_symptoms": [
+      "Muỗi chích đốt gây sưng ngứa",
+      "Phòng chống muỗi truyền bệnh sốt xuất huyết, sốt rét"
+    ],
+    "contraindications": [
+      "Trẻ em dưới 4 tuổi (không dùng nồng độ DEET 15%)",
+      "Không xịt trực tiếp vào mắt, miệng, vết thương hở hay vùng da cháy nắng"
+    ],
+    "dangerous_interactions": [
+      "Có thể làm hỏng các chất liệu nhựa tổng hợp, vải nhân tạo (spandex) hoặc mặt kính đồng hồ"
+    ],
+    "safe_usage_note": "Để cách da 10-15cm và xịt đều lên vùng da hở cần bảo vệ. Để bôi lên mặt: xịt ra lòng bàn tay rồi xoa nhẹ lên mặt."
   }
 ]

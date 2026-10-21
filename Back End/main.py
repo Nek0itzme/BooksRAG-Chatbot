@@ -892,15 +892,22 @@ async def med_check(payload: dict):
 
 
 @app.get("/api/med/all", tags=["OTC Gatekeeper"])
-async def med_get_all(limit: int = 50, offset: int = 0):
-    """Lấy danh sách tất cả các loại thuốc OTC trong kho dữ liệu tham chiếu Dược Thư."""
+async def med_get_all(limit: int = 100, offset: int = 0, lang: str = "vi"):
+    """Lấy danh sách tất cả các loại thuốc OTC trong kho dữ liệu (Hỗ trợ song ngữ chuẩn xác vi / en)."""
     if not _MED_ENABLED:
         raise HTTPException(503, "Phân hệ OTC Gatekeeper chưa sẵn sàng.")
-    # FIX: phân trang — trước đây trả toàn bộ KB mỗi lần gọi, phí băng thông khi KB lớn dần.
     limit = max(1, min(limit, 200))
     offset = max(0, offset)
-    return {"medicines": _OTC_DATA[offset:offset + limit], "total": len(_OTC_DATA),
-            "limit": limit, "offset": offset}
+    data = _OTC_DATA
+    if lang.lower() == "en":
+        try:
+            from otc_english_specs import to_english_specs
+            data = [to_english_specs(d) for d in _OTC_DATA]
+        except Exception as e:
+            print(f"[WARN] Error converting to English specs: {e}")
+            data = _OTC_DATA
+    return {"medicines": data[offset:offset + limit], "total": len(data),
+            "limit": limit, "offset": offset, "lang": lang}
 
 
 @app.post("/api/med/consult", tags=["OTC Gatekeeper"])
@@ -919,6 +926,48 @@ async def med_consult(payload: dict):
         raise HTTPException(400, "Cần có nội dung câu hỏi hoặc triệu chứng (query).")
     return await asyncio.to_thread(consult_otc_medicine, query, conditions, age, gender)
 
+
+# ── 9b. DỊCH THUẬT NGÔN NGỮ ĐƠN GIẢN HÓA (PLAIN LANGUAGE TRANSLATION) ─────────
+@app.post("/api/translate", tags=["I18n"])
+async def translate_text(payload: dict):
+    """
+    Dịch ngược văn bản tư vấn và hội thoại sang Simple English (CEFR A2-B1)
+    hoặc Tiếng Việt đại chúng, tối ưu hóa thuật ngữ y khoa/kỹ thuật cho người dùng phổ thông.
+    Body: {"text": str, "target_lang": "en" | "vi"}
+    """
+    text = (payload.get("text") or "").strip()
+    target_lang = (payload.get("target_lang") or "en").lower()
+    if not text:
+        raise HTTPException(400, "Thiếu nội dung văn bản cần dịch (text).")
+
+    def _do_translate(src: str, lang: str) -> str:
+        if lang == "vi":
+            prompt = (
+                "Bạn là một chuyên gia tư vấn tận tâm và gần gũi. "
+                "Hãy dịch đoạn văn bản sau sang Tiếng Việt thật tự nhiên, ấm áp, gãy gọn và dễ hiểu như lời trò chuyện của một chuyên gia thực thụ. "
+                "Tuyệt đối không dùng văn phong AI gượng gạo hay công thức. Giữ nguyên ý nghĩa y khoa/sách, sự chính xác về liều lượng và định dạng Markdown.\n\n"
+                f"Văn bản nguồn:\n{src}\n\n"
+                "Chỉ trả về bản dịch hoàn chỉnh, không thêm lời chào mào hay giải thích."
+            )
+        else:
+            prompt = (
+                "You are an empathetic, clear, human expert consultant. "
+                "Translate the following consultation into natural, warm, Plain English (CEFR A2-B1) that any reader can immediately understand. "
+                "Avoid stiff AI clichés, robotic headers, or artificial phrasing. Speak like a caring human professional explaining clearly. "
+                "Keep all facts, dosages, drug names, and safety precautions completely accurate.\n\n"
+                f"Source text:\n{src}\n\n"
+                "Return ONLY the translated response without introductory chatter or meta comments."
+            )
+        try:
+            from gemini_client import _call_gemini
+            res = _call_gemini(prompt)
+            return res if res else src
+        except Exception as e:
+            print(f"[WARN] Translate fallback triggered: {e}")
+            return src
+
+    translated = await asyncio.to_thread(_do_translate, text, target_lang)
+    return {"translated": translated, "target_lang": target_lang}
 
 
 # ── 10. KHỞI ĐỘNG MÁY CHỦ UVICORN ─────────────────────────────────────────────

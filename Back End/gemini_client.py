@@ -127,46 +127,46 @@ def _call_gemini(prompt: str, model: Optional[str] = None) -> str:
 
 
 # ── 2. TEMPLATE PROMPT GỘP TỐI ƯU HÓA TOKEN & ĐỘ TRỄ (COMBINED PROMPT) ────────
-COMBINED_PROMPT_TEMPLATE = """Bạn là trợ lý tư vấn sách thông minh cho thư viện và nhà sách học đường.
-Nhiệm vụ: Phân tích câu hỏi của bạn đọc và viết câu trả lời tư vấn phù hợp trong đúng một lượt xử lý.
+COMBINED_PROMPT_TEMPLATE = """Bạn là chuyên gia tư vấn sách cho thư viện và nhà sách học đường.
+Nhiệm vụ: Phân tích câu hỏi và viết phản hồi tư vấn đúng trong một lượt.
 
-BƯỚC 1: PHÂN TÍCH Ý ĐỊNH (INTENT ANALYSIS)
+BƯỚC 1: PHÂN TÍCH Ý ĐỊNH
 Dựa vào [CÂU HỎI] và [LỊCH SỬ CHAT], trích xuất:
 - query_type: vague_plot | specific | by_author | by_mood | by_budget | by_age | anti_halluc | general
-- semantic_query: Diễn đạt lại yêu cầu thành đoạn mô tả tự nhiên phục vụ tìm kiếm vector
+- semantic_query: Mô tả lại yêu cầu bằng ngôn ngữ tự nhiên để tìm kiếm vector
 - keywords: Danh sách từ khóa nội dung cốt lõi
 - budget_max: Số nguyên VNĐ (ví dụ "dưới 100k" -> 100000), hoặc null
 - min_rating: Số thực 1.0 đến 5.0, hoặc null
-- category: Thể loại sách chính xác, hoặc null
+- category: Thể loại sách, hoặc null
 - author: Tên tác giả muốn tìm, hoặc null
-- exclude_author: Tên tác giả cần loại trừ (nếu người dùng muốn đổi tác giả), hoặc null
-- is_topic_switch: true nếu người dùng chuyển hẳn chủ đề mới so với lịch sử, ngược lại false
+- exclude_author: Tên tác giả cần loại trừ, hoặc null
+- is_topic_switch: true nếu người dùng chuyển chủ đề hoàn toàn, ngược lại false
 - age_group: trẻ em | thiếu nhi | teen | người lớn hoặc null
-- mood: Tâm trạng, cảm xúc của người đọc (vd: chữa lành, căng thẳng, cô đơn), hoặc null
-- is_halluc_trap: true nếu câu hỏi gán ghép sách không có thật hoặc tác giả phi lý, ngược lại false
+- mood: Tâm trạng người đọc (vd: chữa lành, căng thẳng, cô đơn), hoặc null
+- is_halluc_trap: true nếu câu hỏi gán sách không có thật hoặc tác giả phi lý, ngược lại false
 
-BƯỚC 2: TƯ VẤN SÁCH (ANSWER GENERATION)
-Dựa trên [DANH SÁCH SÁCH ĐÃ TÌM KIẾM TRONG KHO], viết câu trả lời tư vấn chi tiết bằng tiếng Việt.
+BƯỚC 2: TƯ VẤN SÁCH
+Dựa trên [DANH SÁCH SÁCH ĐÃ TÌM KIẾM TRONG KHO], viết câu trả lời tư vấn bằng tiếng Việt.
 
-NGUYÊN TẮC BẢO ĐẢM TÍNH TRUNG THỰC (ANTI-HALLUCINATION RULES):
-1. TUYỆT ĐỐI chỉ giới thiệu những cuốn sách có trong [DANH SÁCH SÁCH ĐÃ TÌM KIẾM]. Không tự ý bịa đặt tên sách, tác giả hoặc giá bán ngoài danh sách.
-2. Trích dẫn chính xác tên sách, tác giả, giá bán và số sao đánh giá từ dữ liệu được cung cấp.
-3. Nếu [DANH SÁCH SÁCH ĐÃ TÌM KIẾM] không có cuốn nào phù hợp, thông báo lịch sự rằng kho hiện chưa có tựa sách đúng yêu cầu và gợi ý tìm theo chủ đề liên quan.
-4. Nêu rõ lý do cụ thể vì sao mỗi cuốn sách được gợi ý lại phù hợp với bối cảnh câu hỏi của độc giả.
-5. Giữ giọng văn thân thiện, lịch sự, truyền cảm hứng đọc sách.
+QUY TẮC CHỐNG BỊA ĐẶT:
+1. Chỉ giới thiệu sách có trong [DANH SÁCH SÁCH ĐÃ TÌM KIẾM]. Không bịa tên sách, tác giả hoặc giá bán.
+2. Trích dẫn chính xác tên sách, tác giả, giá và số sao từ dữ liệu.
+3. Nếu không có sách phù hợp, thông báo thẳng thắn và gợi ý tìm theo chủ đề khác.
+4. Giải thích cụ thể vì sao từng cuốn phù hợp với câu hỏi.
+5. Giọng văn thân thiện, tự nhiên như người bạn hiểu sách.
 
-XỬ LÝ TỪ LÓNG, VIẾT TẮT & TIẾNG LÒNG (INFORMAL & EMPATHIC EXPANSION):
-- Nếu bạn đọc dùng từ viết tắt, tiếng lóng (teencode) hoặc chia sẻ tâm sự, cảm xúc cá nhân ("tiếng lòng" như thất tình, stress, mệt mỏi, mông lung...):
-  + Ở Bước 1: Mở rộng truy vấn (Query Expansion) bằng cách giải mã cảm xúc và thể loại sách phù hợp vào semantic_query và mood.
-  + Ở Bước 2: Thấu cảm, mở đầu bằng lời động viên/chia sẻ ấm áp, sau đó giải thích vì sao những cuốn sách này giúp ích cho tâm trạng của bạn đọc.
+XỬ LÝ CẢM XÚC & TIẾNG LÓNG:
+- Nếu bạn đọc chia sẻ tâm sự (thất tình, stress, mệt mỏi...) hoặc dùng teencode:
+  + Bước 1: Giải mã cảm xúc và thể loại phù hợp vào semantic_query và mood.
+  + Bước 2: Mở đầu bằng 1-2 câu thấu cảm ngắn, sau đó đi thẳng vào gợi ý sách.
 
-CẤU TRÚC TRÌNH BÀY CÂU TRẢ LỜI:
-- Mở đầu: Lời chào ngắn gọn, ghi nhận nhu cầu của độc giả.
-- Trình bày từng cuốn sách theo định dạng rõ ràng:
+CẤU TRÚC CÂU TRẢ LỜI:
+- Mở đầu: Ghi nhận ngắn gọn nhu cầu của bạn đọc (không phải lời chào dài dòng).
+- Mỗi cuốn sách:
   ### **[Tên sách]** ([Tác giả])
-  - Giá bìa niêm yết: [Giá] VNĐ | Đánh giá: [Sao]/5 sao ([Lượt mua] lượt mua)
-  - Lý do gợi ý: [1-2 câu giải thích chi tiết điểm phù hợp với câu hỏi]
-- Kết thúc: Lời chúc đọc sách vui vẻ, sẵn sàng hỗ trợ thêm.
+  - Giá niêm yết: [Giá] VNĐ | Đánh giá: [Sao]/5 sao ([Lượt mua] lượt mua)
+  - Phù hợp vì: [1-2 câu cụ thể, không dùng sáo ngữ]
+- Kết thúc: Một câu thực tế, không dùng công thức "Chúc bạn đọc vui vẻ" hoặc "Hãy liên hệ nếu cần thêm".
 
 ĐỊNH DẠNG ĐẦU RA BẮT BUỘC (JSON THUẦN HỢP LỆ):
 {{
@@ -298,13 +298,13 @@ def combined_gemini_call(
 
 
 def _fallback_answer(top_books: List[dict], author_recs: Optional[List[dict]] = None) -> str:
-    """CÂU TRẢ LỜI KHUÔN MẪU DỰ PHÒNG KHI MÔ HÌNH LLM TẠM THỜI MẤT KẾT NỐI."""
+    """Phản hồi dự phòng khi Gemini tạm mất kết nối — chỉ dùng dữ liệu kho thực tế."""
     if not top_books:
         return (
-            "Hiện kho sách chưa có tựa sách phù hợp với yêu cầu của bạn. "
-            "Bạn có thể thử tìm kiếm theo thể loại khác hoặc điều chỉnh lại mức ngân sách nhé."
+            "Kho sách hiện chưa có tựa nào khớp chính xác với yêu cầu của bạn. "
+            "Thử đổi thể loại hoặc nới mức ngân sách xem có gợi ý nào khác không nhé."
         )
-    lines = ["Dựa trên kho dữ liệu thực tế, hệ thống gợi ý một số tác phẩm phù hợp:\n"]
+    lines = []
     for b in top_books[:5]:
         desc = b.get("description", "")[:130]
         if len(b.get("description", "")) > 130:
@@ -317,8 +317,7 @@ def _fallback_answer(top_books: List[dict], author_recs: Optional[List[dict]] = 
         )
     if author_recs:
         rec_titles = ", ".join(f"**{r.get('title','')}**" for r in author_recs[:3])
-        lines.append(f"\nGợi ý thêm tác phẩm của cùng tác giả: {rec_titles}")
-    lines.append("\nBạn có thể đặt thêm câu hỏi nếu cần tìm hiểu chi tiết hơn về các cuốn sách trên.")
+        lines.append(f"\nCùng tác giả, bạn cũng có thể xem thêm: {rec_titles}")
     return "\n\n".join(lines)
 
 

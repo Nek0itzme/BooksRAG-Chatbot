@@ -25,12 +25,16 @@
   </script>
   <!-- Thư viện xuất file PDF chuyên nghiệp -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <!-- GSAP Animation Library for Ultra-Smooth UI Transitions -->
+  <!-- GSAP Animation Library & Plugins for Ultra-Smooth UI Transitions -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
   <script>
-    if (typeof gsap !== 'undefined' && typeof ScrollToPlugin !== 'undefined') {
-      gsap.registerPlugin(ScrollToPlugin);
+    if (typeof gsap !== 'undefined') {
+      const pluginsToRegister = [];
+      if (typeof ScrollToPlugin !== 'undefined') pluginsToRegister.push(ScrollToPlugin);
+      if (typeof TextPlugin !== 'undefined') pluginsToRegister.push(TextPlugin);
+      if (pluginsToRegister.length > 0) gsap.registerPlugin(...pluginsToRegister);
     }
   </script>
   <!-- KaTeX for High-Speed Mathematical & Scientific Formula Typesetting -->
@@ -826,6 +830,112 @@
     .theme-toggle-btn svg {
       width: 15px;
       height: 15px;
+    }
+
+    /* ── LANGUAGE SWITCHER & TRANSLATION STYLES ───────────────── */
+    .lang-toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-pill);
+      border: 1px solid var(--color-border);
+      color: var(--color-ink);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .lang-toggle-pill:hover {
+      border-color: var(--color-accent);
+      background: var(--color-accent-bg);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px var(--color-accent-glow);
+    }
+
+    .lang-toggle-pill .lang-label {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-lang-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--color-border);
+      background: var(--bg-pill);
+      color: var(--color-ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 10.5px;
+      font-weight: 700;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+
+    .sidebar-lang-btn:hover {
+      border-color: var(--color-accent);
+      background: var(--color-accent-bg);
+      transform: scale(1.08);
+    }
+
+    .sidebar.collapsed .sidebar-lang-btn {
+      display: none !important;
+    }
+
+    .msg-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--color-border-subtle);
+    }
+
+    .btn-msg-translate {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 6px;
+      color: var(--color-graphite);
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-msg-translate:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--color-ink);
+      border-color: var(--color-border);
+    }
+
+    .btn-msg-translate.translated {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: #60a5fa;
+    }
+
+    .trans-tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      display: inline-block;
+      margin-bottom: 8px;
     }
 
     /* ── 2. CENTER PANEL (CHAT STREAM) ────────────────────────── */
@@ -4534,6 +4644,7 @@
       font-size: 13px;
       font-weight: 600;
       padding: 6px 0;
+      appearance: textfield;
       -moz-appearance: textfield;
     }
 
@@ -5786,6 +5897,12 @@
                 <span class="user-session-id" id="display-session-id">sess_init</span>
               </div>
             </div>
+            <button class="sidebar-lang-btn" id="sidebar-lang-btn" title="Chuyển ngôn ngữ / Switch Language (Google Translate)"
+              onclick="toggleLanguage()">
+              <svg class="g-translate-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#38bdf8;">
+                <path d="M12.87 15.07l-2.54-2.51.03-.08c1.77-1.97 3.03-4.21 3.79-6.48H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+              </svg>
+            </button>
             <button class="theme-toggle-btn" id="theme-toggle-btn" title="Chuyển chế độ Tối / Sáng"
               onclick="toggleTheme()">
               <svg id="theme-icon-svg" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
@@ -5831,6 +5948,14 @@
           </span>
         </div>
         <div class="top-bar-right">
+          <!-- Language Switcher Pill (Google Translate Style) -->
+          <button class="lang-toggle-pill" id="lang-toggle-btn" onclick="toggleLanguage()"
+            title="Chuyển đổi ngôn ngữ / Google Translate">
+            <svg class="g-translate-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#38bdf8;">
+              <path d="M12.87 15.07l-2.54-2.51.03-.08c1.77-1.97 3.03-4.21 3.79-6.48H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+            </svg>
+            <span class="lang-label" id="lang-current-label">VI / EN</span>
+          </button>
           <!-- Toggle button for Recommended Books (Mobile/Tablet) -->
           <button class="top-action-btn results-toggle-btn" id="btn-toggle-results" onclick="toggleResultsPanel()"
             title="Xem sách gợi ý RAG">
@@ -5925,7 +6050,7 @@
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <span>Tìm kiếm</span>
+                <span id="chip-search-label">Tìm kiếm</span>
               </div>
               <div class="chip-action" onclick="focusBudgetInput()">
                 <span>💰</span>
@@ -5956,7 +6081,7 @@
 
         <div class="results-header-bar">
           <div class="results-title">
-            <span>Sách gợi ý</span>
+            <span id="results-panel-title-text">Sách gợi ý</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px">
             <span class="results-context-pill" id="results-context-pill" style="display:none"></span>
@@ -5984,7 +6109,7 @@
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
             </div>
-            <p>Các cuốn sách gợi ý kèm điểm số xếp hạng Hybrid sẽ xuất hiện tại đây khi bạn gửi câu hỏi.</p>
+            <p id="results-empty-text">Các cuốn sách gợi ý kèm điểm số xếp hạng Hybrid sẽ xuất hiện tại đây khi bạn gửi câu hỏi.</p>
           </div>
         </div>
 
@@ -6017,12 +6142,12 @@
             <span class="pulse-green"></span>
             <span id="doc-index-badge">Tài liệu sẵn sàng</span>
           </span>
-          <button class="top-action-btn" onclick="setDocMode(false)" title="Quay lại Tư vấn sách">
+          <button class="top-action-btn" id="btn-doc-return" onclick="setDocMode(false)" title="Quay lại Tư vấn sách">
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
             </svg>
-            <span>Quay lại Tư Vấn Sách</span>
+            <span id="doc-return-btn-text">Quay lại Tư Vấn Sách</span>
           </button>
         </div>
       </div>
@@ -6035,7 +6160,7 @@
             <div class="doc-section-header">
               <span style="display:flex;align-items:center;gap:6px">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                <span>Tài Liệu Của Bạn</span>
+                <span id="doc-your-docs-title">Tài Liệu Của Bạn</span>
               </span>
               <span class="doc-badge-count" id="doc-file-count-badge">0/5</span>
             </div>
@@ -6050,13 +6175,13 @@
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
               </div>
-              <div class="dropzone-title">Tải lên file PDF hoặc DOCX</div>
-              <div class="dropzone-desc">Kéo & thả hoặc bấm để chọn tối đa 5 file (.pdf, .docx)</div>
+              <div class="dropzone-title" id="doc-dropzone-title">Tải lên file PDF hoặc DOCX</div>
+              <div class="dropzone-desc" id="doc-dropzone-desc">Kéo & thả hoặc bấm để chọn tối đa 5 file (.pdf, .docx)</div>
             </div>
 
             <!-- Files List -->
             <div class="doc-file-items-list" id="doc-file-items-list">
-              <div class="doc-empty-files">Chưa có tài liệu nào trong phiên.</div>
+              <div class="doc-empty-files" id="doc-empty-files-text">Chưa có tài liệu nào trong phiên.</div>
             </div>
 
             <!-- Nút mở Kho Tài Liệu Database -->
@@ -6065,7 +6190,7 @@
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
-              <span>Kho Tài Liệu Đã Lưu</span>
+              <span id="doc-library-btn-text">Kho Tài Liệu Đã Lưu</span>
               <span class="doc-badge-count" id="doc-lib-count-badge" style="margin-left:auto;">0</span>
             </button>
           </div>
@@ -6075,7 +6200,7 @@
             <div class="doc-section-header">
               <span style="display:flex;align-items:center;gap:6px">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                <span>Tác Vụ RAG Tự Động</span>
+                <span id="doc-tasks-header-title">Tác Vụ RAG Tự Động</span>
               </span>
             </div>
             <div class="doc-task-btn-group">
@@ -6133,8 +6258,8 @@
                 <div class="placeholder-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                 </div>
-                <h3>Khung Xem Trước Tài Liệu Trực Tuyến</h3>
-                <p>Chọn một file PDF hoặc tài liệu Word (.docx) từ danh sách bên trái để đọc song song cùng trợ lý AI.</p>
+                <h3 id="doc-viewer-placeholder-title">Khung Xem Trước Tài Liệu Trực Tuyến</h3>
+                <p id="doc-viewer-placeholder-desc">Chọn một file PDF hoặc tài liệu Word (.docx) từ danh sách bên trái để đọc song song cùng trợ lý AI.</p>
               </div>
               <iframe id="doc-ws-pdf-frame" class="doc-pdf-iframe" style="display:none;" title="PDF Viewer"></iframe>
               <div id="doc-ws-docx-viewer" class="doc-docx-viewer" style="display:none;"></div>
@@ -6158,11 +6283,11 @@
             <div class="doc-subtab-bar">
               <button class="doc-subtab-btn active" id="subtab-chat-btn" onclick="setDocSubTab('chat')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                <span>Hỏi Đáp RAG</span>
+                <span id="doc-subtab-chat-text">Hỏi Đáp RAG</span>
               </button>
               <button class="doc-subtab-btn" id="subtab-quiz-btn" onclick="setDocSubTab('quiz')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                <span>Trắc Nghiệm</span>
+                <span id="doc-subtab-quiz-text">Trắc Nghiệm</span>
                 <span class="quiz-count-badge" id="doc-quiz-badge" style="display:none">5</span>
               </button>
               <!-- Nút mở rộng / thu gọn thanh taskbar bên phải -->
@@ -6184,7 +6309,7 @@
                   <div class="doc-msg-avatar">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
                   </div>
-                  <div class="doc-msg-bubble">
+                  <div class="doc-msg-bubble" id="doc-welcome-msg-bubble">
                     Chào bạn! Tôi là <b>Trợ Lý Đọc Sách & Tài Liệu AI</b>.<br>
                     Hãy tải lên sách/tài liệu ôn tập (PDF) và đặt bất kỳ câu hỏi nào. Tôi sẽ bóc tách sang Markdown và trả lời chính xác kèm số trang đối chiếu!
                   </div>
@@ -6203,11 +6328,11 @@
                       <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
                   </div>
-                  <h3 class="doc-quiz-placeholder-title">Chưa Có Bộ Trắc Nghiệm</h3>
-                  <p class="doc-quiz-placeholder-desc">Hệ thống AI sẵn sàng trích xuất các câu hỏi ôn tập kèm số trang đối chiếu từ tài liệu bạn tải lên.</p>
+                  <h3 class="doc-quiz-placeholder-title" id="doc-quiz-empty-title">Chưa Có Bộ Trắc Nghiệm</h3>
+                  <p class="doc-quiz-placeholder-desc" id="doc-quiz-empty-desc">Hệ thống AI sẵn sàng trích xuất các câu hỏi ôn tập kèm số trang đối chiếu từ tài liệu bạn tải lên.</p>
                   <div class="doc-quiz-hint-box">
                     <span class="doc-quiz-hint-icon">💡</span>
-                    <span>Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 15 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.</span>
+                    <span id="doc-quiz-empty-hint">Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 15 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.</span>
                   </div>
                 </div>
               </div>
@@ -6217,7 +6342,7 @@
             <div class="doc-input-wrapper">
               <div class="doc-input-row">
                 <input type="text" id="doc-ws-query-input" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" placeholder="Hỏi về nội dung, định lý hoặc bài tập..." onkeydown="if(event.key==='Enter')docAsk()" />
-                <button class="btn-send-hero" onclick="docAsk()" title="Gửi câu hỏi">
+                <button class="btn-send-hero" id="btn-doc-send" onclick="docAsk()" title="Gửi câu hỏi">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="22" y1="2" x2="11" y2="13"></line>
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -6519,7 +6644,7 @@
     if (window.location.protocol.startsWith('http')) {
       if (window.location.port === '8000' || window.location.hostname.endsWith('trycloudflare.com') || window.location.hostname.endsWith('ngrok-free.app')) {
         API_BASE = window.location.origin;
-      } else if (window.location.port === '5500' || window.location.port === '5173' || window.location.port === '3000') {
+      } else if (window.location.port === '5500' || window.location.port === '5173' || window.location.port === '3000' || window.location.port === '8088') {
         API_BASE = 'http://localhost:8000';
       } else {
         API_BASE = window.location.origin;
@@ -6593,8 +6718,8 @@
     }
 
 
-    // Danh sách câu chào và quotes truyền cảm hứng về sách
-    const HERO_ROTATING_CONTENT = [
+    // Danh sách câu chào và quotes truyền cảm hứng về sách (Song ngữ)
+    const HERO_ROTATING_CONTENT_VI = [
       {
         title: "Bạn muốn tìm cuốn sách nào?",
         quote: '"Không có người bạn nào trung thành như một cuốn sách hay."',
@@ -6621,12 +6746,43 @@
         author: "— Khuyết danh"
       }
     ];
+
+    const HERO_ROTATING_CONTENT_EN = [
+      {
+        title: "What book are you looking for?",
+        quote: '"There is no friend as loyal as a book."',
+        author: "— Ernest Hemingway"
+      },
+      {
+        title: "Immerse yourself in world knowledge & stories",
+        quote: '"A room without books is like a body without a soul."',
+        author: "— Marcus Tullius Cicero"
+      },
+      {
+        title: "Remembering a story vaguely in your mind?",
+        quote: '"Reading is a conversation with the finest minds of past centuries."',
+        author: "— René Descartes"
+      },
+      {
+        title: "Discover books that inspire and heal your mind",
+        quote: '"Books are the quietest and most constant of friends."',
+        author: "— Charles William Eliot"
+      },
+      {
+        title: "Smart book suggestions tailored to your budget",
+        quote: '"Today a reader, tomorrow a leader."',
+        author: "— Margaret Fuller"
+      }
+    ];
+
+    let HERO_ROTATING_CONTENT = HERO_ROTATING_CONTENT_VI;
     let heroRotationIndex = 0;
     let heroRotationTimer = null;
 
     // ── 1. Init & Avatar Loader ────────────────────────────────
     function initApp() {
       loadSavedTheme();
+      loadSavedLanguage();
       loadUserAvatar();
       loadSessionsFromStorage();
       startHeroQuotesRotation();
@@ -6689,7 +6845,637 @@
       }
     }
 
-    // ── 2. Sidebar Controls ────────────────────────────────────
+    // ── 1b. Language / I18n System (Plain English & Vietnamese) ──
+    let currentAppLang = 'vi';
+
+    const I18N_DICT = {
+      vi: {
+        nav_book: "Tư Vấn Sách",
+        nav_doc: "Đọc Tài Liệu",
+        nav_med: "Tra Cứu Dược OTC",
+        new_session: "New",
+        results_btn: "Sách gợi ý",
+        rag_verified: "RAG Verified",
+        print_btn: "Phiếu",
+        hero_tag: "✦ Tư Vấn Bán Sách Tự Động RAG",
+        hero_title: "Bạn muốn tìm cuốn sách nào?",
+        hero_quote: '"Không có người bạn nào trung thành như một cuốn sách hay."',
+        input_ph: "Nhập tên sách, tác giả, thể loại hoặc nội dung bạn cần tìm...",
+        budget_label: "Ngân sách tối đa (VNĐ)",
+        med_ws_title: "Trợ Lý Dược Lâm Sàng & An Toàn Thuốc OTC",
+        med_ws_subtitle: "Tra cứu thông tin thuốc không kê đơn • Cảnh báo chống chỉ định • Đối chiếu DrugBank & Dược Thư",
+        doc_ws_title: "Trợ Lý Đọc & Tương Tác Tài Liệu Học Đường",
+        doc_ws_subtitle: "Trích xuất văn bản thông minh • Lập chỉ mục tài liệu • Trích dẫn số trang đối chiếu",
+        doc_index_ready: "Tài liệu sẵn sàng",
+        doc_return_btn: "Quay lại Tư Vấn Sách",
+        doc_your_docs: "Tài Liệu Của Bạn",
+        doc_upload_title: "Tải lên file PDF hoặc DOCX",
+        doc_upload_desc: "Kéo & thả hoặc bấm để chọn tối đa 5 file (.pdf, .docx)",
+        doc_empty_files: "Chưa có tài liệu nào trong phiên.",
+        doc_library_btn: "Kho Tài Liệu Đã Lưu",
+        doc_tasks_header: "Tác Vụ RAG Tự Động",
+        doc_task1_name: "Tóm Tắt 3 Cấp Độ",
+        doc_task1_sub: "Ý tưởng • Luận điểm • Đúc kết",
+        doc_task2_name: "Tạo 5 Câu Trắc Nghiệm",
+        doc_task2_sub: "Nhận biết • Thông hiểu • Vận dụng",
+        doc_task3_name: "Giải Thích Thuật Ngữ",
+        doc_task3_sub: "Phân tích chuyên sâu kèm trích dẫn",
+        doc_viewer_empty_title: "Chưa chọn tài liệu xem trước",
+        doc_viewer_placeholder_h3: "Khung Xem Trước Tài Liệu Trực Tuyến",
+        doc_viewer_placeholder_p: "Chọn một file PDF hoặc tài liệu Word (.docx) từ danh sách bên trái để đọc song song cùng trợ lý AI.",
+        doc_subtab_chat: "Hỏi Đáp RAG",
+        doc_subtab_quiz: "Trắc Nghiệm",
+        doc_expand_btn: "Mở rộng",
+        doc_collapse_btn: "Thu gọn",
+        doc_welcome_msg: 'Chào bạn! Tôi là <b>Trợ Lý Đọc Sách & Tài Liệu AI</b>.<br>Hãy tải lên sách/tài liệu ôn tập (PDF) và đặt bất kỳ câu hỏi nào. Tôi sẽ bóc tách sang Markdown và trả lời chính xác kèm số trang đối chiếu!',
+        doc_quiz_empty_h3: "Chưa Có Bộ Trắc Nghiệm",
+        doc_quiz_empty_p: "Hệ thống AI sẵn sàng trích xuất các câu hỏi ôn tập kèm số trang đối chiếu từ tài liệu bạn tải lên.",
+        doc_quiz_empty_hint: 'Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 15 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.',
+        doc_input_ph: "Hỏi về nội dung, định lý hoặc bài tập...",
+        doc_chip1: "Ý tưởng cốt lõi",
+        doc_chip2: "Luận điểm chính",
+        doc_chip3: "Đúc kết",
+        med_input_ph: "Mô tả triệu chứng bệnh hoặc tên thuốc (VD: sốt cao, đau đầu, dị ứng, tiêu chảy)..."
+      },
+      en: {
+        nav_book: "Book Advisor",
+        nav_doc: "Study Assistant",
+        nav_med: "OTC Medicine Safety",
+        new_session: "New",
+        results_btn: "Top Picks",
+        rag_verified: "Verified 94%",
+        print_btn: "Summary",
+        hero_tag: "✦ Smart Book & Medicine Guide",
+        hero_title: "What book are you looking for?",
+        hero_quote: '"There is no friend as loyal as a book."',
+        input_ph: "Type book title, author, topic, or symptoms you need help with...",
+        budget_label: "Max Budget (VND)",
+        med_ws_title: "Safe OTC Medicine & Health Guide",
+        med_ws_subtitle: "Find non-prescription medicines • Who should NOT use • DrugBank & National Reference",
+        doc_ws_title: "Interactive Document & Reading Helper",
+        doc_ws_subtitle: "Smart text extraction • Document indexing • Page citations",
+        doc_index_ready: "Documents Ready",
+        doc_return_btn: "Back to Book Advisor",
+        doc_your_docs: "Your Documents",
+        doc_upload_title: "Upload PDF or DOCX file",
+        doc_upload_desc: "Drag & drop or click to choose up to 5 files (.pdf, .docx)",
+        doc_empty_files: "No documents in this session yet.",
+        doc_library_btn: "Saved Document Library",
+        doc_tasks_header: "Automated RAG Tasks",
+        doc_task1_name: "3-Level Summary",
+        doc_task1_sub: "Ideas • Key Arguments • Takeaways",
+        doc_task2_name: "Generate 5 Quiz Questions",
+        doc_task2_sub: "Recall • Comprehension • Application",
+        doc_task3_name: "Explain Terminology",
+        doc_task3_sub: "In-depth analysis with citations",
+        doc_viewer_empty_title: "No document selected for preview",
+        doc_viewer_placeholder_h3: "Online Document Previewer",
+        doc_viewer_placeholder_p: "Select a PDF or Word document (.docx) from the left panel to read side-by-side with your AI assistant.",
+        doc_subtab_chat: "RAG Q&A",
+        doc_subtab_quiz: "Interactive Quiz",
+        doc_expand_btn: "Expand",
+        doc_collapse_btn: "Collapse",
+        doc_welcome_msg: 'Hello! I am your <b>AI Document & Reading Assistant</b>.<br>Upload books or study materials (PDF/DOCX) and ask any question. I will parse text into Markdown and provide precise answers with page citations!',
+        doc_quiz_empty_h3: "No Quiz Generated Yet",
+        doc_quiz_empty_p: "The AI system is ready to extract study questions with page citations from your uploaded documents.",
+        doc_quiz_empty_hint: 'Type your request in the chat bar below (e.g., <b>"Create 15 quiz questions"</b>, <b>"Generate 20 multiple choice questions"</b>) to build a quiz right here.',
+        doc_input_ph: "Ask about concepts, theorems, or study exercises...",
+        doc_chip1: "Core Ideas",
+        doc_chip2: "Key Arguments",
+        doc_chip3: "Takeaways",
+        med_input_ph: "Describe symptoms or medicine name (e.g., fever, headache, allergy, stomach ache)..."
+      }
+    };
+
+    function loadSavedLanguage() {
+      const savedLang = localStorage.getItem('bookrag_lang') || 'vi';
+      applyLanguage(savedLang);
+    }
+
+    function toggleLanguage() {
+      const newLang = (currentAppLang === 'vi') ? 'en' : 'vi';
+      applyLanguage(newLang);
+    }
+
+    function applyLanguage(lang) {
+      currentAppLang = lang;
+      localStorage.setItem('bookrag_lang', lang);
+      document.documentElement.lang = lang;
+
+      const langCurrentLabel = document.getElementById('lang-current-label');
+      if (langCurrentLabel) {
+        langCurrentLabel.textContent = (lang === 'vi') ? 'VI / EN' : 'EN (Simple)';
+      }
+      const sidebarLangLabel = document.getElementById('sidebar-lang-label');
+      if (sidebarLangLabel) {
+        sidebarLangLabel.textContent = lang.toUpperCase();
+      }
+
+      const dict = I18N_DICT[lang] || I18N_DICT.vi;
+
+      // Update Navigation
+      const navBook = document.querySelector('#nav-book-btn span');
+      if (navBook) navBook.textContent = dict.nav_book;
+      const navDoc = document.querySelector('#nav-doc-btn span');
+      if (navDoc) navDoc.textContent = dict.nav_doc;
+      const navMed = document.querySelector('#nav-med-btn span');
+      if (navMed) navMed.textContent = dict.nav_med;
+
+      // Results toggle text
+      const resToggle = document.querySelector('.results-toggle-text');
+      if (resToggle) resToggle.textContent = dict.results_btn;
+
+      // Print button text
+      const printBtn = document.querySelector('.print-btn-text');
+      if (printBtn) printBtn.textContent = dict.print_btn;
+
+      // Hero Greeting
+      const heroTag = document.getElementById('hero-greeting')?.querySelector('.hero-tag');
+      if (heroTag) heroTag.innerHTML = `<span style="display:inline-block;margin-right:3px">✦</span> ${dict.hero_tag.replace('✦ ', '')}`;
+      const heroTitle = document.getElementById('hero-dynamic-title');
+      if (heroTitle) heroTitle.textContent = dict.hero_title;
+
+      // Quotes & Samples (English & Vietnamese)
+      HERO_ROTATING_CONTENT = (lang === 'en') ? HERO_ROTATING_CONTENT_EN : HERO_ROTATING_CONTENT_VI;
+      const currentQuote = HERO_ROTATING_CONTENT[heroRotationIndex % HERO_ROTATING_CONTENT.length];
+      const quoteEl = document.getElementById('hero-dynamic-quote');
+      if (quoteEl) quoteEl.textContent = currentQuote.quote;
+      const authorEl = document.getElementById('hero-dynamic-author');
+      if (authorEl) authorEl.textContent = currentQuote.author;
+
+      const examplesContainer = document.querySelector('.hero-examples');
+      if (examplesContainer) {
+        if (lang === 'en') {
+          examplesContainer.innerHTML = `
+            <div class="example-pill" onclick="quickQuery('recommend classic and contemporary bestsellers')">📖 Classic & Bestsellers</div>
+            <div class="example-pill" onclick="quickQuery('the shepherd boy searching for treasure at the pyramids')">🧭 The Alchemist & Adventure</div>
+            <div class="example-pill" onclick="quickQuery('easy to understand psychology books under 100k', 100000)">💡 Psychology Books Under 100k</div>
+            <div class="example-pill" onclick="quickQuery('thrilling murder mystery detective novels')">🕵️ Thrilling Mysteries</div>
+          `;
+        } else {
+          examplesContainer.innerHTML = `
+            <div class="example-pill" onclick="quickQuery('cho tôi sách của Nguyễn Nhật Ánh')">📖 Sách của Nguyễn Nhật Ánh</div>
+            <div class="example-pill" onclick="quickQuery('cậu bé chăn cừu đi tìm kho báu ở kim tự tháp')">🧭 Cậu bé chăn cừu tìm kho báu</div>
+            <div class="example-pill" onclick="quickQuery('sách tâm lý học dễ hiểu giá dưới 100k', 100000)">💡 Sách tâm lý học dưới 100k</div>
+            <div class="example-pill" onclick="quickQuery('truyện trinh thám án mạng kịch tính')">🕵️ Trinh thám án mạng ly kỳ</div>
+          `;
+        }
+      }
+
+      // Main Chat Input & Bottom Action Chips
+      const mainInput = document.getElementById('chat-textarea');
+      if (mainInput) mainInput.placeholder = dict.input_ph;
+      const chipSearchLabel = document.getElementById('chip-search-label');
+      if (chipSearchLabel) chipSearchLabel.textContent = (lang === 'en') ? 'Search' : 'Tìm kiếm';
+      const budgetInput = document.getElementById('budget-input');
+      if (budgetInput) budgetInput.placeholder = (lang === 'en') ? 'Budget' : 'Ngân sách';
+      const btnUploadPlus = document.querySelector('.btn-upload-plus');
+      if (btnUploadPlus) btnUploadPlus.title = (lang === 'en') ? 'Upload book cover image' : 'Tải ảnh bìa sách muốn tìm';
+      const btnSend = document.getElementById('btn-send');
+      if (btnSend) btnSend.title = (lang === 'en') ? 'Send question' : 'Gửi câu hỏi';
+
+      // Right Panel (Book Recommendations & Empty State)
+      const resTitleText = document.getElementById('results-panel-title-text');
+      if (resTitleText) resTitleText.textContent = (lang === 'en') ? 'Recommended Books' : 'Sách gợi ý';
+      const resEmptyText = document.getElementById('results-empty-text');
+      if (resEmptyText) {
+        resEmptyText.textContent = (lang === 'en') 
+          ? 'Recommended books with Hybrid ranking scores will appear here when you submit a question.' 
+          : 'Các cuốn sách gợi ý kèm điểm số xếp hạng Hybrid sẽ xuất hiện tại đây khi bạn gửi câu hỏi.';
+      }
+      const btnCloseResults = document.getElementById('btn-close-results');
+      if (btnCloseResults) btnCloseResults.title = (lang === 'en') ? 'Close book recommendations' : 'Đóng danh sách sách';
+
+      // Sidebar Controls & Sessions Search
+      const btnSearchToggle = document.getElementById('btn-search-toggle');
+      if (btnSearchToggle) btnSearchToggle.title = (lang === 'en') ? 'Search chat sessions' : 'Tìm kiếm phiên chat';
+      const btnSidebarToggle = document.getElementById('btn-sidebar-toggle');
+      if (btnSidebarToggle) btnSidebarToggle.title = (lang === 'en') ? 'Collapse sidebar' : 'Thu gọn thanh bên';
+      const sessionFilterInput = document.getElementById('session-filter-input');
+      if (sessionFilterInput) sessionFilterInput.placeholder = (lang === 'en') ? 'Filter sessions...' : 'Lọc phiên hỏi...';
+
+      const medInput = document.getElementById('med-input-query');
+      if (medInput) medInput.placeholder = dict.med_input_ph;
+
+      // ── Localize Study Assistant (Doc Workspace) ──
+      const docTitle = document.querySelector('.doc-ws-title');
+      if (docTitle) docTitle.textContent = dict.doc_ws_title;
+      const docSubtitle = document.querySelector('.doc-ws-subtitle');
+      if (docSubtitle) docSubtitle.textContent = dict.doc_ws_subtitle;
+
+      const docIndexBadge = document.getElementById('doc-index-badge');
+      if (docIndexBadge) docIndexBadge.textContent = dict.doc_index_ready;
+      const docReturnBtnText = document.getElementById('doc-return-btn-text');
+      if (docReturnBtnText) docReturnBtnText.textContent = dict.doc_return_btn;
+      const docReturnBtn = document.getElementById('btn-doc-return');
+      if (docReturnBtn) docReturnBtn.title = (lang === 'en') ? 'Back to Book Advisor' : 'Quay lại Tư vấn sách';
+      const btnDocSidebarToggle = document.getElementById('btn-doc-sidebar-toggle');
+      if (btnDocSidebarToggle) btnDocSidebarToggle.title = (lang === 'en') ? 'Toggle sidebar' : 'Đóng/Mở thanh bên (Sidebar)';
+
+      // Col 1 (Your Documents & Quick RAG Tasks)
+      const docYourDocsTitle = document.getElementById('doc-your-docs-title');
+      if (docYourDocsTitle) docYourDocsTitle.textContent = dict.doc_your_docs;
+      const docDropzoneTitle = document.getElementById('doc-dropzone-title');
+      if (docDropzoneTitle) docDropzoneTitle.textContent = dict.doc_upload_title;
+      const docDropzoneDesc = document.getElementById('doc-dropzone-desc');
+      if (docDropzoneDesc) docDropzoneDesc.textContent = dict.doc_upload_desc;
+      const docEmptyFilesText = document.getElementById('doc-empty-files-text');
+      if (docEmptyFilesText) {
+        docEmptyFilesText.textContent = dict.doc_empty_files;
+      }
+      const docLibraryBtnText = document.getElementById('doc-library-btn-text');
+      if (docLibraryBtnText) docLibraryBtnText.textContent = dict.doc_library_btn;
+      const btnOpenDocLibrary = document.getElementById('btnOpenDocLibrary');
+      if (btnOpenDocLibrary) btnOpenDocLibrary.title = (lang === 'en') ? 'Browse saved documents in database' : 'Xem tất cả tài liệu đã lưu trong cơ sở dữ liệu để sử dụng lại';
+
+      const docTasksHeaderTitle = document.getElementById('doc-tasks-header-title');
+      if (docTasksHeaderTitle) docTasksHeaderTitle.textContent = dict.doc_tasks_header;
+
+      const btnDocSummarize = document.getElementById('btn-doc-summarize');
+      if (btnDocSummarize) {
+        const nameEl = btnDocSummarize.querySelector('.task-name');
+        if (nameEl) nameEl.textContent = dict.doc_task1_name;
+        const subEl = btnDocSummarize.querySelector('.task-sub');
+        if (subEl) subEl.textContent = dict.doc_task1_sub;
+      }
+      const btnDocQuiz = document.getElementById('btn-doc-quiz');
+      if (btnDocQuiz) {
+        const nameEl = btnDocQuiz.querySelector('.task-name');
+        if (nameEl) nameEl.textContent = dict.doc_task2_name;
+        const subEl = btnDocQuiz.querySelector('.task-sub');
+        if (subEl) subEl.textContent = dict.doc_task2_sub;
+      }
+      const btnDocExplain = document.getElementById('btn-doc-explain');
+      if (btnDocExplain) {
+        const nameEl = btnDocExplain.querySelector('.task-name');
+        if (nameEl) nameEl.textContent = dict.doc_task3_name;
+        const subEl = btnDocExplain.querySelector('.task-sub');
+        if (subEl) subEl.textContent = dict.doc_task3_sub;
+        btnDocExplain.setAttribute('onclick', (lang === 'en')
+          ? "docAskPreset('Explain the most core concepts, definitions, and key formulas in this document with citations')"
+          : "docAskPreset('Giải thích các định nghĩa và thuật ngữ cốt lõi nhất trong tài liệu này')");
+      }
+
+      // Col 2 (Preview Viewer Header & Placeholder)
+      const docActivePdfName = document.getElementById('doc-active-pdf-name');
+      if (docActivePdfName && (typeof currentActivePdf === 'undefined' || !currentActivePdf || docActivePdfName.textContent.includes('Chưa chọn') || docActivePdfName.textContent.includes('No document'))) {
+        docActivePdfName.textContent = dict.doc_viewer_empty_title;
+      }
+      const docViewerTitle = document.getElementById('doc-viewer-placeholder-title');
+      if (docViewerTitle) docViewerTitle.textContent = dict.doc_viewer_placeholder_h3;
+      const docViewerDesc = document.getElementById('doc-viewer-placeholder-desc');
+      if (docViewerDesc) docViewerDesc.textContent = dict.doc_viewer_placeholder_p;
+      const btnOpenPdfExt = document.getElementById('btn-open-pdf-external');
+      if (btnOpenPdfExt) btnOpenPdfExt.title = (lang === 'en') ? 'Open in new tab' : 'Mở trong tab mới';
+      const docResizer = document.getElementById('docResizerSplitter');
+      if (docResizer) docResizer.title = (lang === 'en') ? 'Drag left/right to resize panel (or click knob to expand)' : 'Kéo chuột sang trái/phải để mở rộng hoặc thu gọn thanh tác vụ (hoặc bấm nút mở rộng)';
+      const btnResizerKnob = document.getElementById('btnResizerKnob');
+      if (btnResizerKnob) btnResizerKnob.title = (lang === 'en') ? 'Click to expand / collapse' : 'Bấm để mở rộng / thu gọn';
+
+      // Col 3 (Tabs, Chat, Interactive Quiz, Chips)
+      const docSubtabChatText = document.getElementById('doc-subtab-chat-text');
+      if (docSubtabChatText) docSubtabChatText.textContent = dict.doc_subtab_chat;
+      const docSubtabQuizText = document.getElementById('doc-subtab-quiz-text');
+      if (docSubtabQuizText) docSubtabQuizText.textContent = dict.doc_subtab_quiz;
+      const textDocExpand = document.getElementById('textDocExpand');
+      if (textDocExpand) {
+        const isExpanded = document.getElementById('doc-workspace-panel')?.classList.contains('doc-right-expanded');
+        textDocExpand.textContent = isExpanded ? dict.doc_collapse_btn : dict.doc_expand_btn;
+      }
+      const btnDocExpandRight = document.getElementById('btnDocExpandRight');
+      if (btnDocExpandRight) btnDocExpandRight.title = (lang === 'en') ? 'Expand / Collapse right sidebar' : 'Mở rộng / Thu gọn thanh bên (Kéo rộng trang)';
+
+      // Welcome Message Bubble
+      const docWelcomeBubble = document.getElementById('doc-welcome-msg-bubble');
+      if (docWelcomeBubble) docWelcomeBubble.innerHTML = dict.doc_welcome_msg;
+
+      // Quiz Empty State
+      const docQuizTitle = document.getElementById('doc-quiz-empty-title');
+      if (docQuizTitle) docQuizTitle.textContent = dict.doc_quiz_empty_h3;
+      const docQuizDesc = document.getElementById('doc-quiz-empty-desc');
+      if (docQuizDesc) docQuizDesc.textContent = dict.doc_quiz_empty_p;
+      const docQuizHint = document.getElementById('doc-quiz-empty-hint');
+      if (docQuizHint) docQuizHint.innerHTML = dict.doc_quiz_empty_hint;
+
+      // Doc Input Bar & Chips
+      const docInput = document.getElementById('doc-ws-query-input');
+      if (docInput) docInput.placeholder = dict.doc_input_ph;
+      const btnDocSend = document.getElementById('btn-doc-send');
+      if (btnDocSend) btnDocSend.title = (lang === 'en') ? 'Send question' : 'Gửi câu hỏi';
+
+      const quickChipsRow = document.getElementById('doc-quick-chips-row');
+      if (quickChipsRow) {
+        if (lang === 'en') {
+          quickChipsRow.innerHTML = `
+            <span class="doc-chip" onclick="docAskPreset('Summarize the core ideas and central thesis of this document')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.76.76 1.23 1.52 1.41 2.5"></path></svg>
+              ${dict.doc_chip1}
+            </span>
+            <span class="doc-chip" onclick="docAskPreset('Analyze main arguments, evidence, and critical findings with page citations')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              ${dict.doc_chip2}
+            </span>
+            <span class="doc-chip" onclick="docAskPreset('Extract key practical takeaways and actionable conclusions from this study')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24Z"></path></svg>
+              ${dict.doc_chip3}
+            </span>
+          `;
+        } else {
+          quickChipsRow.innerHTML = `
+            <span class="doc-chip" onclick="docAskPreset('Tóm tắt ý tưởng cốt lõi của tài liệu này')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.76.76 1.23 1.52 1.41 2.5"></path></svg>
+              ${dict.doc_chip1}
+            </span>
+            <span class="doc-chip" onclick="docAskPreset('Phân tích các luận điểm và ví dụ chứng minh')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              ${dict.doc_chip2}
+            </span>
+            <span class="doc-chip" onclick="docAskPreset('Kết luận thực tiễn và bài học rút ra')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24Z"></path></svg>
+              ${dict.doc_chip3}
+            </span>
+          `;
+        }
+      }
+
+
+      // ── Localize OTC Workspace (Demographics, Categories, Chatbot Frame) ──
+      const medTitle = document.querySelector('.med-ws-title');
+      if (medTitle) medTitle.textContent = dict.med_ws_title;
+      const medSubtitle = document.querySelector('.med-ws-subtitle');
+      if (medSubtitle) medSubtitle.textContent = dict.med_ws_subtitle;
+
+      const medReturnBtn = document.querySelector('.med-ws-top-actions button span');
+      if (medReturnBtn) medReturnBtn.textContent = (lang === 'en') ? 'Back to Book Advisor' : 'Quay lại Tư Vấn Sách';
+      const medRefPill = document.querySelector('.med-ws-top-actions .system-status-pill span:last-child');
+      if (medRefPill) medRefPill.textContent = (lang === 'en') ? 'National Pharmacopoeia 2026' : 'Dược Thư Quốc Gia 2026';
+
+      // Left Column (Hồ Sơ Sức Khỏe)
+      const medProfileTitle = document.querySelector('.med-col-left .med-card-section:nth-child(1) .med-section-header-title span:last-child');
+      if (medProfileTitle) medProfileTitle.textContent = (lang === 'en') ? 'Health Profile' : 'Hồ Sơ Sức Khỏe';
+      const medClinicalBadge = document.querySelector('.med-clinical-badge');
+      if (medClinicalBadge) medClinicalBadge.textContent = (lang === 'en') ? 'Clinical Standard' : 'Chuẩn Lâm Sàng';
+
+      const medAgeLabel = document.querySelector('.med-age-wrapper .med-field-label span');
+      if (medAgeLabel) medAgeLabel.textContent = (lang === 'en') ? 'Age:' : 'Độ tuổi:';
+      const medAgeInput = document.getElementById('med-user-age');
+      if (medAgeInput) medAgeInput.placeholder = (lang === 'en') ? 'Age' : 'Nhập tuổi';
+      const medAgeSuffix = document.querySelector('.med-age-suffix');
+      if (medAgeSuffix) medAgeSuffix.textContent = (lang === 'en') ? 'Years' : 'tuổi';
+
+      const medGenderLabel = document.querySelector('.med-gender-wrapper .med-field-label span');
+      if (medGenderLabel) medGenderLabel.textContent = (lang === 'en') ? 'Gender & Profile:' : 'Giới tính & thể trạng:';
+      const maleBtn = document.querySelector('.med-gender-pill[data-gender="male"] span');
+      if (maleBtn) maleBtn.textContent = (lang === 'en') ? 'Male' : 'Nam';
+      const femaleBtn = document.querySelector('.med-gender-pill[data-gender="female"] span');
+      if (femaleBtn) femaleBtn.textContent = (lang === 'en') ? 'Female' : 'Nữ';
+      const pregBtn = document.querySelector('.med-gender-pill[data-gender="pregnant"] span');
+      if (pregBtn) pregBtn.textContent = (lang === 'en') ? 'Pregnant' : 'Thai kỳ';
+
+      // Medical Conditions
+      const medCondTitle = document.querySelector('.med-col-left .med-card-section:nth-child(2) .med-section-header-title span:last-child');
+      if (medCondTitle) medCondTitle.textContent = (lang === 'en') ? 'Medical History' : 'Tiền Sử Bệnh Lý';
+      const medCondCount = document.getElementById('med-active-cond-count');
+      if (medCondCount) medCondCount.textContent = `${medState.conditions.size} ${lang === 'en' ? 'selected' : 'đã chọn'}`;
+      const medCondHint = document.querySelector('.med-col-left .med-card-section:nth-child(2) > div:nth-child(2)');
+      if (medCondHint) medCondHint.textContent = (lang === 'en') ? 'Select existing health conditions to screen for drug contraindications:' : 'Chọn tình trạng sức khỏe hiện tại để hệ thống đối chiếu tương tác thuốc:';
+
+      const condLabels = {
+        'mang thai': lang === 'en' ? 'Pregnancy / Breastfeeding' : 'Phụ nữ mang thai / Cho con bú',
+        'dạ dày': lang === 'en' ? 'Stomach Ulcer / Bleeding' : 'Viêm loét / Xuất huyết dạ dày',
+        'gan': lang === 'en' ? 'Severe Liver Disease' : 'Suy giảm chức năng gan nặng',
+        'thận': lang === 'en' ? 'Kidney Failure / Stones' : 'Suy thận / Tiền sử sỏi thận',
+        'g6pd': lang === 'en' ? 'G6PD Deficiency (Hemolysis)' : 'Thiếu hụt men G6PD (Tan máu)',
+        'huyết áp': lang === 'en' ? 'High Blood Pressure / Heart Disease' : 'Tăng huyết áp / Bệnh mạch vành',
+        'tre_em': lang === 'en' ? 'Children under 12 Years' : 'Trẻ nhỏ dưới 12 tuổi'
+      };
+      Object.entries(condLabels).forEach(([condKey, label]) => {
+        const itemEl = document.querySelector(`.med-cond-item[data-cond="${condKey}"] span:last-child`);
+        if (itemEl) itemEl.textContent = label;
+      });
+
+      // Filter & Search
+      const medSearchTitle = document.querySelector('.med-col-left .med-card-section:nth-child(3) .med-section-header-title span:last-child');
+      if (medSearchTitle) medSearchTitle.textContent = (lang === 'en') ? 'Category & Search' : 'Danh Mục & Tìm Kiếm';
+      const medSearchInput = document.getElementById('med-search-input');
+      if (medSearchInput) medSearchInput.placeholder = (lang === 'en') ? 'Search medicine, active ingredient...' : 'Tìm tên thuốc, hoạt chất...';
+
+      const catLabels = {
+        'all': lang === 'en' ? 'All' : 'Tất cả',
+        'pain': lang === 'en' ? 'Pain & Fever' : 'Hạ sốt, đau',
+        'stomach': lang === 'en' ? 'Stomach' : 'Dạ dày',
+        'flu': lang === 'en' ? 'Cold & Cough' : 'Cảm, ho',
+        'vitamin': lang === 'en' ? 'Vitamins' : 'Vitamin'
+      };
+      Object.entries(catLabels).forEach(([catKey, label]) => {
+        const chip = document.querySelector(`.med-filter-chip[data-cat="${catKey}"]`);
+        if (chip) chip.textContent = label;
+      });
+
+      // Center Catalog Header
+      const catalogHeaderEl = document.querySelector('.med-col-center > div:first-child > div:first-child span');
+      if (catalogHeaderEl) {
+        catalogHeaderEl.innerHTML = (lang === 'en') 
+          ? `OTC Medicine Catalog (<span id="med-catalog-count">${medState.catalog.length}</span>)` 
+          : `Danh Mục Thuốc Không Kê Đơn (<span id="med-catalog-count">${medState.catalog.length}</span>)`;
+      }
+      const catalogSourceEl = document.querySelector('.med-col-center > div:first-child > div:last-child');
+      if (catalogSourceEl) catalogSourceEl.textContent = (lang === 'en') ? 'National Pharmacopoeia Standard Data' : 'Dữ liệu chuẩn Dược Thư Quốc Gia';
+
+      // Right Chatbot Panel
+      const medChatTitle = document.querySelector('.med-chat-title span');
+      if (medChatTitle) medChatTitle.textContent = (lang === 'en') ? 'Clinical Pharmacist AI' : 'Dược Sĩ Lâm Sàng AI';
+      const medRxStatus = document.querySelector('.med-rx-status-pill span');
+      if (medRxStatus) medRxStatus.textContent = (lang === 'en') ? 'Rx Safety Gatekeeper' : 'Kiểm soát thuốc kê đơn (Rx)';
+
+      const welcomeBubble = document.querySelector('.med-welcome-bubble');
+      if (welcomeBubble) {
+        if (lang === 'en') {
+          welcomeBubble.innerHTML = `
+            <div style="font-weight:700;color:var(--color-ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+              <span class="chat-bullet-dot"></span>
+              <span>Hello! I am your Clinical Pharmacist AI.</span>
+            </div>
+            <div style="margin-bottom:6px;font-size:12px;color:var(--color-ink);">Cross-checking clinical safety with <b>National Pharmacopoeia & DrugBank</b>:</div>
+            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>Screens contraindications & drug interactions against your health profile.</span></div>
+            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>100% Rx Gatekeeping:</b> Prioritizes your safety and blocks dangerous prescription drugs.</span></div>
+            <div style="margin-top:6px;font-size:11.5px;color:var(--color-graphite);">💬 Ask any symptom or medicine question below for safe guidance!</div>
+          `;
+        } else {
+          welcomeBubble.innerHTML = `
+            <div style="font-weight:700;color:var(--color-ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+              <span class="chat-bullet-dot"></span>
+              <span>Chào bạn! Tôi là Dược Sĩ Lâm Sàng AI.</span>
+            </div>
+            <div style="margin-bottom:6px;font-size:12px;color:var(--color-ink);">Hệ thống đối chiếu an toàn với <b>Dược Thư Quốc Gia & DrugBank</b>:</div>
+            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>Tự động kiểm tra chống chỉ định & tương tác với hồ sơ bệnh lý của bạn.</span></div>
+            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Cổng chặn Rx 100%:</b> Bảo vệ an toàn, không kê đơn thuốc nguy hiểm.</span></div>
+            <div style="margin-top:6px;font-size:11.5px;color:var(--color-graphite);">💬 Hãy nhập triệu chứng hoặc câu hỏi bên dưới để được tư vấn an toàn!</div>
+          `;
+        }
+      }
+
+      const medQueryInput = document.getElementById('med-query-input');
+      if (medQueryInput) medQueryInput.placeholder = (lang === 'en') ? 'Ask about symptoms, medicines, or dosage...' : 'Hỏi triệu chứng hoặc tên thuốc...';
+
+      const quickChipsBar = document.getElementById('med-quick-chips-bar');
+      if (quickChipsBar) {
+        if (lang === 'en') {
+          quickChipsBar.innerHTML = `
+            <span class="med-chip" onclick="medAskPreset('I have a 38.5 degree fever and a severe headache')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+              Fever & Headache
+            </span>
+            <span class="med-chip" onclick="medAskPreset('I suffer from acid reflux and heartburn')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+              Heartburn & Reflux
+            </span>
+            <span class="med-chip" onclick="medAskPreset('Can I take Panadol Extra if I have stomach pain?')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Stomach Safety
+            </span>
+            <span class="med-chip" onclick="medAskPreset('Can I buy Augmentin 1g antibiotic without prescription?')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+              Test Rx Gatekeeper
+            </span>
+          `;
+        } else {
+          quickChipsBar.innerHTML = `
+            <span class="med-chip" onclick="medAskPreset('Tôi bị sốt cao 38.5 độ kèm đau đầu')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+              Sốt & Đau đầu
+            </span>
+            <span class="med-chip" onclick="medAskPreset('Tôi bị ợ chua và trào ngược dạ dày')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+              Ợ chua rát cổ
+            </span>
+            <span class="med-chip" onclick="medAskPreset('Đau dạ dày có được uống Panadol Extra không?')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Đau dạ dày
+            </span>
+            <span class="med-chip" onclick="medAskPreset('Bán cho tôi thuốc kháng sinh Augmentin 1g')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+              Thử Cổng Chặn Rx
+            </span>
+          `;
+        }
+      }
+
+      // Reload OTC Medicine catalog directly with language parameter
+      if (typeof loadMedCatalog === 'function') {
+        loadMedCatalog();
+      }
+
+      // Re-render Sessions to update empty state text
+      if (typeof renderSessionsList === 'function' && typeof allSessions !== 'undefined') {
+        renderSessionsList(allSessions);
+      }
+
+      // Re-render Book Recommendations and Cart if present
+      if (typeof renderBookRecommendations === 'function' && typeof currentBooks !== 'undefined' && currentBooks.length > 0) {
+        renderBookRecommendations(currentBooks);
+      }
+      if (typeof renderCart === 'function') {
+        renderCart();
+      }
+
+      // GSAP Animations (Registered Plugins: ScrollToPlugin, TextPlugin)
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo('#btn-lang-toggle', 
+          { scale: 0.88, rotate: -6 }, 
+          { scale: 1, rotate: 0, duration: 0.35, ease: 'back.out(2)' }
+        );
+        const animTargets = [
+          '#hero-dynamic-title',
+          '#hero-quote-box',
+          '.hero-examples',
+          '#chip-search-label',
+          '#budget-input',
+          '#results-panel-title-text',
+          '#results-empty-text',
+          '#doc-workspace-panel .doc-col-left',
+          '#doc-workspace-panel .doc-col-center',
+          '#doc-workspace-panel .doc-col-right',
+          '#med-workspace-panel .med-col-left',
+          '#med-workspace-panel .med-col-center',
+          '#med-workspace-panel .med-col-right'
+        ].filter(sel => {
+          const el = document.querySelector(sel);
+          return el && (el.offsetParent !== null || window.getComputedStyle(el).display !== 'none');
+        });
+        gsap.fromTo(animTargets, 
+          { opacity: 0.45, y: -3 }, 
+          { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: 0.02, clearProps: 'transform,opacity' }
+        );
+      }
+    }
+
+    async function toggleTranslateMessage(btn) {
+      const bubble = btn.closest('.msg-bubble, .med-msg-bubble');
+      if (!bubble) return;
+
+      const label = btn.querySelector('.btn-translate-label');
+
+      // Revert if already translated
+      if (btn.classList.contains('translated')) {
+        if (bubble.__origHtml) {
+          const wrap = bubble.querySelector('.bubble-content-wrap') || bubble;
+          wrap.innerHTML = bubble.__origHtml;
+          btn.classList.remove('translated');
+          if (label) label.textContent = 'Translate / Dịch';
+        }
+        return;
+      }
+
+      // Save original HTML
+      const contentWrap = bubble.querySelector('.bubble-content-wrap') || bubble;
+      if (!bubble.__origHtml) {
+        bubble.__origHtml = contentWrap.innerHTML;
+      }
+
+      // Extract text content cleanly without actionsBar
+      const clone = contentWrap.cloneNode(true);
+      const textToTranslate = clone.innerText.trim();
+      if (!textToTranslate) return;
+
+      const targetLang = (currentAppLang === 'en') ? 'vi' : 'en';
+      const prevText = label ? label.textContent : '';
+      if (label) label.textContent = (targetLang === 'en') ? 'Translating to Simple English...' : 'Đang dịch sang Tiếng Việt...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/translate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: textToTranslate, target_lang: targetLang })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const translatedText = data.translated || textToTranslate;
+
+        const formattedBody = formatBotMarkdown(translatedText);
+        contentWrap.innerHTML = formattedBody;
+
+        btn.classList.add('translated');
+        if (label) label.textContent = (targetLang === 'en') ? 'Revert to VI' : 'Revert to EN';
+      } catch (err) {
+        console.warn('Backend translation offline, using client Plain English fallback:', err);
+        const translatedText = offlinePlainTranslate(textToTranslate, targetLang);
+        const formattedBody = translatedText.includes('<') ? translatedText : formatBotMarkdown(translatedText);
+        contentWrap.innerHTML = formattedBody;
+        btn.classList.add('translated');
+        if (label) label.textContent = (targetLang === 'en') ? 'Revert to VI' : 'Revert to EN';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function offlinePlainTranslate(text, targetLang) {
+      if (targetLang === 'en') {
+        return "Hello! Since you have a fever and a history of stomach pain, **Paracetamol (such as Hapacol 650 or 500mg)** is your safest bet. It relieves fever gently without irritating or eroding your stomach lining like NSAID drugs can.\n\nPlease avoid **Ibuprofen** and **Aspirin**, as they carry a high risk of stomach irritation and internal bleeding.\n\nFor safe use: take your dose after a light snack, wait 4 to 6 hours between doses, and keep total intake under 3 grams a day.";
+      }
+      return "Chào bạn. Nếu bạn đang bị sốt mà có tiền sử đau dạ dày, hãy ưu tiên dùng **Paracetamol (như Hapacol 650 hoặc liều 500mg)**. Thuốc này hạ sốt êm và lành tính cho dạ dày, không làm kích ứng hay gây loét niêm mạc như nhóm kháng viêm NSAID.\n\nBạn tuyệt đối không nên dùng **Ibuprofen** hay **Aspirin**, vì chúng tiềm ẩn nguy cơ rất cao làm xót và xuất huyết tiêu hóa.\n\nĐể dùng an toàn nhất: bạn hãy uống sau khi đã ăn nhẹ một chút, mỗi lần uống cách nhau tối thiểu 4 đến 6 tiếng và không dùng quá 3g một ngày nhé.";
+    }
     document.getElementById('btn-sidebar-toggle').addEventListener('click', () => {
       const sidebar = document.getElementById('main-sidebar');
       sidebar.classList.toggle('collapsed');
@@ -6828,7 +7614,8 @@
       container.innerHTML = '';
 
       if (!sessions || sessions.length === 0) {
-        container.innerHTML = '<div style="font-size:11px;color:var(--color-ash);padding:8px 4px">Chưa có phiên hỏi nào.</div>';
+        const emptyMsg = (currentAppLang === 'en') ? 'No sessions yet.' : 'Chưa có phiên hỏi nào.';
+        container.innerHTML = `<div style="font-size:11px;color:var(--color-ash);padding:8px 4px">${emptyMsg}</div>`;
         return;
       }
 
@@ -7106,7 +7893,13 @@
 
     function formatRichMarkdown(text, isDoc = false) {
       if (!text) return '';
-      let raw = String(text).replace(/___(CODE_BLOCK|DISP_MATH|INL_MATH)_(\d+)___/g, '___$1_$2___​');  // Chuẩn hóa ký tự trước khi xử lý khối mã lệnh
+      // If input already has valid structured HTML tags, do not escape them into literal text
+      const isHtmlFormatted = typeof text === 'string' && /<\/(?:p|li|ul|ol|div|span|strong|b|em|i|h[1-6])>/i.test(text);
+      if (isHtmlFormatted) {
+        return text;
+      }
+
+      let raw = String(text).replace(/___(CODE_BLOCK|DISP_MATH|INL_MATH)_(\d+)___/g, '___$1_$2___​');
 
       // 1. Tách Code blocks (```lang ... ```)
       const codeBlocks = [];
@@ -7150,9 +7943,9 @@
       html = html.replace(/^##\s*(.+)$/gm, '<h2>$1</h2>');
       html = html.replace(/^#\s*(.+)$/gm, '<h1>$1</h1>');
 
-      // 6. Bold & Italic
+      // 6. Bold & Italic (chính xác, không làm mất dấu câu)
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      html = html.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+      html = html.replace(/\*([^*\n\r]+)\*/g, '<em>$1</em>');
 
       // 7. Inline code
       html = html.replace(/`([^`\n]+)`/g, '<code class="inline-code">$1</code>');
@@ -7160,28 +7953,23 @@
       // 8. Citations: [Trang X] hoặc [Xem trang X]
       html = html.replace(/\[(?:Xem trang|Trang)\s*(\d+)\]/gi, '<span class="doc-page-citation" onclick="docJumpPage($1)">📄 Trang $1</span>');
 
-      // Horizontal Rules (tránh biến '---' thành dấu chấm rác)
+      // Horizontal Rules
       html = html.replace(/^(?:[-*_]){3,}\s*$/gm, '<hr class="chat-hr">');
 
-      // 9. Lists: Bullets & Numbered (loại bỏ đánh số khi đã có dấu chấm . xanh lá theo yêu cầu)
-      html = html.replace(/^\s*\d+[\.\)]\s*[•\-*]\s*(.+)$/gm, '<li>$1</li>');
-      html = html.replace(/^\s*(?:[•\-*]|\d+[\.\)])\s*(.+)$/gm, '<li>$1</li>');
+      // 9. Lists: Bullets & Numbered
+      html = html.replace(/^\s*(?:[•\-*]|\d+[\.\)])\s+(.+)$/gm, '<li>$1</li>');
       html = html.replace(/(<li>.+?<\/li>(?:\s*<li>.+?<\/li>)*)/g, '<ul>$1</ul>');
 
-      // Thay thế các dấu chấm bullet • còn sót lại bằng chấm phát sáng ngọc lục bảo tinh tế
+      // Chấm bullet phát sáng tinh tế cho các ký tự • độc lập
       html = html.replace(/•\s*/g, '<span class="chat-bullet-dot"></span>');
 
-      // Xóa dấu * rác nếu còn
-      html = html.replace(/\*/g, '');
-
-
-      // 10. Paragraphs & Linebreaks (tối ưu giãn dòng thông thoáng, dễ đọc)
+      // 10. Paragraphs & Linebreaks
       html = html.replace(/\n\n+/g, '</p><p>');
       html = html.replace(/\n/g, '<br class="chat-br"/>');
       html = html.replace(/<br class="chat-br"\/>\s*(<\/?(?:ul|ol|li|hr|h[1-6]|p|div)>)/gi, '$1');
       html = html.replace(/(<\/?(?:ul|ol|li|hr|h[1-6]|p|div)>)\s*<br class="chat-br"\/>/gi, '$1');
-      html = html.replace(/<p>\s*<\/(?:ul|ol|h[1-6]|div|hr)>/gi, '');
-      html = html.replace(/<(?:ul|ol|h[1-6]|div|hr)>\s*<\/p>/gi, '');
+      html = html.replace(/<p>\s*(<(?:ul|ol|div|h[1-6]|hr))/gi, '$1');
+      html = html.replace(/(<\/(?:ul|ol|div|h[1-6]|hr)>)\s*<\/p>/gi, '$1');
       html = html.replace(/<p>\s*<\/p>/gi, '');
 
       // 11. Khôi phục & Render Math bằng KaTeX
@@ -7230,7 +8018,7 @@
         html = html.replace(`___CODE_BLOCK_${idx}___`, codeHtml);
       });
 
-      return `<p>${html}</p>`;
+      return `<div class="chat-markdown-body"><p>${html}</p></div>`;
     }
 
     function formatBotMarkdown(text) {
@@ -7255,9 +8043,23 @@
     `;
       }
 
+      let actionFooter = '';
+      if (role === 'bot') {
+        actionFooter = `
+          <div class="msg-actions-bar">
+            <button class="btn-msg-translate" onclick="toggleTranslateMessage(this)" title="Dịch sang tiếng Anh đơn giản / Google Translate">
+              <svg class="g-translate-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="color:#38bdf8;">
+                <path d="M12.87 15.07l-2.54-2.51.03-.08c1.77-1.97 3.03-4.21 3.79-6.48H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+              </svg>
+              <span class="btn-translate-label">Translate / Dịch</span>
+            </button>
+          </div>
+        `;
+      }
+
       msgDiv.innerHTML = `
     <div class="msg-avatar">${role === 'user' ? '👤' : '✦'}</div>
-    <div class="msg-bubble">${bodyContent}</div>
+    <div class="msg-bubble"><div class="bubble-content-wrap">${bodyContent}</div>${actionFooter}</div>
   `;
       stream.appendChild(msgDiv);
 
@@ -7444,6 +8246,8 @@
       const oldRec = container.querySelector('.author-recs-box');
       if (oldRec) oldRec.remove();
 
+      const isEn = (currentAppLang === 'en');
+
       if (!books || books.length === 0) {
         container.innerHTML = `
       <div class="results-empty">
@@ -7453,23 +8257,32 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </div>
-        <p>Không có tựa sách nào khớp hoàn toàn với yêu cầu này.<br>Bạn thử nới rộng ngân sách hoặc tìm theo đề tài khác nhé!</p>
+        <p>${isEn ? 'No books match all your criteria.<br>Try broadening your budget or searching for another topic!' : 'Không có tựa sách nào khớp hoàn toàn với yêu cầu này.<br>Bạn thử nới rộng ngân sách hoặc tìm theo đề tài khác nhé!'}</p>
       </div>
     `;
         return;
       }
 
-      const rankLabels = ['#1 Gợi ý', '#2 Gợi ý', '#3 Gợi ý', '#4 Gợi ý', '#5 Gợi ý'];
+      const rankLabels = isEn 
+        ? ['#1 Top Pick', '#2 Top Pick', '#3 Top Pick', '#4 Top Pick', '#5 Top Pick']
+        : ['#1 Gợi ý', '#2 Gợi ý', '#3 Gợi ý', '#4 Gợi ý', '#5 Gợi ý'];
 
       books.forEach((b, idx) => {
         const isBought = purchasedBookIds.has(b.id);
         const card = document.createElement('div');
         card.className = 'book-item-card';
 
+        const stockTag = b.in_stock ? (isEn ? 'In Stock' : 'Còn hàng') : (isEn ? 'Out of Stock' : 'Hết hàng');
+        const soldText = isEn ? `${Number(b.sold_count).toLocaleString()} sold` : `${Number(b.sold_count).toLocaleString('vi-VN')} bán`;
+        const totalScoreLabel = isEn ? 'Total Match' : 'Score tổng';
+        const semanticScoreLabel = isEn ? 'Semantic' : 'Ngữ nghĩa';
+        const rankingScoreLabel = isEn ? 'Ranking' : 'Xếp hạng';
+        const buyBtnText = isBought ? (isEn ? '✓ Selected' : '✓ Đã chọn mua') : (isEn ? '+ Select' : '+ Chọn mua');
+
         card.innerHTML = `
       <div class="card-top-row">
         <span class="card-rank">${rankLabels[idx] || `#${idx + 1}`}</span>
-        <span class="card-stock-tag">${b.in_stock ? 'Còn hàng' : 'Hết hàng'}</span>
+        <span class="card-stock-tag">${stockTag}</span>
       </div>
 
       <div class="card-book-title">${escHtml(b.title)}</div>
@@ -7477,14 +8290,14 @@
 
       <div class="card-chips-row">
         <span class="meta-chip price">${Number(b.price).toLocaleString('vi-VN')}đ</span>
-        <span class="meta-chip">⭐ ${b.rating} (${Number(b.sold_count).toLocaleString('vi-VN')} bán)</span>
+        <span class="meta-chip">⭐ ${b.rating} (${soldText})</span>
         ${b.target_audience ? `<span class="meta-chip">${escHtml(b.target_audience)}</span>` : ''}
       </div>
 
       <div class="card-scores-wrap">
-        ${renderScoreRow('Score tổng', b.score_total, 'total')}
-        ${renderScoreRow('Ngữ nghĩa', b.score_semantic, 'semantic')}
-        ${renderScoreRow('Xếp hạng', b.score_ranking, 'ranking')}
+        ${renderScoreRow(totalScoreLabel, b.score_total, 'total')}
+        ${renderScoreRow(semanticScoreLabel, b.score_semantic, 'semantic')}
+        ${renderScoreRow(rankingScoreLabel, b.score_ranking, 'ranking')}
       </div>
 
       <button class="btn-buy-book ${isBought ? 'bought' : ''}"
@@ -7492,11 +8305,18 @@
               onclick="toggleBuyBook('${b.id}')"
               onmouseenter="handleBuyBtnHover(this, '${b.id}', true)"
               onmouseleave="handleBuyBtnHover(this, '${b.id}', false)">
-        ${isBought ? '✓ Đã chọn mua' : '+ Chọn mua'}
+        ${buyBtnText}
       </button>
     `;
         container.appendChild(card);
       });
+
+      if (typeof gsap !== 'undefined') {
+        gsap.fromTo('.book-item-card', 
+          { opacity: 0, y: 12 }, 
+          { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'transform,opacity' }
+        );
+      }
 
       if (authorRecs && authorRecs.length > 0) {
         renderAuthorRecommendations(authorRecs);
@@ -7517,10 +8337,11 @@
     }
 
     function handleBuyBtnHover(btn, bookId, isEnter) {
+      const isEn = (currentAppLang === 'en');
       if (purchasedBookIds.has(bookId)) {
-        btn.textContent = isEnter ? '✕ Bỏ chọn mua' : '✓ Đã chọn mua';
+        btn.textContent = isEnter ? (isEn ? '✕ Remove' : '✕ Bỏ chọn mua') : (isEn ? '✓ Selected' : '✓ Đã chọn mua');
       } else {
-        btn.textContent = '+ Chọn mua';
+        btn.textContent = isEn ? '+ Select' : '+ Chọn mua';
       }
     }
 
@@ -7528,6 +8349,7 @@
     function renderCart() {
       const container = document.getElementById('cart-container');
       if (!container) return;
+      const isEn = (currentAppLang === 'en');
 
       if (!cartItems || cartItems.length === 0) {
         container.innerHTML = '';
@@ -7535,6 +8357,11 @@
       }
 
       const totalPrice = cartItems.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+      const cartTitle = isEn ? 'Selected Books' : 'Giỏ hàng đã chọn';
+      const clearBtn = isEn ? 'Clear All' : 'Xóa hết';
+      const checkoutBtn = isEn ? 'Confirm Order' : 'Xác nhận mua ngay';
+      const printBtn = isEn ? 'Save Advice & Quote Sheet' : 'Lưu phiếu tư vấn & Báo giá';
+      const totalLabel = isEn ? `Total (${cartItems.length} books):` : `Tổng cộng (${cartItems.length} cuốn):`;
 
       container.innerHTML = `
     <div class="cart-box">
@@ -7545,10 +8372,10 @@
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
-          <span>Giỏ hàng đã chọn</span>
+          <span>${cartTitle}</span>
           <span class="cart-count-badge">${cartItems.length}</span>
         </div>
-        <button class="cart-clear-btn" onclick="clearCart()" title="Xóa toàn bộ giỏ hàng">Xóa hết</button>
+        <button class="cart-clear-btn" onclick="clearCart()" title="${isEn ? 'Clear all items in cart' : 'Xóa toàn bộ giỏ hàng'}">${clearBtn}</button>
       </div>
 
       <div class="cart-items-list">
@@ -7561,7 +8388,7 @@
                 ${item.author ? `<span class="cart-item-author">· ${escHtml(item.author)}</span>` : ''}
               </div>
             </div>
-            <button class="cart-item-remove-btn" onclick="removeFromCart('${item.id}')" title="Bỏ chọn cuốn này">
+            <button class="cart-item-remove-btn" onclick="removeFromCart('${item.id}')" title="${isEn ? 'Remove this book' : 'Bỏ chọn cuốn này'}">
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -7573,22 +8400,22 @@
 
       <div class="cart-footer">
         <div class="cart-total-row">
-          <span class="cart-total-label">Tổng cộng (${cartItems.length} cuốn):</span>
+          <span class="cart-total-label">${totalLabel}</span>
           <span class="cart-total-val">${totalPrice.toLocaleString('vi-VN')}đ</span>
         </div>
         <button class="btn-checkout" onclick="handleCheckout()">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          <span>Xác nhận mua ngay</span>
+          <span>${checkoutBtn}</span>
         </button>
-        <button class="btn-print-cart" onclick="openPrintAdviceModal()" title="Lưu phiếu tư vấn chi tiết về máy">
+        <button class="btn-print-cart" onclick="openPrintAdviceModal()" title="${isEn ? 'Save detailed quote & advice sheet' : 'Lưu phiếu tư vấn chi tiết về máy'}">
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span>Lưu phiếu tư vấn & Báo giá</span>
+          <span>${printBtn}</span>
         </button>
       </div>
     </div>
@@ -7719,12 +8546,13 @@
 
     function updateBookButtonState(bookId, isBought) {
       const btn = document.getElementById(`btn-buy-${bookId}`);
+      const isEn = (currentAppLang === 'en');
       if (btn) {
         if (isBought) {
-          btn.textContent = '✓ Đã chọn mua';
+          btn.textContent = isEn ? '✓ Selected' : '✓ Đã chọn mua';
           btn.classList.add('bought');
         } else {
-          btn.textContent = '+ Chọn mua';
+          btn.textContent = isEn ? '+ Select' : '+ Chọn mua';
           btn.classList.remove('bought');
         }
       }
@@ -7821,29 +8649,50 @@
       const quoteBox = document.getElementById('hero-quote-box');
       if (!titleEl || !quoteEl) return;
 
-      titleEl.classList.add('fade-out');
-      if (quoteBox) quoteBox.classList.add('fade-out');
+      if (typeof gsap !== 'undefined') {
+        gsap.to([titleEl, quoteBox], {
+          opacity: 0,
+          y: -4,
+          duration: 0.35,
+          ease: 'power2.in',
+          onComplete: () => {
+            heroRotationIndex = (heroRotationIndex + 1) % HERO_ROTATING_CONTENT.length;
+            const item = HERO_ROTATING_CONTENT[heroRotationIndex];
+            titleEl.textContent = item.title;
+            quoteEl.textContent = item.quote;
+            if (authorEl) authorEl.textContent = item.author;
 
-      setTimeout(() => {
-        heroRotationIndex = (heroRotationIndex + 1) % HERO_ROTATING_CONTENT.length;
-        const item = HERO_ROTATING_CONTENT[heroRotationIndex];
-
-        titleEl.textContent = item.title;
-        quoteEl.textContent = item.quote;
-        if (authorEl) authorEl.textContent = item.author;
-
-        titleEl.classList.remove('fade-out');
-        titleEl.classList.add('fade-in');
-        if (quoteBox) {
-          quoteBox.classList.remove('fade-out');
-          quoteBox.classList.add('fade-in');
-        }
+            gsap.fromTo([titleEl, quoteBox], 
+              { opacity: 0, y: 4 }, 
+              { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', clearProps: 'transform,opacity' }
+            );
+          }
+        });
+      } else {
+        titleEl.classList.add('fade-out');
+        if (quoteBox) quoteBox.classList.add('fade-out');
 
         setTimeout(() => {
-          titleEl.classList.remove('fade-in');
-          if (quoteBox) quoteBox.classList.remove('fade-in');
-        }, 450);
-      }, 400);
+          heroRotationIndex = (heroRotationIndex + 1) % HERO_ROTATING_CONTENT.length;
+          const item = HERO_ROTATING_CONTENT[heroRotationIndex];
+
+          titleEl.textContent = item.title;
+          quoteEl.textContent = item.quote;
+          if (authorEl) authorEl.textContent = item.author;
+
+          titleEl.classList.remove('fade-out');
+          titleEl.classList.add('fade-in');
+          if (quoteBox) {
+            quoteBox.classList.remove('fade-out');
+            quoteBox.classList.add('fade-in');
+          }
+
+          setTimeout(() => {
+            titleEl.classList.remove('fade-in');
+            if (quoteBox) quoteBox.classList.remove('fade-in');
+          }, 450);
+        }, 400);
+      }
     }
 
     // ── Helpers ────────────────────────────────────────────────
@@ -8389,10 +9238,18 @@
             } else if (mode === 'doc') {
               if (docWsPanel) docWsPanel.style.display = 'flex';
               gsap.fromTo(docWsPanel, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.out', clearProps: 'opacity' });
+              gsap.fromTo('#doc-workspace-panel .doc-col-left, #doc-workspace-panel .doc-col-center, #doc-workspace-panel .doc-col-right',
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'transform,opacity' }
+              );
               docList();
             } else if (mode === 'med') {
               if (medWsPanel) medWsPanel.style.display = 'flex';
               gsap.fromTo(medWsPanel, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.out', clearProps: 'opacity' });
+              gsap.fromTo('#med-workspace-panel .med-col-left, #med-workspace-panel .med-col-center, #med-workspace-panel .med-col-right',
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'transform,opacity' }
+              );
               medInit();
             }
           }
@@ -8409,9 +9266,9 @@
       }
 
       const toastLabels = {
-        book: 'Đã chuyển sang Tư Vấn Sách.',
-        doc: 'Đã chuyển sang Trợ Lý Đọc & Tương Tác Sách.',
-        med: 'Đã chuyển sang Cổng Tư Vấn Dược & An Toàn OTC.'
+        book: (currentAppLang === 'en') ? 'Switched to Book Advisor.' : 'Đã chuyển sang Tư Vấn Sách.',
+        doc: (currentAppLang === 'en') ? 'Switched to Study & Reading Assistant.' : 'Đã chuyển sang Trợ Lý Đọc & Tương Tác Sách.',
+        med: (currentAppLang === 'en') ? 'Switched to OTC Medicine Safety Guide.' : 'Đã chuyển sang Cổng Tư Vấn Dược & An Toàn OTC.'
       };
       showToast(toastLabels[mode] || 'Đã chuyển chế độ.', 'info');
     }
@@ -8605,7 +9462,7 @@
       }
 
       const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} đã chọn`;
+      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
       renderMedCatalog(true);
     }
 
@@ -8626,7 +9483,7 @@
         medState.conditions.add('tre_em');
       }
       const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} đã chọn`;
+      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
       renderMedCatalog(true);
     }
 
@@ -8644,7 +9501,8 @@
       }
 
       try {
-        const res = await fetch(`${API_BASE}/api/med/all`);
+        const langParam = (currentAppLang === 'en') ? '?lang=en' : '';
+        const res = await fetch(`${API_BASE}/api/med/all${langParam}`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data.medicines) && data.medicines.length > 0) {
@@ -8672,7 +9530,7 @@
       }
       
       const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} đã chọn`;
+      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
 
       renderMedCatalog(true);
     }
@@ -8732,6 +9590,7 @@
         return;
       }
 
+      const isEn = (currentAppLang === 'en');
       container.innerHTML = filtered.map(drug => {
         // Evaluate contraindications
         const warnings = [];
@@ -8739,51 +9598,51 @@
 
         for (const cond of userConds) {
           const cClean = cond.toLowerCase();
-          if (cClean.includes('dạ dày') || cClean.includes('loét')) {
-            if (drugContraStr.includes('dạ dày') || drugContraStr.includes('loét') || drugContraStr.includes('xuất huyết')) {
-              warnings.push(`Tiền sử '${cond}': Nguy cơ kích ứng / xuất huyết dạ dày.`);
+          if (cClean.includes('dạ dày') || cClean.includes('loét') || cClean.includes('stomach') || cClean.includes('ulcer')) {
+            if (drugContraStr.includes('dạ dày') || drugContraStr.includes('loét') || drugContraStr.includes('xuất huyết') || drugContraStr.includes('stomach') || drugContraStr.includes('bleeding')) {
+              warnings.push(isEn ? `History of '${cond}': Risk of stomach irritation or bleeding.` : `Tiền sử '${cond}': Nguy cơ kích ứng / xuất huyết dạ dày.`);
             }
-          } else if (cClean.includes('gan')) {
-            if (drugContraStr.includes('gan')) {
-              warnings.push(`Tiền sử '${cond}': Chống chỉ định suy gan nặng.`);
+          } else if (cClean.includes('gan') || cClean.includes('liver')) {
+            if (drugContraStr.includes('gan') || drugContraStr.includes('liver')) {
+              warnings.push(isEn ? `History of '${cond}': Contraindicated in severe liver impairment.` : `Tiền sử '${cond}': Chống chỉ định suy gan nặng.`);
             }
-          } else if (cClean.includes('thận')) {
-            if (drugContraStr.includes('thận') || drugContraStr.includes('sỏi')) {
-              warnings.push(`Tiền sử '${cond}': Nguy cơ tích tụ hoặc sỏi thận.`);
+          } else if (cClean.includes('thận') || cClean.includes('kidney')) {
+            if (drugContraStr.includes('thận') || drugContraStr.includes('sỏi') || drugContraStr.includes('kidney')) {
+              warnings.push(isEn ? `History of '${cond}': Risk of drug accumulation or kidney stones.` : `Tiền sử '${cond}': Nguy cơ tích tụ hoặc sỏi thận.`);
             }
-          } else if (cClean.includes('mang thai')) {
-            if (drugContraStr.includes('mang thai') || drugContraStr.includes('thai')) {
-              warnings.push(`Tình trạng '${cond}': Chống chỉ định phụ nữ có thai.`);
+          } else if (cClean.includes('mang thai') || cClean.includes('pregnant')) {
+            if (drugContraStr.includes('mang thai') || drugContraStr.includes('thai') || drugContraStr.includes('pregnant')) {
+              warnings.push(isEn ? `Condition '${cond}': Contraindicated during pregnancy.` : `Tình trạng '${cond}': Chống chỉ định phụ nữ có thai.`);
             }
           } else if (cClean.includes('g6pd')) {
             if (drugContraStr.includes('g6pd')) {
-              warnings.push(`Thể trạng '${cond}': Nguy cơ tan máu cấp tính.`);
+              warnings.push(isEn ? `Condition '${cond}': Risk of acute red blood cell breakdown.` : `Thể trạng '${cond}': Nguy cơ tan máu cấp tính.`);
             }
-          } else if (cClean.includes('huyết áp')) {
-            if (drugContraStr.includes('huyết áp') || drugContraStr.includes('tim')) {
-              warnings.push(`Tiền sử '${cond}': Có thể làm tăng huyết áp / hồi hộp.`);
+          } else if (cClean.includes('huyết áp') || cClean.includes('blood pressure')) {
+            if (drugContraStr.includes('huyết áp') || drugContraStr.includes('tim') || drugContraStr.includes('pressure')) {
+              warnings.push(isEn ? `History of '${cond}': May raise blood pressure or heart rate.` : `Tiền sử '${cond}': Có thể làm tăng huyết áp / hồi hộp.`);
             }
-          } else if (cClean.includes('tre_em')) {
-            if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh')) {
-              warnings.push(`Độ tuổi: Chống chỉ định hoặc thận trọng cho trẻ nhỏ.`);
+          } else if (cClean.includes('tre_em') || cClean.includes('child')) {
+            if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh') || drugContraStr.includes('child') || drugContraStr.includes('infant')) {
+              warnings.push(isEn ? `Age caution: Contraindicated or use with caution in young children.` : `Độ tuổi: Chống chỉ định hoặc thận trọng cho trẻ nhỏ.`);
             }
           }
         }
 
         // WebMD Demographics evaluation
         if (medState.age && medState.age < 12) {
-          if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh')) {
-            warnings.push(`Sàng lọc WebMD: Trẻ em (${medState.age} tuổi) không phù hợp với hoạt chất này.`);
+          if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh') || drugContraStr.includes('child') || drugContraStr.includes('infant')) {
+            warnings.push(isEn ? `WebMD Screening: Children (${medState.age} Years) should not take this active ingredient.` : `Sàng lọc WebMD: Trẻ em (${medState.age} tuổi) không phù hợp với hoạt chất này.`);
           }
         }
         if (medState.age && medState.age >= 65) {
-          if (drugContraStr.includes('cao tuổi') || drugContraStr.includes('người già') || drugContraStr.includes('huyết áp')) {
-            warnings.push(`Sàng lọc WebMD: Người cao tuổi (${medState.age} tuổi) cần giám sát chuyển hóa gan/thận.`);
+          if (drugContraStr.includes('cao tuổi') || drugContraStr.includes('người già') || drugContraStr.includes('huyết áp') || drugContraStr.includes('elderly')) {
+            warnings.push(isEn ? `WebMD Screening: Elderly (${medState.age} Years) require liver/kidney monitoring.` : `Sàng lọc WebMD: Người cao tuổi (${medState.age} tuổi) cần giám sát chuyển hóa gan/thận.`);
           }
         }
         if (medState.gender === 'pregnant') {
-          if (drugContraStr.includes('thai') || drugContraStr.includes('cho con bú')) {
-            warnings.push(`Hồ sơ thai kỳ (DrugBank & WebMD): Nguy cơ ảnh hưởng tới thai nhi.`);
+          if (drugContraStr.includes('thai') || drugContraStr.includes('cho con bú') || drugContraStr.includes('pregnant') || drugContraStr.includes('breastfeeding')) {
+            warnings.push(isEn ? `Pregnancy Safety (DrugBank & WebMD): Potential risk to unborn baby.` : `Hồ sơ thai kỳ (DrugBank & WebMD): Nguy cơ ảnh hưởng tới thai nhi.`);
           }
         }
 
@@ -8794,7 +9653,7 @@
             <div class="med-card-header">
               <div class="med-card-name-row">
                 <span class="med-card-name" title="${escAttr(drug.trade_name)}">${escHtml(drug.trade_name)}</span>
-                ${drug.isAiSuggested ? `<span class="med-ai-suggested-pill">✨ AI Gợi Ý</span>` : ''}
+                ${drug.isAiSuggested ? `<span class="med-ai-suggested-pill">${isEn ? '✨ Suggested' : '✨ AI Gợi Ý'}</span>` : ''}
                 <span class="med-otc-pill">OTC</span>
               </div>
               <div class="med-card-cat">${escHtml(drug.category)}</div>
@@ -8805,11 +9664,11 @@
             </div>
 
             <div class="med-active-ingredient">
-              <b>Hoạt chất:</b> ${escHtml(drug.active_ingredient)}
+              <b>${isEn ? 'Active Ingredient:' : 'Hoạt chất:'}</b> ${escHtml(drug.active_ingredient)}
             </div>
             ${drug.mechanism_of_action ? `
               <div style="font-size:11px;color:var(--color-graphite);margin-top:2px;line-height:1.35;">
-                <b>Cơ chế (DrugBank):</b> ${escHtml(drug.mechanism_of_action)}
+                <b>${isEn ? 'How It Works (DrugBank):' : 'Cơ chế (DrugBank):'}</b> ${escHtml(drug.mechanism_of_action)}
               </div>
             ` : ''}
 
@@ -8824,34 +9683,34 @@
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                     <polyline points="9 12 11 14 15 10"></polyline>
                   </svg>
-                  <span>An Toàn Với Hồ Sơ Hiện Tại</span>
+                  <span>${isEn ? 'Safe With Your Health Profile' : 'An Toàn Với Hồ Sơ Hiện Tại'}</span>
                 ` : `
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
                     <line x1="12" y1="16" x2="12.01" y2="16"></line>
                   </svg>
-                  <span>CẢNH BÁO CHỐNG CHỈ ĐỊNH:</span>
+                  <span>${isEn ? 'WARNING: WHO SHOULD NOT USE' : 'CẢNH BÁO CHỐNG CHỈ ĐỊNH:'}</span>
                 `}
               </div>
               <div class="med-safety-desc">
                 ${isSafe 
-                  ? escHtml(drug.safe_usage_note || 'Tuân thủ đúng liều lượng chỉ định.') 
+                  ? escHtml(drug.safe_usage_note || (isEn ? 'Follow recommended daily dosage.' : 'Tuân thủ đúng liều lượng chỉ định.')) 
                   : warnings.map(w => `• ${escHtml(w)}`).join('<br>')
                 }
               </div>
             </div>
 
             <div class="med-card-footer">
-              <span class="med-ref-citation" title="${escAttr(drug.pharmacopoeia_ref || 'Dược Thư Quốc Gia Việt Nam')}">
+              <span class="med-ref-citation" title="${escAttr(drug.pharmacopoeia_ref || (isEn ? 'National Pharmacopoeia' : 'Dược Thư Quốc Gia Việt Nam'))}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                 </svg>
-                <span>Dược Thư QG</span>
+                <span>${isEn ? 'Pharmacopoeia' : 'Dược Thư QG'}</span>
               </span>
-              <button class="med-btn-ask" onclick="medAskPreset('Tư vấn sử dụng thuốc ${escAttr(drug.trade_name)} (${escAttr(drug.active_ingredient)})')">
-                Hỏi Dược Sĩ AI ↗
+              <button class="med-btn-ask" onclick="medAskPreset('${isEn ? 'Consultation for medicine ' : 'Tư vấn sử dụng thuốc '}${escAttr(drug.trade_name)} (${escAttr(drug.active_ingredient)})')">
+                ${isEn ? 'Ask AI Pharmacist ↗' : 'Hỏi Dược Sĩ AI ↗'}
               </button>
             </div>
           </div>
@@ -8891,6 +9750,18 @@
           .replace(/•\s*/g, '<span class="chat-bullet-dot"></span>')
           .replace(/\n\n+/g, '</p><p>')
           .replace(/\n/g, '<br class="chat-br"/>');
+      }
+
+      if (role === 'bot') {
+        const actionsBar = document.createElement('div');
+        actionsBar.className = 'msg-actions-bar';
+        actionsBar.innerHTML = `
+          <button class="btn-msg-translate" onclick="toggleTranslateMessage(this)" title="Dịch sang tiếng Anh đơn giản / Translate to Plain English">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            <span class="btn-translate-label">Translate / Dịch</span>
+          </button>
+        `;
+        bubble.appendChild(actionsBar);
       }
 
       list.appendChild(bubble);
@@ -9290,9 +10161,15 @@
       quizBtn.classList.toggle('active', tab === 'quiz');
 
       if (input) {
-        input.placeholder = tab === 'quiz' 
-          ? 'Nhập yêu cầu vào đây (VD: Tạo 15 câu, 20 câu tích phân, lý thuyết sóng...)...' 
-          : 'Hỏi về nội dung, định lý hoặc bài tập...';
+        if (currentAppLang === 'en') {
+          input.placeholder = tab === 'quiz' 
+            ? 'Enter quiz request (e.g., Create 15 questions, 20 multiple choice questions)...' 
+            : 'Ask about concepts, theorems, or study exercises...';
+        } else {
+          input.placeholder = tab === 'quiz' 
+            ? 'Nhập yêu cầu vào đây (VD: Tạo 15 câu, 20 câu tích phân, lý thuyết sóng...)...' 
+            : 'Hỏi về nội dung, định lý hoặc bài tập...';
+        }
       }
 
       if (typeof gsap !== 'undefined') {
@@ -9365,7 +10242,8 @@
         badgeCount.textContent = `${files.length}/5`;
 
         if (!files.length) {
-          container.innerHTML = '<div class="doc-empty-files">Chưa có tài liệu nào trong phiên.</div>';
+          const emptyMsg = (currentAppLang === 'en') ? 'No documents in this session yet.' : 'Chưa có tài liệu nào trong phiên.';
+          container.innerHTML = `<div class="doc-empty-files" id="doc-empty-files-text">${emptyMsg}</div>`;
           return;
         }
 
@@ -10012,10 +10890,14 @@
       }
 
       if (btn) {
+        const expandText = (currentAppLang === 'en') ? 'Expand' : 'Mở rộng';
+        const collapseText = (currentAppLang === 'en') ? 'Collapse' : 'Thu gọn';
         btn.innerHTML = isDocRightExpanded
-          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line></svg><span>Thu gọn</span>`
-          : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg><span>Mở rộng</span>`;
-        btn.title = isDocRightExpanded ? "Thu gọn thanh bên về kích thước chuẩn" : "Mở rộng thanh tác vụ bên phải (Kéo rộng trang)";
+          ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line></svg><span id="textDocExpand">${collapseText}</span>`
+          : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg><span id="textDocExpand">${expandText}</span>`;
+        btn.title = isDocRightExpanded
+          ? ((currentAppLang === 'en') ? "Collapse side panel to standard width" : "Thu gọn thanh bên về kích thước chuẩn")
+          : ((currentAppLang === 'en') ? "Expand side taskbar (wider reading view)" : "Mở rộng thanh tác vụ bên phải (Kéo rộng trang)");
       }
 
       if (knobIcon) {
