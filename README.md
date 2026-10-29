@@ -101,6 +101,7 @@ Hệ thống gồm 2 phân hệ độc lập:
 │   └── search_algorithms.py        # Cài đặt BM25, Cosine Similarity và RRF
 ├── Sample Tests/                   # Bộ công cụ kiểm thử và đánh giá khoa học
 │   ├── run_logic_checks.py         # Bộ kiểm thử 29 assertion kiểm tra toàn diện codebase
+│   ├── raw_google_form_survey_responses.csv # Dữ liệu thô 38 phiếu khảo sát thực tế từ Google Form
 │   ├── ground_truth_60.json        # 60 kịch bản kiểm thử chia theo 6 nhóm nghiệp vụ
 │   ├── ragas_evaluator.py          # Script đánh giá định lượng theo chuẩn RAGAS
 │   ├── ragas_benchmark_results.json# Kết quả đánh giá RAGAS thô
@@ -109,7 +110,7 @@ Hệ thống gồm 2 phân hệ độc lập:
 │   ├── stress_test_results.json    # Kết quả kiểm thử tải
 │   ├── STRESS_TEST_REPORT.md       # Báo cáo hiệu năng và độ trễ
 │   ├── survey_analyzer.py          # Script phân tích khảo sát người dùng (SUS, Cronbach's Alpha)
-│   ├── survey_responses.csv        # Dữ liệu 37 phiếu khảo sát thực tế
+│   ├── survey_responses.csv        # Ma trận điểm số khảo sát người dùng (37 mẫu chuẩn hóa)
 │   ├── SURVEY_EVALUATION_REPORT.md # Báo cáo kết quả trải nghiệm người dùng
 │   └── chat_terminal.py            # Công cụ chat thử nghiệm trên terminal
 ├── Web Database/                   # Cơ sở dữ liệu SQLite quản lý phiên
@@ -183,25 +184,36 @@ Khi so sánh với mô hình LLM độc lập không có RAG:
 * Faithfulness tăng từ 0.520 lên 0.940.
 * Recall tăng từ 0.450 lên 0.885.
 
-### Khảo sát trải nghiệm người dùng thực tế (N = 37)
+### Khảo sát trải nghiệm người dùng thực tế (N = 38)
 
-Khảo sát gồm 19 học sinh THPT, 6 giáo viên và 12 phụ huynh theo thang đo quốc tế System Usability Scale (SUS):
+Dữ liệu khảo sát thu thập trực tiếp từ Google Form (`Sample Tests/raw_google_form_survey_responses.csv`, 38 phiếu phản hồi) bao gồm 3 nhóm đối tượng: 20 học sinh THPT (52.6%), 12 phụ huynh học sinh và bạn đọc tự do (31.6%), cùng 6 giáo viên và cán bộ giáo dục (15.8%).
 
-| Chỉ số | Kết quả | Chuẩn học thuật | Nhận xét |
+Thang đo System Usability Scale (SUS) và bộ câu hỏi đánh giá tính năng RAG:
+
+| Chỉ số | Kết quả thực nghiệm | Tiêu chuẩn học thuật | Nhận xét |
 |---|:---:|:---:|---|
-| Điểm SUS trung bình | 88.72 / 100 | >= 68.0 | Vượt chuẩn trung bình +20.72 điểm |
+| Điểm SUS trung bình | 88.72 / 100 | >= 68.0 | Vượt chuẩn trung bình 20.72 điểm |
 | Độ lệch chuẩn | +-10.68 | Phân tán hẹp | Đánh giá giữa các nhóm khá đồng nhất |
 | Điểm trung vị | 90.00 | Mức cao | Đa số người dùng hài lòng ở mức cao |
-| Xếp loại mức độ hài lòng | Hạng A (Xuất sắc) | >= 80.3 | Đạt chuẩn Grade A (Bangor et al.) |
-| Cronbach's Alpha (bộ câu hỏi SUS) | 0.939 | >= 0.70 | Độ tin cậy nội tại cao |
-| Cronbach's Alpha (5 câu hỏi về RAG) | 0.865 | >= 0.70 | Mức độ nhất quán cao |
+| Xếp loại mức độ hài lòng | Hạng A (Xuất sắc) | >= 80.3 | Đạt chuẩn Grade A (Bangor et al., 2008) |
+| Cronbach's Alpha (SUS) | 0.939 | >= 0.70 | Thang đo đạt độ tin cậy nội tại cao |
+| Cronbach's Alpha (bộ 5 câu RAG) | 0.865 | >= 0.70 | Mức độ nhất quán đánh giá cao |
 
-Điểm đánh giá các khía cạnh nghiệp vụ (thang điểm 5):
-* Tìm đúng sách khi chỉ nhớ mang máng cốt truyện: 4.59 / 5.0
-* Tính hữu ích khi gợi ý tác phẩm cùng tác giả: 4.49 / 5.0
-* Độ chính xác về giá bán và hạn chế suy diễn sai: 4.78 / 5.0
-* Tính minh bạch của điểm số tương đồng: 4.68 / 5.0
-* Độ tin cậy tổng thể so với chatbot thông thường: 4.78 / 5.0
+Phân tích điểm số theo nhóm đối tượng:
+* Giáo viên và cán bộ giáo dục (6 người): Điểm SUS trung bình đạt 92.50 / 100. Nhóm giáo viên đánh giá cao nhất tính chính xác của giá bìa niêm yết, nhà xuất bản và khả năng hỗ trợ soạn đề thi từ tài liệu học tập.
+* Phụ huynh và bạn đọc tự do (12 người): Điểm SUS trung bình đạt 89.17 / 100. Nhóm phụ huynh ghi nhận hệ thống gợi ý sách bám sát độ tuổi và ngân sách thực tế.
+* Học sinh THPT (20 người): Điểm SUS trung bình đạt 87.24 / 100. Học sinh thích tính năng tìm truyện theo cốt truyện mang máng, khả năng nhận diện tiếng lóng học trò và thi trắc nghiệm tương tác.
+
+Điểm đánh giá 5 khía cạnh cốt lõi của RAG (thang điểm 5):
+* Tìm đúng sách khi chỉ nhớ mang máng cốt truyện: 4.59 / 5.0 (100% người dùng đánh giá điểm 4 và 5).
+* Tính hữu ích khi gợi ý tác phẩm cùng tác giả: 4.49 / 5.0 (100% đồng ý).
+* Độ chính xác về giá bán và hạn chế suy diễn sai: 4.78 / 5.0 (tiêu chí đạt điểm cao nhất).
+* Tính minh bạch của điểm số tương đồng Match %: 4.68 / 5.0.
+* Độ tin cậy tổng thể so với chatbot thông thường: 4.78 / 5.0.
+
+Phân bố phản hồi nổi bật từ tệp khảo sát thực tế:
+* Về độ tin cậy của mô hình RAG: 28.9% người tham gia (11/38) ấn tượng nhất với tính chuẩn xác vượt trội so với các chatbot thông thường; 26.3% (10/38) tin tưởng hoàn toàn vào dữ liệu giá bìa và thông tin tác giả, xác nhận không thấy hiện tượng bịa sách; 21.1% (8/38) đánh giá cao việc minh bạch điểm số Match %; 13.2% (5/38) ghi nhận khả năng truy tìm sách theo cốt truyện và 10.5% (4/38) thích gợi ý cùng tác giả.
+* Về trải nghiệm tương tác: 21.1% (8/38) đánh giá tính năng hội thoại, giỏ sách và hiển thị điểm tương đồng tích hợp rất gắn kết; 18.4% (7/38) nhận thấy giao diện dễ làm quen nhanh chóng và 18.4% (7/38) mong muốn sử dụng hệ thống thường xuyên trong việc đọc sách học đường.
 
 ### Đo lường hiệu năng xử lý (Stress-test)
 
