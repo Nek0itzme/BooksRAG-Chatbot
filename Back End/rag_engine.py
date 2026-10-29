@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pyright: reportMissingImports=false
 """
 [AI-Assisted Code] Prompt #04 — Tích hợp Hybrid Search (Dense + Sparse Lexical)
 Tích hợp Hybrid Search (Dense + Sparse Lexical),
@@ -25,8 +26,8 @@ from typing import Optional, List, Dict, Any, Tuple
 import chromadb
 from sentence_transformers import SentenceTransformer
 
-from teen_normalizer import normalize_query
-from config import (
+from teen_normalizer import normalize_query  # type: ignore
+from config import (  # type: ignore
     SAMPLE_JSON,
     CHROMA_PERSIST,
     CHROMA_COLLECTION,
@@ -40,7 +41,7 @@ from config import (
     AUTHOR_REC_COUNT,
     AUTHOR_EXACT_MATCH_SCORE,
 )
-from gemini_client import parse_intent, generate_answer, combined_gemini_call, analyze_book_image
+from gemini_client import parse_intent, generate_answer, combined_gemini_call, analyze_book_image  # type: ignore
 
 # ── Tích hợp Bộ quy tắc Guardrail Harness (RAG Rules) ─────────────────────────
 import sys
@@ -50,7 +51,7 @@ if str(_RAG_RULES_DIR) not in sys.path:
     sys.path.insert(0, str(_RAG_RULES_DIR))
 
 try:
-    from rule_harness import InputRuleHarness, OutputRuleHarness
+    from rule_harness import InputRuleHarness, OutputRuleHarness  # type: ignore
 except Exception:
     InputRuleHarness = None
     OutputRuleHarness = None
@@ -58,7 +59,7 @@ except Exception:
 # ── Tích hợp Bộ lọc Hyperbolic Poincaré Ball (HyPE Filter) ────────────────────
 get_hype_filter: Any = None
 try:
-    from hype_filter import get_hype_filter
+    from hype_filter import get_hype_filter  # type: ignore
     _HYPE_ENABLED = True
 except Exception as _hype_err:
     _HYPE_ENABLED = False
@@ -343,13 +344,14 @@ def extract_topic_keywords(query: str, exclude_author: Optional[str] = None) -> 
 # BƯỚC 2: CỔNG LỌC CỨNG (HARD FILTERING GATE - PLAN §3.2)
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def hard_filter(books: List[dict], budget: int, min_rating: float) -> List[dict]:
     """
     CỔNG LỌC CỨNG ĐẦU VÀO (HARD FILTERING GATE):
     Eligible(b) = 1 nếu và chỉ nếu:
-      b.in_stock == True (còn hàng trong kho)
-      AND b.rating >= min_rating (chất lượng đánh giá đạt chuẩn)
-      AND b.price <= budget (nằm trong khả năng tài chính của độc giả)
+        b.in_stock == True (còn hàng trong kho)
+        AND b.rating >= min_rating (chất lượng đánh giá đạt chuẩn)
+        AND b.price <= budget (nằm trong khả năng tài chính của độc giả)
     """
     # FIX: ép kiểu an toàn — data cào có thể chứa price/rating = None hoặc chuỗi
     # ("120.000đ", "") khiến float()/int() cũ nổ ValueError → 500 toàn bộ /chat.
@@ -366,6 +368,7 @@ def hard_filter(books: List[dict], budget: int, min_rating: float) -> List[dict]
 # ─────────────────────────────────────────────────────────────────────────────
 # BƯỚC 4: CÔNG THỨC CHẤM ĐIỂM LAI (HYBRID SCORING ENGINE - PLAN §3.2)
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 def score_rating(book: dict) -> float:
     """
@@ -442,6 +445,7 @@ def hybrid_score(semantic: float, book: dict) -> float:
 # BƯỚC 5: GỢI Ý TÁC PHẨM CÙNG TÁC GIẢ (IN-SESSION RECOMMENDATIONS)
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 def get_author_recommendations(purchased_book_id: str, exclude_ids: Optional[List[str]] = None) -> List[dict]:
     """
     Khi độc giả chọn mua một cuốn sách -> Hệ thống tự động truy vấn và gợi ý thêm
@@ -469,6 +473,7 @@ def get_author_recommendations(purchased_book_id: str, exclude_ids: Optional[Lis
 # ─────────────────────────────────────────────────────────────────────────────
 # QUY TRÌNH THI HÀNH RAG TOÀN DIỆN (MAIN RAG EXECUTION PIPELINE)
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 def run_rag(
     message: str,

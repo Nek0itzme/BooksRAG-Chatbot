@@ -715,10 +715,9 @@ async def doc_quiz(payload: dict):
     session_id = str(payload.get("session_id") or "").strip()
     topic      = str(payload.get("topic") or "").strip()
     try:
-        # FIX: đồng nhất trần với doc_rag.generate_quiz (tối đa 30) — trước đây main cho 50
-        # nhưng engine ép xuống 30, client tưởng tạo 50 câu nhưng thực tế chỉ nhận ~30.
+        # Hỗ trợ tạo đề thi tới 50+ câu hỏi trắc nghiệm cho tài liệu dài
         count = int(payload.get("count") or payload.get("num_questions") or 5)
-        count = max(1, min(count, 30))
+        count = max(1, min(count, 60))
     except (ValueError, TypeError):
         count = 5
     if not session_id:
@@ -860,73 +859,6 @@ async def doc_delete_library_post(payload: dict):
 
 
 
-# ── OTC GATEKEEPER: Tra cứu an toàn dược phẩm lâm sàng ───────────────────────
-check_drug_safety: Any = None
-_OTC_DATA: List[Dict[str, Any]] = []
-consult_otc_medicine: Any = None
-
-try:
-    from med_gatekeeper import check_drug_safety
-    from otc_gatekeeper import _OTC_DATA, consult_otc_medicine
-    _MED_ENABLED = True
-except Exception as _med_err:
-    _MED_ENABLED = False
-    print(f"[WARN] OTC Gatekeeper không nạp được: {_med_err}")
-
-
-@app.post("/api/med/check", tags=["OTC Gatekeeper"])
-async def med_check(payload: dict):
-    """
-    POC tra cứu an toàn dược học OTC.
-    Body: {"drug": "Hapacol 650", "conditions": ["suy gan"], "age": 25, "gender": "male"}.
-    """
-    if not _MED_ENABLED:
-        raise HTTPException(503, "Phân hệ OTC Gatekeeper chưa sẵn sàng.")
-    drug = (payload.get("drug") or "").strip()
-    conditions = payload.get("conditions") or []
-    age = payload.get("age")
-    gender = payload.get("gender")
-    if not drug:
-        raise HTTPException(400, "Cần có tên thuốc (drug).")
-    return await asyncio.to_thread(check_drug_safety, drug, conditions, age, gender)
-
-
-@app.get("/api/med/all", tags=["OTC Gatekeeper"])
-async def med_get_all(limit: int = 100, offset: int = 0, lang: str = "vi"):
-    """Lấy danh sách tất cả các loại thuốc OTC trong kho dữ liệu (Hỗ trợ song ngữ chuẩn xác vi / en)."""
-    if not _MED_ENABLED:
-        raise HTTPException(503, "Phân hệ OTC Gatekeeper chưa sẵn sàng.")
-    limit = max(1, min(limit, 200))
-    offset = max(0, offset)
-    data = _OTC_DATA
-    if lang.lower() == "en":
-        try:
-            from otc_english_specs import to_english_specs
-            data = [to_english_specs(d) for d in _OTC_DATA]
-        except Exception as e:
-            print(f"[WARN] Error converting to English specs: {e}")
-            data = _OTC_DATA
-    return {"medicines": data[offset:offset + limit], "total": len(data),
-            "limit": limit, "offset": offset, "lang": lang}
-
-
-@app.post("/api/med/consult", tags=["OTC Gatekeeper"])
-async def med_consult(payload: dict):
-    """
-    Tư vấn Dược học lâm sàng OTC thông minh:
-    Body: {"query": "sốt đau đầu", "conditions": ["viêm loét dạ dày"], "age": 25, "gender": "female"}.
-    """
-    if not _MED_ENABLED:
-        raise HTTPException(503, "Phân hệ OTC Gatekeeper chưa sẵn sàng.")
-    query = (payload.get("query") or "").strip()
-    conditions = payload.get("conditions") or []
-    age = payload.get("age")
-    gender = payload.get("gender")
-    if not query:
-        raise HTTPException(400, "Cần có nội dung câu hỏi hoặc triệu chứng (query).")
-    return await asyncio.to_thread(consult_otc_medicine, query, conditions, age, gender)
-
-
 # ── 9b. DỊCH THUẬT NGÔN NGỮ ĐƠN GIẢN HÓA (PLAIN LANGUAGE TRANSLATION) ─────────
 @app.post("/api/translate", tags=["I18n"])
 async def translate_text(payload: dict):
@@ -945,7 +877,7 @@ async def translate_text(payload: dict):
             prompt = (
                 "Bạn là một chuyên gia tư vấn tận tâm và gần gũi. "
                 "Hãy dịch đoạn văn bản sau sang Tiếng Việt thật tự nhiên, ấm áp, gãy gọn và dễ hiểu như lời trò chuyện của một chuyên gia thực thụ. "
-                "Tuyệt đối không dùng văn phong AI gượng gạo hay công thức. Giữ nguyên ý nghĩa y khoa/sách, sự chính xác về liều lượng và định dạng Markdown.\n\n"
+                "Tuyệt đối không dùng văn phong AI gượng gạo hay công thức. Giữ nguyên ý nghĩa nguyên tác của sách/tài liệu học tập và định dạng Markdown.\n\n"
                 f"Văn bản nguồn:\n{src}\n\n"
                 "Chỉ trả về bản dịch hoàn chỉnh, không thêm lời chào mào hay giải thích."
             )
@@ -954,7 +886,7 @@ async def translate_text(payload: dict):
                 "You are an empathetic, clear, human expert consultant. "
                 "Translate the following consultation into natural, warm, Plain English (CEFR A2-B1) that any reader can immediately understand. "
                 "Avoid stiff AI clichés, robotic headers, or artificial phrasing. Speak like a caring human professional explaining clearly. "
-                "Keep all facts, dosages, drug names, and safety precautions completely accurate.\n\n"
+                "Keep all facts, concepts, titles, and markdown formatting completely accurate.\n\n"
                 f"Source text:\n{src}\n\n"
                 "Return ONLY the translated response without introductory chatter or meta comments."
             )

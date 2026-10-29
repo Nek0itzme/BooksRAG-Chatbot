@@ -162,11 +162,10 @@ class HyPEFilter:
         query_h   = all_h[0]                   # Vector Hyperbolic của câu hỏi
         books_h   = all_h[1:]                  # Ma trận Vector Hyperbolic của các cuốn sách
 
-        # 3. Tính điểm bao hàm Entailment Score cho từng cuốn sách
-        scores: List[float] = []
-        for i in range(len(books)):
-            e_score = entailment_score(query_h, books_h[i]).item()
-            scores.append(e_score)
+        # 3. Tính điểm bao hàm Entailment Score – batch vectorized (no Python loop)
+        psi_q  = half_aperture_angle(query_h)              # () scalar tensor
+        dists  = BALL.dist(query_h.unsqueeze(0), books_h)  # (n,) pairwise distances
+        scores: List[float] = (psi_q - dists).tolist()
 
         # 4. Áp dụng Ngưỡng lọc động (Dynamic Thresholding):
         # dynamic_threshold = median(scores) - 0.5 * std(scores)

@@ -4388,8 +4388,7 @@
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.18);
     }
 
-    .doc-quick-chips,
-    .med-quick-chips {
+    .doc-quick-chips {
       display: flex;
       gap: 6px;
       overflow-x: auto;
@@ -4398,15 +4397,13 @@
       -ms-overflow-style: none !important;
     }
 
-    .doc-quick-chips::-webkit-scrollbar,
-    .med-quick-chips::-webkit-scrollbar {
+    .doc-quick-chips::-webkit-scrollbar {
       display: none !important;
       width: 0 !important;
       height: 0 !important;
     }
 
-    .doc-chip,
-    .med-chip {
+    .doc-chip {
       font-size: 11px;
       padding: 4px 10px;
       border-radius: var(--radius-pill);
@@ -4420,8 +4417,7 @@
       flex-shrink: 0;
     }
 
-    .doc-chip:hover,
-    .med-chip:hover {
+    .doc-chip:hover {
       border-color: var(--color-accent-border, rgba(255, 255, 255, 0.3));
       color: var(--color-ink);
       background: var(--color-accent-bg);
@@ -4445,882 +4441,8 @@
       }
     }
 
-    /* ── 13. DEDICATED MEDICINE ADVISORY & OTC GATEKEEPER WORKSPACE ─────────── */
-    .med-workspace-panel {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      height: 100%;
-      min-height: 0;
-      padding: 16px;
-      gap: 12px;
-      overflow: hidden;
-      background: var(--bg-card);
-      border: 1px solid var(--color-border);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-glass, 20px);
-    }
-
-    .med-ws-top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--color-border);
-      flex-shrink: 0;
-    }
-
-    .med-ws-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .med-ws-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
-    }
-
-    .med-ws-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--color-ink);
-      letter-spacing: -0.2px;
-    }
-
-    .med-ws-subtitle {
-      font-size: 11.5px;
-      color: var(--color-graphite);
-      margin-top: 2px;
-    }
-
-    .med-ws-top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .med-ws-grid {
-      display: grid;
-      grid-template-columns: 290px 1fr 370px;
-      gap: 14px;
-      flex: 1;
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .med-col-left, .med-col-center, .med-col-right {
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      height: 100%;
-      gap: 12px;
-    }
-
-    .med-col-left {
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
-      scroll-behavior: smooth;
-    }
-
-    body.light-mode .med-col-left {
-      scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
-    }
-
-    .med-card-section {
-      background: var(--bg-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 18px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-      position: relative;
-    }
-
-    .med-section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--color-ink);
-      line-height: 1.2;
-    }
-
-    .med-section-header-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      white-space: nowrap;
-      min-width: 0;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--color-ink);
-    }
-
-    .med-section-header-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      flex-shrink: 0;
-    }
-
-    /* ── Sleek Demographics: Age & Segmented Gender Controls ── */
-    .med-clinical-badge {
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      letter-spacing: 0.1px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .med-demo-fields {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 2px;
-    }
-
-    .med-field-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--color-ink);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 5px;
-    }
-
-    .med-age-input-box {
-      position: relative;
-      display: flex;
-      align-items: center;
-      background: var(--bg-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 12px;
-      padding: 2px 12px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .med-age-input-box:focus-within {
-      border-color: #10b981;
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-    }
-
-    .med-age-field {
-      width: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--color-ink);
-      font-size: 13px;
-      font-weight: 600;
-      padding: 6px 0;
-      appearance: textfield;
-      -moz-appearance: textfield;
-    }
-
-    .med-age-field::-webkit-outer-spin-button,
-    .med-age-field::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    .med-age-suffix {
-      font-size: 11px;
-      color: var(--color-graphite);
-      font-weight: 500;
-      pointer-events: none;
-    }
-
-    .med-gender-segmented {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1.15fr;
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.25);
-      padding: 3px;
-      border-radius: 12px;
-      border: 1px solid var(--color-border);
-    }
-
-    body.light-mode .med-gender-segmented {
-      background: rgba(0, 0, 0, 0.05);
-    }
-
-    .med-gender-pill {
-      border: none;
-      background: transparent;
-      color: var(--color-graphite);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 7px 4px;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      text-align: center;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .med-gender-pill:hover {
-      color: var(--color-ink);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .med-gender-pill.active {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(16, 185, 129, 0.12));
-      color: #10b981;
-      font-weight: 700;
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.25);
-    }
-
-    .med-rx-status-pill {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    /* Fixed Left Column Condition Group - Khắc phục cắt dở các mục */
-    .med-condition-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      overflow-y: auto;
-      max-height: clamp(130px, 22vh, 250px);
-      padding-right: 4px;
-      scrollbar-width: thin;
-      -ms-overflow-style: none;
-    }
-    .med-condition-group::-webkit-scrollbar {
-      display: none;
-    }
-
-    .med-cond-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7.5px 12px;
-      border-radius: 9999px;
-      background: var(--bg-pill);
-      border: 1px solid var(--color-border);
-      font-size: 11.5px;
-      color: var(--color-graphite);
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .med-cond-item:hover {
-      border-color: var(--color-accent-border, rgba(255, 255, 255, 0.3));
-      color: var(--color-ink);
-      transform: translateX(2px);
-    }
-
-    .med-cond-item.active {
-      background: rgba(239, 68, 68, 0.14);
-      border-color: rgba(239, 68, 68, 0.5);
-      color: #ef4444;
-      font-weight: 600;
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
-    }
-
-    .med-cond-item input[type="checkbox"] {
-      display: none;
-    }
-
-    .med-cond-check {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 1.5px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .med-cond-item.active .med-cond-check {
-      background: #ef4444;
-      border-color: #ef4444;
-      color: #fff;
-    }
-
-    /* Fixed Filter Bar & Chip - Sửa lỗi mũi tên 1 (trắng bệch, không thấy chữ) */
-    .med-filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .med-filter-chip {
-      font-size: 11.5px;
-      padding: 5px 12px;
-      border-radius: 9999px;
-      background: var(--bg-pill);
-      border: 1px solid var(--color-border);
-      color: var(--color-graphite);
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .med-filter-chip:hover {
-      color: var(--color-ink);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-1px);
-    }
-
-    .med-filter-chip.active {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.08)) !important;
-      border: 1px solid rgba(16, 185, 129, 0.55) !important;
-      color: #10b981 !important;
-      font-weight: 700;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
-    }
-
-    .med-search-input {
-      width: 100%;
-      padding: 8px 14px;
-      border-radius: 9999px;
-      border: 1px solid var(--color-border);
-      background: var(--bg-surface);
-      color: var(--color-ink);
-      font-size: 12px;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    .med-search-input:focus {
-      border-color: #10b981;
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
-    }
-
-    /* Liquid Glass Custom Scrollbar for Medicine Advisory (Thanh cuộn siêu mỏng, bo tròn) */
-    .med-catalog-scroll,
-    .med-messages-list,
-    .med-col-left {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
-      scroll-behavior: smooth;
-    }
-
-    .med-catalog-scroll,
-    .med-messages-list {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-    }
-
-    .med-catalog-scroll::-webkit-scrollbar,
-    .med-messages-list::-webkit-scrollbar,
-    .med-col-left::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    .med-catalog-scroll::-webkit-scrollbar-track,
-    .med-messages-list::-webkit-scrollbar-track,
-    .med-col-left::-webkit-scrollbar-track {
-      background: transparent;
-      border-radius: 9999px;
-      margin: 4px 0;
-    }
-
-    .med-catalog-scroll::-webkit-scrollbar-thumb,
-    .med-messages-list::-webkit-scrollbar-thumb,
-    .med-col-left::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.16);
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: background 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .med-catalog-scroll::-webkit-scrollbar-thumb:hover,
-    .med-messages-list::-webkit-scrollbar-thumb:hover,
-    .med-col-left::-webkit-scrollbar-thumb:hover {
-      background: rgba(16, 185, 129, 0.55);
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-    }
-
-    .med-catalog-scroll::-webkit-scrollbar-button,
-    .med-messages-list::-webkit-scrollbar-button,
-    .med-col-left::-webkit-scrollbar-button {
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
-    }
-
-    body.light-mode .med-catalog-scroll,
-    body.light-mode .med-messages-list,
-    body.light-mode .med-col-left {
-      scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
-    }
-
-    body.light-mode .med-catalog-scroll::-webkit-scrollbar-thumb,
-    body.light-mode .med-messages-list::-webkit-scrollbar-thumb,
-    body.light-mode .med-col-left::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.16);
-      border: 1px solid rgba(0, 0, 0, 0.04);
-    }
-
-    body.light-mode .med-catalog-scroll::-webkit-scrollbar-thumb:hover,
-    body.light-mode .med-messages-list::-webkit-scrollbar-thumb:hover,
-    body.light-mode .med-col-left::-webkit-scrollbar-thumb:hover {
-      background: rgba(16, 185, 129, 0.7);
-    }
-
-    .med-catalog-scroll {
-      padding-right: 6px;
-      padding-bottom: 12px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      grid-auto-rows: min-content;
-      gap: 16px;
-      align-content: start;
-    }
-
-    /* Thẻ bo góc 20px, hiệu ứng Liquid Glass tối ưu hiệu năng không gây lag GPU */
-    .med-drug-card {
-      background: rgba(255, 255, 255, 0.045);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.16);
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-      box-sizing: border-box;
-    }
-
-    body.light-mode .med-drug-card {
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    }
-
-    .med-card-header {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      width: 100%;
-    }
-
-    .med-card-name-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .med-card-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--color-ink);
-      line-height: 1.3;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex: 1;
-    }
-
-    .med-otc-pill {
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      flex-shrink: 0;
-    }
-
-    .med-ai-suggested-pill {
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(59, 130, 246, 0.22));
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      animation: medGlowPulse 2.4s ease-in-out infinite;
-    }
-
-    body.light-mode .med-ai-suggested-pill {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
-      color: #059669;
-      border-color: rgba(16, 185, 129, 0.4);
-    }
-
-    @keyframes medGlowPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
-      50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
-    }
-
-    .med-drug-card.med-card-ai-suggested {
-      border-color: rgba(16, 185, 129, 0.45);
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    }
-
-    body.light-mode .med-drug-card.med-card-ai-suggested {
-      border-color: rgba(16, 185, 129, 0.5);
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-    }
-
-    .med-card-cat {
-      font-size: 11.5px;
-      color: var(--color-graphite);
-      margin-top: 1px;
-      margin-bottom: 3px;
-      line-height: 1.35;
-      display: block;
-      width: 100%;
-    }
-
-    .med-card-badges-row {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-      width: 100%;
-    }
-
-    .med-source-tag {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 8px;
-      background: var(--bg-pill);
-      color: var(--color-graphite);
-      border: 1px solid var(--color-border);
-      white-space: nowrap;
-      flex-shrink: 0;
-      text-decoration: none;
-    }
-
-    .med-drugbank-badge {
-      background: rgba(59, 130, 246, 0.12);
-      color: #3b82f6 !important;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      transition: all 0.2s ease;
-    }
-
-    .med-drugbank-badge:hover {
-      background: rgba(59, 130, 246, 0.22);
-      border-color: #3b82f6;
-      color: #60a5fa !important;
-      transform: translateY(-1px);
-    }
-
-    .med-active-ingredient {
-      font-size: 11px;
-      color: var(--color-graphite);
-      background: rgba(255, 255, 255, 0.03);
-      padding: 6px 9px;
-      border-radius: 10px;
-      border: 1px solid var(--color-border);
-      font-family: var(--font-mono, monospace);
-      line-height: 1.4;
-    }
-
-    .med-symptoms-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .med-symptom-tag {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.08);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-
-    .med-safety-box {
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-size: 11px;
-      line-height: 1.45;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      transition: all 0.3s ease;
-      margin-top: 2px;
-    }
-
-    .med-safety-box.is-safe {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.28);
-      color: #10b981;
-    }
-
-    .med-safety-box.is-contraindicated {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-      color: #ef4444;
-    }
-
-    .med-safety-title {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 700;
-    }
-
-    .med-safety-desc {
-      font-size: 10.5px;
-      color: var(--color-graphite);
-      margin-top: 2px;
-      line-height: 1.4;
-    }
-
-    .med-safety-box.is-contraindicated .med-safety-desc {
-      color: #fca5a5;
-    }
-
-    /* Footer thẻ được thiết kế lại ngăn nắp, không bị rớt dòng chữ */
-    .med-card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--color-border);
-      font-size: 10.5px;
-    }
-
-    .med-ref-citation {
-      font-size: 10px;
-      color: var(--color-graphite);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .med-btn-ask {
-      padding: 5px 12px;
-      font-size: 11px;
-      font-weight: 600;
-      border-radius: 12px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #10b981;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .med-btn-ask:hover {
-      background: #10b981;
-      color: #ffffff;
-      border-color: #10b981;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    .med-chat-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--color-border);
-      border-radius: 18px;
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .med-chat-header {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .med-chat-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--color-ink);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .med-messages-list {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 14px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      scroll-behavior: smooth;
-    }
-
-    @keyframes medDotBounce {
-      0%, 80%, 100% {
-        transform: translateY(0);
-        opacity: 0.35;
-      }
-      40% {
-        transform: translateY(-6px);
-        opacity: 1;
-        box-shadow: 0 0 10px rgba(16, 185, 129, 0.95);
-      }
-    }
-
-    .med-typing-dots {
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      padding: 2px 4px;
-    }
-
-    .med-typing-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.85);
-      animation: medDotBounce 1.3s infinite ease-in-out;
-      will-change: transform, opacity;
-      display: inline-block;
-    }
-
-    .med-typing-dot:nth-child(1) { animation-delay: 0s; }
-    .med-typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .med-typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    .med-msg-bubble {
-      font-size: 12.5px;
-      line-height: 1.7;
-      padding: 14px 18px;
-      border-radius: 16px;
-      max-width: 92%;
-      word-break: break-word;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s ease;
-    }
-
-    .med-msg-bubble p, .med-ai-advice-body p {
-      margin: 0 0 10px 0;
-      line-height: 1.7;
-    }
-
-    .med-msg-bubble p:last-child, .med-ai-advice-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .med-msg-bubble h1, .med-msg-bubble h2, .med-msg-bubble h3,
-    .med-ai-advice-body h1, .med-ai-advice-body h2, .med-ai-advice-body h3 {
-      margin: 14px 0 8px 0;
-      font-weight: 700;
-      line-height: 1.45;
-      color: var(--color-ink);
-    }
-
-    .med-msg-bubble h1:first-child, .med-msg-bubble h2:first-child, .med-msg-bubble h3:first-child,
-    .med-ai-advice-body h1:first-child, .med-ai-advice-body h2:first-child, .med-ai-advice-body h3:first-child {
-      margin-top: 0;
-    }
-
-    .med-msg-bot {
-      align-self: flex-start;
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: var(--color-ink);
-      border-top-left-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    body.light-mode .med-msg-bot {
-      background: rgba(16, 185, 129, 0.05);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.06);
-    }
-
-    #active-med-typing {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.15);
-      padding: 10px 14px;
-      border-radius: 14px;
-      border-top-left-radius: 4px;
-    }
-
-    .med-msg-user {
-      align-self: flex-end;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #ffffff;
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      border-top-right-radius: 4px;
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
-    }
-
-    /* Tinh chỉnh UI cho các dấu chấm / bullet dots trong câu trả lời của chatbot */
-    .chat-bullet-dot, .med-bullet-dot {
+    /* ── 13. CHATBOT COMMON FORMATTING ─────────────────────────────────────────── */
+    .chat-bullet-dot {
       display: inline-block;
       width: 6px;
       height: 6px;
@@ -5334,7 +4456,7 @@
       top: -1px;
     }
 
-    .med-bullet-row, .chat-bullet-row {
+    .chat-bullet-row {
       display: flex;
       align-items: baseline;
       gap: 8px;
@@ -5342,13 +4464,12 @@
       line-height: 1.7;
     }
 
-    .med-bullet-row .chat-bullet-dot, .chat-bullet-row .chat-bullet-dot {
+    .chat-bullet-row .chat-bullet-dot {
       margin-right: 0;
       top: 0;
     }
 
-    /* Chuẩn hóa list ul/li/ol trong toàn bộ chatbot bubbles để dấu chấm thẳng hàng, màu ngọc lục bảo (Không hiển thị số khi đã có dấu chấm) */
-    .med-msg-bubble ul, .med-msg-bubble ol, .med-ai-advice-body ul, .med-ai-advice-body ol, .msg-bubble ul, .msg-bubble ol, .doc-bubble ul, .doc-bubble ol {
+    .msg-bubble ul, .msg-bubble ol, .doc-bubble ul, .doc-bubble ol {
       list-style: none !important;
       padding-left: 0 !important;
       margin: 8px 0 12px 0 !important;
@@ -5357,7 +4478,7 @@
       gap: 8px;
     }
 
-    .med-msg-bubble li, .med-ai-advice-body li, .msg-bubble li, .doc-bubble li {
+    .msg-bubble li, .doc-bubble li {
       position: relative;
       padding-left: 20px !important;
       line-height: 1.7;
@@ -5365,7 +4486,7 @@
       list-style-type: none !important;
     }
 
-    .med-msg-bubble li::before, .med-ai-advice-body li::before, .msg-bubble li::before, .doc-bubble li::before {
+    .msg-bubble li::before, .doc-bubble li::before {
       content: "";
       position: absolute;
       left: 4px;
@@ -5390,24 +4511,26 @@
       margin-top: 6px;
     }
 
-
-    .med-rx-blocked-box {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: #ef4444;
-      font-size: 11.5px;
-      line-height: 1.5;
+    .doc-retry-btn {
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #10b981;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .med-input-wrapper {
-      padding: 10px 12px;
-      border-top: 1px solid var(--color-border);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: var(--bg-surface);
+    .doc-retry-btn:hover {
+      background: #10b981;
+      color: #ffffff;
+      border-color: #10b981;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
     /* ── 14. LAPTOP 1-MÀN & COMPACT DISPLAY OPTIMIZATION (<= 1440px / <= 860px height) ── */
@@ -5420,215 +4543,6 @@
       .app-container {
         padding: 8px;
         gap: 8px;
-      }
-
-      /* View C: Tư Vấn & Tra Cứu Dược */
-      .med-workspace-panel {
-        padding: 10px 14px;
-        gap: 8px;
-        border-radius: 16px;
-      }
-
-      .med-ws-top-bar {
-        padding-bottom: 8px;
-      }
-
-      .med-ws-icon {
-        width: 34px;
-        height: 34px;
-        font-size: 16px;
-        border-radius: 9px;
-      }
-
-      .med-ws-title {
-        font-size: 13.5px;
-      }
-
-      .med-ws-subtitle {
-        font-size: 11px;
-      }
-
-      .med-ws-grid {
-        grid-template-columns: 255px minmax(0, 1fr) 330px;
-        gap: 10px;
-      }
-
-      .med-col-left, .med-col-center, .med-col-right {
-        gap: 8px;
-      }
-
-      .med-card-section {
-        padding: 9px 11px;
-        gap: 6px;
-        border-radius: 14px;
-      }
-
-      .med-section-header {
-        font-size: 12px;
-      }
-
-      .med-section-header-title {
-        font-size: 12px;
-        gap: 5px;
-      }
-
-      .med-section-header-icon {
-        width: 20px;
-        height: 20px;
-        border-radius: 6px;
-      }
-
-      .med-clinical-badge {
-        font-size: 9px;
-        padding: 2px 6px;
-      }
-
-      .med-demo-fields {
-        gap: 6px;
-      }
-
-      .med-field-label {
-        font-size: 10px;
-        margin-bottom: 2px;
-      }
-
-      .med-age-input-box {
-        padding: 1px 8px;
-        border-radius: 8px;
-      }
-
-      .med-age-field {
-        font-size: 11.5px;
-        padding: 3px 0;
-      }
-
-      .med-gender-segmented {
-        padding: 2px;
-        gap: 2px;
-        border-radius: 8px;
-      }
-
-      .med-gender-pill {
-        padding: 4px 2px;
-        font-size: 10px;
-        border-radius: 6px;
-        gap: 2px;
-      }
-
-      .med-gender-pill svg {
-        width: 10px;
-        height: 10px;
-      }
-
-      .med-condition-group {
-        max-height: clamp(110px, 18vh, 160px);
-        gap: 4px;
-      }
-
-      .med-cond-item {
-        padding: 4.5px 8px;
-        font-size: 10px;
-        gap: 5px;
-      }
-
-      .med-cond-check {
-        width: 12px;
-        height: 12px;
-        font-size: 8px;
-      }
-
-      .med-search-input {
-        padding: 5px 9px;
-        font-size: 11px;
-        height: 30px;
-      }
-
-      .med-filter-bar {
-        gap: 3px;
-      }
-
-      .med-filter-chip {
-        padding: 2.5px 7px;
-        font-size: 9.5px;
-        border-radius: 6px;
-      }
-
-      /* Center Drug Cards */
-      .med-drug-card {
-        padding: 10px 12px;
-        gap: 6px;
-        border-radius: 14px;
-      }
-
-      .med-card-name {
-        font-size: 13.5px;
-      }
-
-      .med-card-cat {
-        font-size: 10.5px;
-        margin-bottom: 1px;
-      }
-
-      .med-active-ingredient {
-        font-size: 11px;
-      }
-
-      .med-symptoms-wrap {
-        gap: 3px;
-      }
-
-      .med-symptom-tag {
-        padding: 1px 6px;
-        font-size: 9.5px;
-      }
-
-      .med-safety-box {
-        padding: 6px 8px;
-        font-size: 10px;
-        border-radius: 8px;
-      }
-
-      .med-safety-title {
-        font-size: 10px;
-      }
-
-      .med-btn-ask {
-        padding: 3px 8px;
-        font-size: 10px;
-      }
-
-      /* Right Chatbot */
-      .med-messages-list {
-        padding: 8px 10px;
-        gap: 6px;
-      }
-
-      .med-input-wrapper {
-        padding: 6px 8px;
-        gap: 4px;
-      }
-
-      .med-input-wrapper .doc-input-row input {
-        height: 36px;
-        min-height: 36px;
-        padding: 6px 10px;
-        font-size: 12px;
-        border-radius: 10px;
-      }
-
-      .med-input-wrapper .btn-send-hero {
-        width: 30px;
-        height: 30px;
-      }
-
-      .med-quick-chips {
-        gap: 3px;
-        padding: 1px 0;
-      }
-
-      .med-chip {
-        padding: 3px 7px;
-        font-size: 9.5px;
       }
 
       /* View B: Trợ Lý Đọc Sách & Tài Liệu */
@@ -5754,10 +4668,6 @@
         --results-w: 290px;
       }
 
-      .med-ws-grid {
-        grid-template-columns: 235px minmax(0, 1fr) 295px;
-        gap: 8px;
-      }
 
       .doc-ws-grid {
         grid-template-columns: 220px minmax(0, 1fr) 6px min(290px, 30vw);
@@ -5765,18 +4675,7 @@
       }
     }
 
-    /* ── TABLETS & STACKED MOBILE (<= 960px) ── */
-    @media (max-width: 960px) {
-      .med-ws-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
-        overflow-y: auto;
-      }
-      .med-col-left {
-        max-height: none;
-        overflow-y: visible;
-      }
-    }
+
   </style>
 </head>
 
@@ -5834,7 +4733,7 @@
           <span>New</span>
         </button>
 
-        <!-- Primary Nav: 3 Chế Độ Hoạt Động -->
+        <!-- Primary Nav: 2 Chế Độ Hoạt Động -->
         <div class="nav-list">
           <button class="nav-btn active" id="nav-book-btn" onclick="switchAppMode('book')">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -5850,14 +4749,6 @@
               <polyline points="14 2 14 8 20 8"></polyline>
             </svg>
             <span>Trợ Lý Đọc</span>
-          </button>
-          <button class="nav-btn" id="nav-med-btn" onclick="switchAppMode('med')">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
-              <path d="m8.5 8.5 7 7"></path>
-            </svg>
-            <span>Tư vấn Dược</span>
           </button>
         </div>
 
@@ -6332,7 +5223,7 @@
                   <p class="doc-quiz-placeholder-desc" id="doc-quiz-empty-desc">Hệ thống AI sẵn sàng trích xuất các câu hỏi ôn tập kèm số trang đối chiếu từ tài liệu bạn tải lên.</p>
                   <div class="doc-quiz-hint-box">
                     <span class="doc-quiz-hint-icon">💡</span>
-                    <span id="doc-quiz-empty-hint">Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 15 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.</span>
+                    <span id="doc-quiz-empty-hint">Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 50 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.</span>
                   </div>
                 </div>
               </div>
@@ -6361,261 +5252,6 @@
                 <span class="doc-chip" onclick="docAskPreset('Kết luận thực tiễn và bài học rút ra')">
                   <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.77V6a3 3 0 0 0-6 0v4.77a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24Z"></path></svg>
                   Đúc kết
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── VIEW C: DEDICATED MEDICINE ADVISORY & OTC GATEKEEPER WORKSPACE ── -->
-    <section class="med-workspace-panel glass-card" id="med-workspace-panel" style="display:none">
-      <!-- Top Bar -->
-      <div class="med-ws-top-bar">
-        <div class="med-ws-brand">
-          <button class="top-action-btn" id="btn-med-sidebar-toggle" onclick="document.getElementById('btn-sidebar-toggle').click()" title="Đóng/Mở thanh bên (Sidebar)" style="padding: 6px 10px; margin-right: 2px;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-          </button>
-          <div class="med-ws-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
-              <path d="m8.5 8.5 7 7"></path>
-            </svg>
-          </div>
-          <div>
-            <div class="med-ws-title">Tư Vấn & Tra Cứu Thuốc Không Kê Đơn (OTC)</div>
-            <div class="med-ws-subtitle">Dược Thư Quốc Gia Việt Nam • Phân loại thuốc kê đơn & không kê đơn • Cảnh báo tương tác an toàn</div>
-          </div>
-        </div>
-        <div class="med-ws-top-actions">
-          <span class="system-status-pill">
-            <span class="pulse-green"></span>
-            <span>Dược Thư Quốc Gia 2026</span>
-          </span>
-          <button class="top-action-btn" onclick="switchAppMode('book')" title="Quay lại Tư vấn sách">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
-            <span>Quay lại Tư Vấn Sách</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 3-Column Split Body -->
-      <div class="med-ws-grid">
-        <!-- CỘT 1: Hồ sơ bệnh lý & Lọc (290px) -->
-        <div class="med-col-left">
-          <!-- Demographic & Health Profile -->
-          <div class="med-card-section">
-            <div class="med-section-header">
-              <span class="med-section-header-title">
-                <span class="med-section-header-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                </span>
-                <span>Hồ Sơ Sức Khỏe</span>
-              </span>
-              <span class="med-clinical-badge">Chuẩn Lâm Sàng</span>
-            </div>
-            
-            <div class="med-demo-fields">
-              <div class="med-age-wrapper">
-                <label class="med-field-label">
-                  <span>Độ tuổi:</span>
-                </label>
-                <div class="med-age-input-box" id="med-age-box">
-                  <input type="number" id="med-user-age" min="1" max="120" value="" class="med-age-field" oninput="updateMedDemographics()" onchange="updateMedDemographics()" placeholder="Nhập tuổi" />
-                  <span class="med-age-suffix">tuổi</span>
-                </div>
-              </div>
-
-              <div class="med-gender-wrapper">
-                <label class="med-field-label">
-                  <span>Giới tính & thể trạng:</span>
-                </label>
-                <!-- Segmented Control - Không còn menu popup native Windows màu xanh thô ráp -->
-                <div class="med-gender-segmented" id="med-gender-segmented">
-                  <button type="button" class="med-gender-pill active" data-gender="male" onclick="setMedGender('male', this)">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10" cy="14" r="5"></circle><line x1="19" y1="5" x2="13.6" y2="10.4"></line><polyline points="19 9 19 5 15 5"></polyline></svg>
-                    <span>Nam</span>
-                  </button>
-                  <button type="button" class="med-gender-pill" data-gender="female" onclick="setMedGender('female', this)">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="9" r="5"></circle><line x1="12" y1="14" x2="12" y2="21"></line><line x1="9" y1="18" x2="15" y2="18"></line></svg>
-                    <span>Nữ</span>
-                  </button>
-                  <button type="button" class="med-gender-pill" data-gender="pregnant" onclick="setMedGender('pregnant', this)">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    <span>Thai kỳ</span>
-                  </button>
-                </div>
-                <!-- Hidden select để tương thích 100% với các hàm JS cũ -->
-                <select id="med-user-gender" style="display:none;" onchange="updateMedDemographics()">
-                  <option value="male" selected>Nam</option>
-                  <option value="female">Nữ</option>
-                  <option value="pregnant">Nữ (Thai kỳ)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="med-card-section">
-            <div class="med-section-header">
-              <span class="med-section-header-title">
-                <span class="med-section-header-icon" style="background:rgba(239,68,68,0.12);color:#ef4444;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                    <path d="M12 5v6"></path>
-                    <path d="M9 8h6"></path>
-                  </svg>
-                </span>
-                <span>Tiền Sử Bệnh Lý</span>
-              </span>
-              <span class="doc-badge-count" id="med-active-cond-count">0 đã chọn</span>
-            </div>
-            <div style="font-size:11px;color:var(--color-graphite);line-height:1.4">
-              Chọn tình trạng sức khỏe hiện tại để hệ thống đối chiếu tương tác thuốc:
-            </div>
-            <div class="med-condition-group" id="med-conditions-list">
-              <label class="med-cond-item" data-cond="mang thai" onclick="toggleMedCondition('mang thai', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Phụ nữ mang thai / Cho con bú</span>
-              </label>
-              <label class="med-cond-item" data-cond="dạ dày" onclick="toggleMedCondition('dạ dày', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Viêm loét / Xuất huyết dạ dày</span>
-              </label>
-              <label class="med-cond-item" data-cond="gan" onclick="toggleMedCondition('gan', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Suy giảm chức năng gan nặng</span>
-              </label>
-              <label class="med-cond-item" data-cond="thận" onclick="toggleMedCondition('thận', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Suy thận / Tiền sử sỏi thận</span>
-              </label>
-              <label class="med-cond-item" data-cond="g6pd" onclick="toggleMedCondition('g6pd', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Thiếu hụt men G6PD (Tan máu)</span>
-              </label>
-              <label class="med-cond-item" data-cond="huyết áp" onclick="toggleMedCondition('huyết áp', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Tăng huyết áp / Bệnh mạch vành</span>
-              </label>
-              <label class="med-cond-item" data-cond="tre_em" onclick="toggleMedCondition('tre_em', this)">
-                <span class="med-cond-check">✓</span>
-                <span>Trẻ nhỏ dưới 12 tuổi</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Lọc & Tìm Kiếm -->
-          <div class="med-card-section">
-            <div class="med-section-header">
-              <span class="med-section-header-title">
-                <span class="med-section-header-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6;">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                  </svg>
-                </span>
-                <span>Danh Mục & Tìm Kiếm</span>
-              </span>
-            </div>
-            <input type="text" class="med-search-input" id="med-search-input" placeholder="Tìm tên thuốc, hoạt chất..." oninput="filterMedCatalog()" />
-            <div class="med-filter-bar">
-              <span class="med-filter-chip active" data-cat="all" onclick="setMedCategoryFilter('all', this)">Tất cả</span>
-              <span class="med-filter-chip" data-cat="pain" onclick="setMedCategoryFilter('pain', this)">Hạ sốt, đau</span>
-              <span class="med-filter-chip" data-cat="stomach" onclick="setMedCategoryFilter('stomach', this)">Dạ dày</span>
-              <span class="med-filter-chip" data-cat="flu" onclick="setMedCategoryFilter('flu', this)">Cảm, ho</span>
-              <span class="med-filter-chip" data-cat="vitamin" onclick="setMedCategoryFilter('vitamin', this)">Vitamin</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- CỘT 2: Danh mục thuốc không kê đơn (Flex 1) -->
-        <div class="med-col-center">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px">
-            <div style="font-size:12.5px;font-weight:700;color:var(--color-ink);display:flex;align-items:center;gap:6px">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
-                <path d="m8.5 8.5 7 7"></path>
-              </svg>
-              <span>Danh Mục Thuốc Không Kê Đơn (<span id="med-catalog-count">8</span>)</span>
-            </div>
-            <div style="font-size:11px;color:var(--color-graphite)">
-              Dữ liệu chuẩn Dược Thư Quốc Gia
-            </div>
-          </div>
-          <div class="med-catalog-scroll" id="med-catalog-list">
-            <!-- Dynamic Drug Cards rendered here -->
-          </div>
-        </div>
-
-        <!-- CỘT 3: Dược Sĩ AI & Cổng Chặn Rx (370px) -->
-        <div class="med-col-right">
-          <div class="med-chat-card">
-            <div class="med-chat-header">
-              <div class="med-chat-title" style="display:flex;align-items:center;gap:6px">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"></path>
-                  <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"></path>
-                  <circle cx="20" cy="10" r="2"></circle>
-                </svg>
-                <span>Dược Sĩ Lâm Sàng AI</span>
-              </div>
-              <span class="med-rx-status-pill">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span>Kiểm soát thuốc kê đơn (Rx)</span>
-              </span>
-            </div>
-
-            <!-- Messages List -->
-            <div class="med-messages-list" id="med-messages-list">
-              <div class="med-msg-bubble med-msg-bot med-welcome-bubble">
-                <div style="font-weight:700;color:var(--color-ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-                  <span class="chat-bullet-dot"></span>
-                  <span>Chào bạn! Tôi là Dược Sĩ Lâm Sàng AI.</span>
-                </div>
-                <div style="margin-bottom:6px;font-size:12px;color:var(--color-ink);">Hệ thống đối chiếu an toàn với <b>Dược Thư Quốc Gia & DrugBank</b>:</div>
-                <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>Tự động kiểm tra chống chỉ định & tương tác với hồ sơ bệnh lý của bạn.</span></div>
-                <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Cổng chặn Rx 100%:</b> Bảo vệ an toàn, không kê đơn thuốc nguy hiểm.</span></div>
-                <div style="margin-top:6px;font-size:11.5px;color:var(--color-graphite);">💬 Hãy nhập triệu chứng hoặc câu hỏi bên dưới để được tư vấn an toàn!</div>
-              </div>
-
-            </div>
-
-            <!-- Input Bar -->
-            <div class="med-input-wrapper">
-              <div class="doc-input-row">
-                <input type="text" id="med-query-input" spellcheck="false" autocorrect="off" autocapitalize="off" autocomplete="off" placeholder="Hỏi triệu chứng hoặc tên thuốc..." onkeydown="if(event.key==='Enter')medAsk()" />
-                <button class="btn-send-hero" onclick="medAsk()" title="Gửi câu hỏi">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
-                </button>
-              </div>
-              <div class="med-quick-chips" id="med-quick-chips-bar">
-                <span class="med-chip" onclick="medAskPreset('Tôi bị sốt cao 38.5 độ kèm đau đầu')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-                  Sốt & Đau đầu
-                </span>
-                <span class="med-chip" onclick="medAskPreset('Tôi bị ợ chua và trào ngược dạ dày')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-                  Ợ chua rát cổ
-                </span>
-                <span class="med-chip" onclick="medAskPreset('Đau dạ dày có được uống Panadol Extra không?')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                  Đau dạ dày
-                </span>
-                <span class="med-chip" onclick="medAskPreset('Bán cho tôi thuốc kháng sinh Augmentin 1g')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-                  Thử Cổng Chặn Rx
                 </span>
               </div>
             </div>
@@ -6852,7 +5488,6 @@
       vi: {
         nav_book: "Tư Vấn Sách",
         nav_doc: "Đọc Tài Liệu",
-        nav_med: "Tra Cứu Dược OTC",
         new_session: "New",
         results_btn: "Sách gợi ý",
         rag_verified: "RAG Verified",
@@ -6862,8 +5497,6 @@
         hero_quote: '"Không có người bạn nào trung thành như một cuốn sách hay."',
         input_ph: "Nhập tên sách, tác giả, thể loại hoặc nội dung bạn cần tìm...",
         budget_label: "Ngân sách tối đa (VNĐ)",
-        med_ws_title: "Trợ Lý Dược Lâm Sàng & An Toàn Thuốc OTC",
-        med_ws_subtitle: "Tra cứu thông tin thuốc không kê đơn • Cảnh báo chống chỉ định • Đối chiếu DrugBank & Dược Thư",
         doc_ws_title: "Trợ Lý Đọc & Tương Tác Tài Liệu Học Đường",
         doc_ws_subtitle: "Trích xuất văn bản thông minh • Lập chỉ mục tài liệu • Trích dẫn số trang đối chiếu",
         doc_index_ready: "Tài liệu sẵn sàng",
@@ -6890,28 +5523,24 @@
         doc_welcome_msg: 'Chào bạn! Tôi là <b>Trợ Lý Đọc Sách & Tài Liệu AI</b>.<br>Hãy tải lên sách/tài liệu ôn tập (PDF) và đặt bất kỳ câu hỏi nào. Tôi sẽ bóc tách sang Markdown và trả lời chính xác kèm số trang đối chiếu!',
         doc_quiz_empty_h3: "Chưa Có Bộ Trắc Nghiệm",
         doc_quiz_empty_p: "Hệ thống AI sẵn sàng trích xuất các câu hỏi ôn tập kèm số trang đối chiếu từ tài liệu bạn tải lên.",
-        doc_quiz_empty_hint: 'Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 15 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.',
+        doc_quiz_empty_hint: 'Nhập yêu cầu vào thanh chat bên dưới (ví dụ: <b>"Tạo 50 câu hỏi"</b>, <b>"Tạo 20 câu trắc nghiệm"</b>) để AI tạo bộ câu hỏi ngay tại đây.',
         doc_input_ph: "Hỏi về nội dung, định lý hoặc bài tập...",
         doc_chip1: "Ý tưởng cốt lõi",
         doc_chip2: "Luận điểm chính",
         doc_chip3: "Đúc kết",
-        med_input_ph: "Mô tả triệu chứng bệnh hoặc tên thuốc (VD: sốt cao, đau đầu, dị ứng, tiêu chảy)..."
       },
       en: {
         nav_book: "Book Advisor",
         nav_doc: "Study Assistant",
-        nav_med: "OTC Medicine Safety",
         new_session: "New",
         results_btn: "Top Picks",
         rag_verified: "Verified 94%",
         print_btn: "Summary",
-        hero_tag: "✦ Smart Book & Medicine Guide",
+        hero_tag: "✦ Smart Book & Study Assistant",
+        input_ph: "Type book title, author, topic, or subject you need help with...",
         hero_title: "What book are you looking for?",
         hero_quote: '"There is no friend as loyal as a book."',
-        input_ph: "Type book title, author, topic, or symptoms you need help with...",
         budget_label: "Max Budget (VND)",
-        med_ws_title: "Safe OTC Medicine & Health Guide",
-        med_ws_subtitle: "Find non-prescription medicines • Who should NOT use • DrugBank & National Reference",
         doc_ws_title: "Interactive Document & Reading Helper",
         doc_ws_subtitle: "Smart text extraction • Document indexing • Page citations",
         doc_index_ready: "Documents Ready",
@@ -6938,12 +5567,11 @@
         doc_welcome_msg: 'Hello! I am your <b>AI Document & Reading Assistant</b>.<br>Upload books or study materials (PDF/DOCX) and ask any question. I will parse text into Markdown and provide precise answers with page citations!',
         doc_quiz_empty_h3: "No Quiz Generated Yet",
         doc_quiz_empty_p: "The AI system is ready to extract study questions with page citations from your uploaded documents.",
-        doc_quiz_empty_hint: 'Type your request in the chat bar below (e.g., <b>"Create 15 quiz questions"</b>, <b>"Generate 20 multiple choice questions"</b>) to build a quiz right here.',
+        doc_quiz_empty_hint: 'Type your request in the chat bar below (e.g., <b>"Create 50 quiz questions"</b>, <b>"Generate 20 multiple choice questions"</b>) to build a quiz right here.',
         doc_input_ph: "Ask about concepts, theorems, or study exercises...",
         doc_chip1: "Core Ideas",
         doc_chip2: "Key Arguments",
         doc_chip3: "Takeaways",
-        med_input_ph: "Describe symptoms or medicine name (e.g., fever, headache, allergy, stomach ache)..."
       }
     };
 
@@ -6978,8 +5606,6 @@
       if (navBook) navBook.textContent = dict.nav_book;
       const navDoc = document.querySelector('#nav-doc-btn span');
       if (navDoc) navDoc.textContent = dict.nav_doc;
-      const navMed = document.querySelector('#nav-med-btn span');
-      if (navMed) navMed.textContent = dict.nav_med;
 
       // Results toggle text
       const resToggle = document.querySelector('.results-toggle-text');
@@ -7053,9 +5679,6 @@
       if (btnSidebarToggle) btnSidebarToggle.title = (lang === 'en') ? 'Collapse sidebar' : 'Thu gọn thanh bên';
       const sessionFilterInput = document.getElementById('session-filter-input');
       if (sessionFilterInput) sessionFilterInput.placeholder = (lang === 'en') ? 'Filter sessions...' : 'Lọc phiên hỏi...';
-
-      const medInput = document.getElementById('med-input-query');
-      if (medInput) medInput.placeholder = dict.med_input_ph;
 
       // ── Localize Study Assistant (Doc Workspace) ──
       const docTitle = document.querySelector('.doc-ws-title');
@@ -7198,174 +5821,6 @@
         }
       }
 
-
-      // ── Localize OTC Workspace (Demographics, Categories, Chatbot Frame) ──
-      const medTitle = document.querySelector('.med-ws-title');
-      if (medTitle) medTitle.textContent = dict.med_ws_title;
-      const medSubtitle = document.querySelector('.med-ws-subtitle');
-      if (medSubtitle) medSubtitle.textContent = dict.med_ws_subtitle;
-
-      const medReturnBtn = document.querySelector('.med-ws-top-actions button span');
-      if (medReturnBtn) medReturnBtn.textContent = (lang === 'en') ? 'Back to Book Advisor' : 'Quay lại Tư Vấn Sách';
-      const medRefPill = document.querySelector('.med-ws-top-actions .system-status-pill span:last-child');
-      if (medRefPill) medRefPill.textContent = (lang === 'en') ? 'National Pharmacopoeia 2026' : 'Dược Thư Quốc Gia 2026';
-
-      // Left Column (Hồ Sơ Sức Khỏe)
-      const medProfileTitle = document.querySelector('.med-col-left .med-card-section:nth-child(1) .med-section-header-title span:last-child');
-      if (medProfileTitle) medProfileTitle.textContent = (lang === 'en') ? 'Health Profile' : 'Hồ Sơ Sức Khỏe';
-      const medClinicalBadge = document.querySelector('.med-clinical-badge');
-      if (medClinicalBadge) medClinicalBadge.textContent = (lang === 'en') ? 'Clinical Standard' : 'Chuẩn Lâm Sàng';
-
-      const medAgeLabel = document.querySelector('.med-age-wrapper .med-field-label span');
-      if (medAgeLabel) medAgeLabel.textContent = (lang === 'en') ? 'Age:' : 'Độ tuổi:';
-      const medAgeInput = document.getElementById('med-user-age');
-      if (medAgeInput) medAgeInput.placeholder = (lang === 'en') ? 'Age' : 'Nhập tuổi';
-      const medAgeSuffix = document.querySelector('.med-age-suffix');
-      if (medAgeSuffix) medAgeSuffix.textContent = (lang === 'en') ? 'Years' : 'tuổi';
-
-      const medGenderLabel = document.querySelector('.med-gender-wrapper .med-field-label span');
-      if (medGenderLabel) medGenderLabel.textContent = (lang === 'en') ? 'Gender & Profile:' : 'Giới tính & thể trạng:';
-      const maleBtn = document.querySelector('.med-gender-pill[data-gender="male"] span');
-      if (maleBtn) maleBtn.textContent = (lang === 'en') ? 'Male' : 'Nam';
-      const femaleBtn = document.querySelector('.med-gender-pill[data-gender="female"] span');
-      if (femaleBtn) femaleBtn.textContent = (lang === 'en') ? 'Female' : 'Nữ';
-      const pregBtn = document.querySelector('.med-gender-pill[data-gender="pregnant"] span');
-      if (pregBtn) pregBtn.textContent = (lang === 'en') ? 'Pregnant' : 'Thai kỳ';
-
-      // Medical Conditions
-      const medCondTitle = document.querySelector('.med-col-left .med-card-section:nth-child(2) .med-section-header-title span:last-child');
-      if (medCondTitle) medCondTitle.textContent = (lang === 'en') ? 'Medical History' : 'Tiền Sử Bệnh Lý';
-      const medCondCount = document.getElementById('med-active-cond-count');
-      if (medCondCount) medCondCount.textContent = `${medState.conditions.size} ${lang === 'en' ? 'selected' : 'đã chọn'}`;
-      const medCondHint = document.querySelector('.med-col-left .med-card-section:nth-child(2) > div:nth-child(2)');
-      if (medCondHint) medCondHint.textContent = (lang === 'en') ? 'Select existing health conditions to screen for drug contraindications:' : 'Chọn tình trạng sức khỏe hiện tại để hệ thống đối chiếu tương tác thuốc:';
-
-      const condLabels = {
-        'mang thai': lang === 'en' ? 'Pregnancy / Breastfeeding' : 'Phụ nữ mang thai / Cho con bú',
-        'dạ dày': lang === 'en' ? 'Stomach Ulcer / Bleeding' : 'Viêm loét / Xuất huyết dạ dày',
-        'gan': lang === 'en' ? 'Severe Liver Disease' : 'Suy giảm chức năng gan nặng',
-        'thận': lang === 'en' ? 'Kidney Failure / Stones' : 'Suy thận / Tiền sử sỏi thận',
-        'g6pd': lang === 'en' ? 'G6PD Deficiency (Hemolysis)' : 'Thiếu hụt men G6PD (Tan máu)',
-        'huyết áp': lang === 'en' ? 'High Blood Pressure / Heart Disease' : 'Tăng huyết áp / Bệnh mạch vành',
-        'tre_em': lang === 'en' ? 'Children under 12 Years' : 'Trẻ nhỏ dưới 12 tuổi'
-      };
-      Object.entries(condLabels).forEach(([condKey, label]) => {
-        const itemEl = document.querySelector(`.med-cond-item[data-cond="${condKey}"] span:last-child`);
-        if (itemEl) itemEl.textContent = label;
-      });
-
-      // Filter & Search
-      const medSearchTitle = document.querySelector('.med-col-left .med-card-section:nth-child(3) .med-section-header-title span:last-child');
-      if (medSearchTitle) medSearchTitle.textContent = (lang === 'en') ? 'Category & Search' : 'Danh Mục & Tìm Kiếm';
-      const medSearchInput = document.getElementById('med-search-input');
-      if (medSearchInput) medSearchInput.placeholder = (lang === 'en') ? 'Search medicine, active ingredient...' : 'Tìm tên thuốc, hoạt chất...';
-
-      const catLabels = {
-        'all': lang === 'en' ? 'All' : 'Tất cả',
-        'pain': lang === 'en' ? 'Pain & Fever' : 'Hạ sốt, đau',
-        'stomach': lang === 'en' ? 'Stomach' : 'Dạ dày',
-        'flu': lang === 'en' ? 'Cold & Cough' : 'Cảm, ho',
-        'vitamin': lang === 'en' ? 'Vitamins' : 'Vitamin'
-      };
-      Object.entries(catLabels).forEach(([catKey, label]) => {
-        const chip = document.querySelector(`.med-filter-chip[data-cat="${catKey}"]`);
-        if (chip) chip.textContent = label;
-      });
-
-      // Center Catalog Header
-      const catalogHeaderEl = document.querySelector('.med-col-center > div:first-child > div:first-child span');
-      if (catalogHeaderEl) {
-        catalogHeaderEl.innerHTML = (lang === 'en') 
-          ? `OTC Medicine Catalog (<span id="med-catalog-count">${medState.catalog.length}</span>)` 
-          : `Danh Mục Thuốc Không Kê Đơn (<span id="med-catalog-count">${medState.catalog.length}</span>)`;
-      }
-      const catalogSourceEl = document.querySelector('.med-col-center > div:first-child > div:last-child');
-      if (catalogSourceEl) catalogSourceEl.textContent = (lang === 'en') ? 'National Pharmacopoeia Standard Data' : 'Dữ liệu chuẩn Dược Thư Quốc Gia';
-
-      // Right Chatbot Panel
-      const medChatTitle = document.querySelector('.med-chat-title span');
-      if (medChatTitle) medChatTitle.textContent = (lang === 'en') ? 'Clinical Pharmacist AI' : 'Dược Sĩ Lâm Sàng AI';
-      const medRxStatus = document.querySelector('.med-rx-status-pill span');
-      if (medRxStatus) medRxStatus.textContent = (lang === 'en') ? 'Rx Safety Gatekeeper' : 'Kiểm soát thuốc kê đơn (Rx)';
-
-      const welcomeBubble = document.querySelector('.med-welcome-bubble');
-      if (welcomeBubble) {
-        if (lang === 'en') {
-          welcomeBubble.innerHTML = `
-            <div style="font-weight:700;color:var(--color-ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-              <span class="chat-bullet-dot"></span>
-              <span>Hello! I am your Clinical Pharmacist AI.</span>
-            </div>
-            <div style="margin-bottom:6px;font-size:12px;color:var(--color-ink);">Cross-checking clinical safety with <b>National Pharmacopoeia & DrugBank</b>:</div>
-            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>Screens contraindications & drug interactions against your health profile.</span></div>
-            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>100% Rx Gatekeeping:</b> Prioritizes your safety and blocks dangerous prescription drugs.</span></div>
-            <div style="margin-top:6px;font-size:11.5px;color:var(--color-graphite);">💬 Ask any symptom or medicine question below for safe guidance!</div>
-          `;
-        } else {
-          welcomeBubble.innerHTML = `
-            <div style="font-weight:700;color:var(--color-ink);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-              <span class="chat-bullet-dot"></span>
-              <span>Chào bạn! Tôi là Dược Sĩ Lâm Sàng AI.</span>
-            </div>
-            <div style="margin-bottom:6px;font-size:12px;color:var(--color-ink);">Hệ thống đối chiếu an toàn với <b>Dược Thư Quốc Gia & DrugBank</b>:</div>
-            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>Tự động kiểm tra chống chỉ định & tương tác với hồ sơ bệnh lý của bạn.</span></div>
-            <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Cổng chặn Rx 100%:</b> Bảo vệ an toàn, không kê đơn thuốc nguy hiểm.</span></div>
-            <div style="margin-top:6px;font-size:11.5px;color:var(--color-graphite);">💬 Hãy nhập triệu chứng hoặc câu hỏi bên dưới để được tư vấn an toàn!</div>
-          `;
-        }
-      }
-
-      const medQueryInput = document.getElementById('med-query-input');
-      if (medQueryInput) medQueryInput.placeholder = (lang === 'en') ? 'Ask about symptoms, medicines, or dosage...' : 'Hỏi triệu chứng hoặc tên thuốc...';
-
-      const quickChipsBar = document.getElementById('med-quick-chips-bar');
-      if (quickChipsBar) {
-        if (lang === 'en') {
-          quickChipsBar.innerHTML = `
-            <span class="med-chip" onclick="medAskPreset('I have a 38.5 degree fever and a severe headache')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-              Fever & Headache
-            </span>
-            <span class="med-chip" onclick="medAskPreset('I suffer from acid reflux and heartburn')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-              Heartburn & Reflux
-            </span>
-            <span class="med-chip" onclick="medAskPreset('Can I take Panadol Extra if I have stomach pain?')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-              Stomach Safety
-            </span>
-            <span class="med-chip" onclick="medAskPreset('Can I buy Augmentin 1g antibiotic without prescription?')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-              Test Rx Gatekeeper
-            </span>
-          `;
-        } else {
-          quickChipsBar.innerHTML = `
-            <span class="med-chip" onclick="medAskPreset('Tôi bị sốt cao 38.5 độ kèm đau đầu')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-              Sốt & Đau đầu
-            </span>
-            <span class="med-chip" onclick="medAskPreset('Tôi bị ợ chua và trào ngược dạ dày')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
-              Ợ chua rát cổ
-            </span>
-            <span class="med-chip" onclick="medAskPreset('Đau dạ dày có được uống Panadol Extra không?')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-              Đau dạ dày
-            </span>
-            <span class="med-chip" onclick="medAskPreset('Bán cho tôi thuốc kháng sinh Augmentin 1g')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-              Thử Cổng Chặn Rx
-            </span>
-          `;
-        }
-      }
-
-      // Reload OTC Medicine catalog directly with language parameter
-      if (typeof loadMedCatalog === 'function') {
-        loadMedCatalog();
-      }
-
       // Re-render Sessions to update empty state text
       if (typeof renderSessionsList === 'function' && typeof allSessions !== 'undefined') {
         renderSessionsList(allSessions);
@@ -7395,10 +5850,7 @@
           '#results-empty-text',
           '#doc-workspace-panel .doc-col-left',
           '#doc-workspace-panel .doc-col-center',
-          '#doc-workspace-panel .doc-col-right',
-          '#med-workspace-panel .med-col-left',
-          '#med-workspace-panel .med-col-center',
-          '#med-workspace-panel .med-col-right'
+          '#doc-workspace-panel .doc-col-right'
         ].filter(sel => {
           const el = document.querySelector(sel);
           return el && (el.offsetParent !== null || window.getComputedStyle(el).display !== 'none');
@@ -7411,7 +5863,7 @@
     }
 
     async function toggleTranslateMessage(btn) {
-      const bubble = btn.closest('.msg-bubble, .med-msg-bubble');
+      const bubble = btn.closest('.msg-bubble');
       if (!bubble) return;
 
       const label = btn.querySelector('.btn-translate-label');
@@ -7472,9 +5924,9 @@
 
     function offlinePlainTranslate(text, targetLang) {
       if (targetLang === 'en') {
-        return "Hello! Since you have a fever and a history of stomach pain, **Paracetamol (such as Hapacol 650 or 500mg)** is your safest bet. It relieves fever gently without irritating or eroding your stomach lining like NSAID drugs can.\n\nPlease avoid **Ibuprofen** and **Aspirin**, as they carry a high risk of stomach irritation and internal bleeding.\n\nFor safe use: take your dose after a light snack, wait 4 to 6 hours between doses, and keep total intake under 3 grams a day.";
+        return "Hello! Based on your reading interests and study goals, here are the most relevant recommended books and reference materials. Each recommendation has been cross-checked with verified library records for accuracy.\n\nPlease check the details and summaries on the right panel.";
       }
-      return "Chào bạn. Nếu bạn đang bị sốt mà có tiền sử đau dạ dày, hãy ưu tiên dùng **Paracetamol (như Hapacol 650 hoặc liều 500mg)**. Thuốc này hạ sốt êm và lành tính cho dạ dày, không làm kích ứng hay gây loét niêm mạc như nhóm kháng viêm NSAID.\n\nBạn tuyệt đối không nên dùng **Ibuprofen** hay **Aspirin**, vì chúng tiềm ẩn nguy cơ rất cao làm xót và xuất huyết tiêu hóa.\n\nĐể dùng an toàn nhất: bạn hãy uống sau khi đã ăn nhẹ một chút, mỗi lần uống cách nhau tối thiểu 4 đến 6 tiếng và không dùng quá 3g một ngày nhé.";
+      return "Chào bạn! Dựa trên sở thích đọc và mục tiêu học tập của bạn, đây là các cuốn sách và tài liệu tham khảo phù hợp nhất. Mọi đề xuất đều được đối chiếu chặt chẽ với kho dữ liệu thực tế để đảm bảo độ tin cậy.\n\nBạn có thể xem chi tiết thông tin và tóm tắt sách ở khung bên phải nhé.";
     }
     document.getElementById('btn-sidebar-toggle').addEventListener('click', () => {
       const sidebar = document.getElementById('main-sidebar');
@@ -9191,46 +7643,39 @@
       }
     });
 
-    // ── 12. THREE-MODE NAVIGATION CONTROLLER (GSAP Powered) ───────────────────
-    let currentAppMode = 'book'; // 'book' | 'doc' | 'med'
+    // ── 12. TWO-MODE NAVIGATION CONTROLLER (GSAP Powered) ─────────────────
+    let currentAppMode = 'book'; // 'book' | 'doc'
     let docMode = false;
     let currentDocSubTab = 'chat';
     let currentActivePdf = '';
 
     function switchAppMode(mode) {
-      if (!['book', 'doc', 'med'].includes(mode)) mode = 'book';
+      if (!['book', 'doc'].includes(mode)) mode = 'book';
       currentAppMode = mode;
       docMode = (mode === 'doc');
 
       const bookPanel = document.getElementById('book-consult-panel');
       const resultsPanel = document.getElementById('results-panel');
       const docWsPanel = document.getElementById('doc-workspace-panel');
-      const medWsPanel = document.getElementById('med-workspace-panel');
 
       const navBookBtn = document.getElementById('nav-book-btn');
       const navDocBtn = document.getElementById('nav-doc-btn');
-      const navMedBtn = document.getElementById('nav-med-btn');
 
       if (navBookBtn) navBookBtn.classList.toggle('active', mode === 'book');
       if (navDocBtn) navDocBtn.classList.toggle('active', mode === 'doc');
-      if (navMedBtn) navMedBtn.classList.toggle('active', mode === 'med');
 
-      const allPanels = [bookPanel, resultsPanel, docWsPanel, medWsPanel].filter(Boolean);
+      const allPanels = [bookPanel, resultsPanel, docWsPanel].filter(Boolean);
 
       if (typeof gsap !== 'undefined') {
-        // Fast compositor-only fade out
         gsap.to(allPanels, {
           opacity: 0,
           duration: 0.15,
           ease: 'power1.out',
           onComplete: () => {
-            // Hide all
             if (bookPanel) bookPanel.style.display = 'none';
             if (resultsPanel) resultsPanel.style.display = 'none';
             if (docWsPanel) docWsPanel.style.display = 'none';
-            if (medWsPanel) medWsPanel.style.display = 'none';
 
-            // Show selected mode
             if (mode === 'book') {
               if (bookPanel) bookPanel.style.display = 'flex';
               if (resultsPanel) resultsPanel.style.display = '';
@@ -9243,910 +7688,26 @@
                 { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'transform,opacity' }
               );
               docList();
-            } else if (mode === 'med') {
-              if (medWsPanel) medWsPanel.style.display = 'flex';
-              gsap.fromTo(medWsPanel, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: 'power1.out', clearProps: 'opacity' });
-              gsap.fromTo('#med-workspace-panel .med-col-left, #med-workspace-panel .med-col-center, #med-workspace-panel .med-col-right',
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'transform,opacity' }
-              );
-              medInit();
             }
           }
         });
       } else {
-        // Fallback without GSAP
         if (bookPanel) bookPanel.style.display = mode === 'book' ? 'flex' : 'none';
         if (resultsPanel) resultsPanel.style.display = mode === 'book' ? '' : 'none';
         if (docWsPanel) docWsPanel.style.display = mode === 'doc' ? 'flex' : 'none';
-        if (medWsPanel) medWsPanel.style.display = mode === 'med' ? 'flex' : 'none';
 
         if (mode === 'doc') docList();
-        if (mode === 'med') medInit();
       }
 
       const toastLabels = {
         book: (currentAppLang === 'en') ? 'Switched to Book Advisor.' : 'Đã chuyển sang Tư Vấn Sách.',
-        doc: (currentAppLang === 'en') ? 'Switched to Study & Reading Assistant.' : 'Đã chuyển sang Trợ Lý Đọc & Tương Tác Sách.',
-        med: (currentAppLang === 'en') ? 'Switched to OTC Medicine Safety Guide.' : 'Đã chuyển sang Cổng Tư Vấn Dược & An Toàn OTC.'
+        doc: (currentAppLang === 'en') ? 'Switched to Study & Reading Assistant.' : 'Đã chuyển sang Trợ Lý Đọc & Tương Tác Sách.'
       };
       showToast(toastLabels[mode] || 'Đã chuyển chế độ.', 'info');
     }
 
     function setDocMode(on) {
       switchAppMode(on ? 'doc' : 'book');
-    }
-
-    // ── 13. DEDICATED MEDICINE ADVISORY & OTC GATEKEEPER ENGINE ──────────────
-    const _DEFAULT_OTC_FALLBACK = [
-      {
-        "drug_id": "OTC_01",
-        "trade_name": "Hapacol 650",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Paracetamol 650mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 842)",
-        "category": "Thuốc giảm đau - hạ sốt không kê đơn (OTC)",
-        "common_symptoms": ["Sốt cao", "Đau đầu", "Đau răng", "Đau nhức cơ bắp"],
-        "contraindications": [
-          "Người suy giảm chức năng gan nặng",
-          "Người thiếu hụt men G6PD",
-          "Người dị ứng với Paracetamol"
-        ],
-        "dangerous_interactions": [
-          "Rượu bia (tăng nguy cơ độc tính tế bào gan)",
-          "Các chế phẩm khác chứa Paracetamol (nguy cơ quá liều tích lũy)"
-        ],
-        "safe_usage_note": "Khoảng cách giữa 2 lần uống tối thiểu 4-6 giờ. Không uống quá 4g/ngày đối với người lớn."
-      },
-      {
-        "drug_id": "OTC_02",
-        "trade_name": "Berberin 100mg",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Berberin clorid 100mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 315)",
-        "category": "Thuốc trị tiêu chảy không kê đơn (OTC)",
-        "common_symptoms": ["Tiêu chảy", "Đau bụng", "Rối loạn tiêu hóa", "Viêm ruột nhẹ"],
-        "contraindications": [
-          "Phụ nữ có thai (kích thích co bóp tử cung gây sảy thai)",
-          "Trẻ sơ sinh thiếu hụt men G6PD"
-        ],
-        "dangerous_interactions": [
-          "Thuốc ức chế miễn dịch Ciclosporin (tăng nồng độ thuốc trong máu)"
-        ],
-        "safe_usage_note": "Uống sau bữa ăn. Ngưng dùng và đi khám nếu tiêu chảy ra máu hoặc sốt cao trên 2 ngày."
-      },
-      {
-        "drug_id": "OTC_03",
-        "trade_name": "Vitamin C 500mg",
-        "source_pharmacy": "Pharmacity / An Khang",
-        "active_ingredient": "Acid ascorbic 500mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 1207)",
-        "category": "Vitamin bổ sung không kê đơn (OTC)",
-        "common_symptoms": ["Tăng đề kháng", "Mệt mỏi", "Chảy máu chân răng", "Phục hồi sau ốm"],
-        "contraindications": [
-          "Người có tiền sử sỏi thận oxalat",
-          "Người thiếu men G6PD (nguy cơ tan máu liều cao)",
-          "Người dị ứng với Acid ascorbic"
-        ],
-        "dangerous_interactions": [
-          "Aspirin liều cao (làm giảm hấp thu Vitamin C)",
-          "Thuốc kháng acid chứa nhôm (tăng hấp thu nhôm gây độc tính)"
-        ],
-        "safe_usage_note": "Nên uống vào ban ngày (buổi sáng/trưa) sau ăn, tránh uống tối gây mất ngủ và lắng cặn sỏi thận."
-      },
-      {
-        "drug_id": "OTC_04",
-        "trade_name": "Gaviscon Dual Action",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Natri alginat 500mg, Natri bicarbonat 213mg, Calci carbonat 325mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 512)",
-        "category": "Thuốc kháng acid & chống trào ngược dạ dày (OTC)",
-        "common_symptoms": ["Ợ chua", "Ợ nóng", "Trào ngược dạ dày thực quản", "Đau rát thượng vị"],
-        "contraindications": [
-          "Người suy tim nặng hoặc tăng huyết áp cần ăn kiêng muối nghiêm ngặt (do chứa Natri)",
-          "Người tăng calci máu hoặc sỏi thận calci"
-        ],
-        "dangerous_interactions": [
-          "Kháng sinh nhóm Tetracyclin, Quinolon, Thuốc bổ sắt (cần uống cách nhau ít nhất 2 giờ)"
-        ],
-        "safe_usage_note": "Uống sau bữa ăn chính và trước khi đi ngủ. Lắc kỹ gói hỗn dịch trước khi uống."
-      },
-      {
-        "drug_id": "OTC_05",
-        "trade_name": "Panadol Extra (Đỏ)",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Paracetamol 500mg + Caffeine 65mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 844)",
-        "category": "Thuốc giảm đau hạ sốt tăng cường không kê đơn (OTC)",
-        "common_symptoms": ["Đau đầu dữ dội", "Đau nửa đầu", "Đau răng", "Đau bụng kinh", "Sốt"],
-        "contraindications": [
-          "Người suy gan nặng",
-          "Người rối loạn nhịp tim nhanh, mất ngủ kinh niên",
-          "Phụ nữ mang thai 3 tháng đầu (do có chứa Caffeine liều cao)",
-          "Trẻ em dưới 12 tuổi"
-        ],
-        "dangerous_interactions": [
-          "Rượu bia, cà phê, trà đậm (gây bồn chồn, hồi hộp tim và tăng độc tính gan)",
-          "Thuốc an thần, thuốc ngủ (bị giảm tác dụng bởi caffeine)"
-        ],
-        "safe_usage_note": "Không dùng quá 8 viên/ngày. Tránh uống vào buổi tối sát giờ đi ngủ."
-      },
-      {
-        "drug_id": "OTC_06",
-        "trade_name": "Smecta 3g",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Diosmectite 3g",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 418)",
-        "category": "Thuốc bao phủ niêm mạc & cầm tiêu chảy không kê đơn (OTC)",
-        "common_symptoms": ["Tiêu chảy cấp và mạn tính", "Đau bụng đi ngoài", "Đầy hơi chướng bụng"],
-        "contraindications": [
-          "Người tắc ruột cơ học",
-          "Người dị ứng với Diosmectite"
-        ],
-        "dangerous_interactions": [
-          "Làm giảm hấp thu tất cả các thuốc uống khác (phải uống cách các thuốc khác tối thiểu 2 giờ)"
-        ],
-        "safe_usage_note": "Pha với 50ml nước ấm hoặc trộn đều vào thức ăn sệt. Kết hợp bù nước điện giải Oresol."
-      },
-      {
-        "drug_id": "OTC_07",
-        "trade_name": "Eugica Xanh (Viên nang mềm)",
-        "source_pharmacy": "Pharmacity / Long Châu",
-        "active_ingredient": "Eucalyptol 100mg, Tinh dầu tràm 50mg, Menthol 0.5mg, Tinh dầu gừng 0.75mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 480)",
-        "category": "Thuốc ho thảo dược long đờm không kê đơn (OTC)",
-        "common_symptoms": ["Ho có đờm", "Ho do cảm lạnh", "Đau rát họng", "Khản tiếng"],
-        "contraindications": [
-          "Trẻ em dưới 30 tháng tuổi hoặc trẻ có tiền sử co giật do sốt cao",
-          "Người hen suyễn, suy hô hấp",
-          "Người ho do lao phổi"
-        ],
-        "dangerous_interactions": [
-          "Không phối hợp với thuốc ức chế trung tâm ho như Codein, Dextromethorphan (gây ứ đọng đờm)"
-        ],
-        "safe_usage_note": "Uống sau ăn với nhiều nước ấm để giúp loãng đờm tự nhiên."
-      },
-      {
-        "drug_id": "OTC_08",
-        "trade_name": "Decolgen Forte",
-        "source_pharmacy": "Long Châu / Pharmacity",
-        "active_ingredient": "Paracetamol 500mg, Phenylephrine HCl 10mg, Chlorpheniramine maleate 2mg",
-        "pharmacopoeia_ref": "Dược Thư Quốc Gia VN (Trang 382)",
-        "category": "Thuốc trị cảm cúm, sổ mũi không kê đơn (OTC)",
-        "common_symptoms": ["Nghẹt mũi", "Sổ mũi", "Hắt hơi", "Sốt kèm nhức đầu", "Đau họng"],
-        "contraindications": [
-          "Người tăng huyết áp nặng, bệnh mạch vành tim",
-          "Người u tuyến tiền liệt, bí tiểu",
-          "Người mắc bệnh Glaucoma góc đóng (tăng nhãn áp)",
-          "Người đang dùng thuốc ức chế IMAO"
-        ],
-        "dangerous_interactions": [
-          "Rượu bia (tăng tác dụng buồn ngủ và ức chế thần kinh trung ương)",
-          "Thuốc an thần, chống trầm cảm"
-        ],
-        "safe_usage_note": "Thuốc gây buồn ngủ, không dùng khi lái xe hoặc vận hành máy móc nguy hiểm."
-      }
-    ];
-
-    const medState = {
-      conditions: new Set(),
-      catalog: [..._DEFAULT_OTC_FALLBACK],
-      selectedCategory: 'all',
-      searchQuery: '',
-      age: null,
-      gender: 'male'
-    };
-
-    function setMedGender(genderVal, el) {
-      medState.gender = genderVal;
-      const genderEl = document.getElementById('med-user-gender');
-      if (genderEl) genderEl.value = genderVal;
-
-      document.querySelectorAll('.med-gender-pill').forEach(btn => {
-        const isActive = (btn.getAttribute('data-gender') === genderVal);
-        btn.classList.toggle('active', isActive);
-        if (isActive && typeof gsap !== 'undefined') {
-          gsap.fromTo(btn, { scale: 0.94 }, { scale: 1, duration: 0.22, ease: 'back.out(2)' });
-        }
-      });
-
-      if (genderVal === 'pregnant') {
-        medState.conditions.add('mang thai');
-        const pregCond = document.querySelector('.med-cond-item[data-cond="mang thai"]');
-        if (pregCond && !pregCond.classList.contains('active')) {
-          pregCond.classList.add('active');
-          if (typeof gsap !== 'undefined') {
-            gsap.fromTo(pregCond, { scale: 1.05 }, { scale: 1, duration: 0.3, ease: 'power2.out' });
-          }
-        }
-      }
-
-      const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
-      renderMedCatalog(true);
-    }
-
-    function updateMedDemographics() {
-      const ageEl = document.getElementById('med-user-age');
-      const genderEl = document.getElementById('med-user-gender');
-      if (ageEl) medState.age = parseInt(ageEl.value, 10) || null;
-      if (genderEl) {
-        medState.gender = genderEl.value;
-        if (genderEl.value === 'pregnant') {
-          medState.conditions.add('mang thai');
-        }
-        document.querySelectorAll('.med-gender-pill').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-gender') === genderEl.value);
-        });
-      }
-      if (medState.age && medState.age < 12) {
-        medState.conditions.add('tre_em');
-      }
-      const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
-      renderMedCatalog(true);
-    }
-
-    async function medInit() {
-      // Horizontal mousewheel scroll for chips bar
-      const chipBar = document.getElementById('med-quick-chips-bar');
-      if (chipBar && !chipBar._hasWheelListener) {
-        chipBar._hasWheelListener = true;
-        chipBar.addEventListener('wheel', (e) => {
-          if (e.deltaY !== 0) {
-            e.preventDefault();
-            chipBar.scrollLeft += e.deltaY;
-          }
-        }, { passive: false });
-      }
-
-      try {
-        const langParam = (currentAppLang === 'en') ? '?lang=en' : '';
-        const res = await fetch(`${API_BASE}/api/med/all${langParam}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data.medicines) && data.medicines.length > 0) {
-            medState.catalog = data.medicines;
-          }
-        }
-      } catch (e) {
-        console.warn('Sử dụng dữ liệu OTC tích hợp sẵn:', e);
-      }
-      renderMedCatalog();
-    }
-
-    function toggleMedCondition(condition, el) {
-      if (medState.conditions.has(condition)) {
-        medState.conditions.delete(condition);
-        if (el) el.classList.remove('active');
-      } else {
-        medState.conditions.add(condition);
-        if (el) {
-          el.classList.add('active');
-          if (typeof gsap !== 'undefined') {
-            gsap.fromTo(el, { scale: 0.95 }, { scale: 1, duration: 0.2, ease: 'power2.out' });
-          }
-        }
-      }
-      
-      const countEl = document.getElementById('med-active-cond-count');
-      if (countEl) countEl.textContent = `${medState.conditions.size} ${currentAppLang === 'en' ? 'selected' : 'đã chọn'}`;
-
-      renderMedCatalog(true);
-    }
-
-    function setMedCategoryFilter(cat, el) {
-      medState.selectedCategory = cat;
-      document.querySelectorAll('.med-filter-chip').forEach(c => c.classList.remove('active'));
-      if (el) {
-        el.classList.add('active');
-        if (typeof gsap !== 'undefined') {
-          gsap.fromTo(el, { scale: 0.92 }, { scale: 1, duration: 0.22, ease: 'back.out(2)' });
-        }
-      }
-      renderMedCatalog();
-    }
-
-    function filterMedCatalog() {
-      const input = document.getElementById('med-search-input');
-      medState.searchQuery = (input ? input.value : '').toLowerCase().trim();
-      renderMedCatalog();
-    }
-
-    function renderMedCatalog(animateSafetyOnly) {
-      const container = document.getElementById('med-catalog-list');
-      const countEl = document.getElementById('med-catalog-count');
-      if (!container) return;
-
-      const userConds = Array.from(medState.conditions);
-      const q = medState.searchQuery;
-      const cat = medState.selectedCategory;
-
-      const filtered = medState.catalog.filter(drug => {
-        // Filter by category
-        if (cat === 'pain' && !drug.category.toLowerCase().includes('giảm đau') && !drug.category.toLowerCase().includes('hạ sốt')) return false;
-        if (cat === 'stomach' && !drug.category.toLowerCase().includes('dạ dày') && !drug.category.toLowerCase().includes('tiêu chảy')) return false;
-        if (cat === 'flu' && !drug.category.toLowerCase().includes('cảm') && !drug.category.toLowerCase().includes('ho')) return false;
-        if (cat === 'vitamin' && !drug.category.toLowerCase().includes('vitamin')) return false;
-
-        // Filter by query
-        if (q) {
-          const matchName = drug.trade_name.toLowerCase().includes(q);
-          const matchIng = drug.active_ingredient.toLowerCase().includes(q);
-          const matchSym = (drug.common_symptoms || []).some(s => s.toLowerCase().includes(q));
-          if (!matchName && !matchIng && !matchSym) return false;
-        }
-        return true;
-      });
-
-      if (countEl) countEl.textContent = filtered.length;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div style="grid-column: 1/-1; text-align: center; padding: 40px 20px; color: var(--color-graphite); font-size: 13px;">
-            Không tìm thấy thuốc OTC nào phù hợp với bộ lọc hiện tại.
-          </div>
-        `;
-        return;
-      }
-
-      const isEn = (currentAppLang === 'en');
-      container.innerHTML = filtered.map(drug => {
-        // Evaluate contraindications
-        const warnings = [];
-        const drugContraStr = (drug.contraindications || []).join(' ').toLowerCase();
-
-        for (const cond of userConds) {
-          const cClean = cond.toLowerCase();
-          if (cClean.includes('dạ dày') || cClean.includes('loét') || cClean.includes('stomach') || cClean.includes('ulcer')) {
-            if (drugContraStr.includes('dạ dày') || drugContraStr.includes('loét') || drugContraStr.includes('xuất huyết') || drugContraStr.includes('stomach') || drugContraStr.includes('bleeding')) {
-              warnings.push(isEn ? `History of '${cond}': Risk of stomach irritation or bleeding.` : `Tiền sử '${cond}': Nguy cơ kích ứng / xuất huyết dạ dày.`);
-            }
-          } else if (cClean.includes('gan') || cClean.includes('liver')) {
-            if (drugContraStr.includes('gan') || drugContraStr.includes('liver')) {
-              warnings.push(isEn ? `History of '${cond}': Contraindicated in severe liver impairment.` : `Tiền sử '${cond}': Chống chỉ định suy gan nặng.`);
-            }
-          } else if (cClean.includes('thận') || cClean.includes('kidney')) {
-            if (drugContraStr.includes('thận') || drugContraStr.includes('sỏi') || drugContraStr.includes('kidney')) {
-              warnings.push(isEn ? `History of '${cond}': Risk of drug accumulation or kidney stones.` : `Tiền sử '${cond}': Nguy cơ tích tụ hoặc sỏi thận.`);
-            }
-          } else if (cClean.includes('mang thai') || cClean.includes('pregnant')) {
-            if (drugContraStr.includes('mang thai') || drugContraStr.includes('thai') || drugContraStr.includes('pregnant')) {
-              warnings.push(isEn ? `Condition '${cond}': Contraindicated during pregnancy.` : `Tình trạng '${cond}': Chống chỉ định phụ nữ có thai.`);
-            }
-          } else if (cClean.includes('g6pd')) {
-            if (drugContraStr.includes('g6pd')) {
-              warnings.push(isEn ? `Condition '${cond}': Risk of acute red blood cell breakdown.` : `Thể trạng '${cond}': Nguy cơ tan máu cấp tính.`);
-            }
-          } else if (cClean.includes('huyết áp') || cClean.includes('blood pressure')) {
-            if (drugContraStr.includes('huyết áp') || drugContraStr.includes('tim') || drugContraStr.includes('pressure')) {
-              warnings.push(isEn ? `History of '${cond}': May raise blood pressure or heart rate.` : `Tiền sử '${cond}': Có thể làm tăng huyết áp / hồi hộp.`);
-            }
-          } else if (cClean.includes('tre_em') || cClean.includes('child')) {
-            if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh') || drugContraStr.includes('child') || drugContraStr.includes('infant')) {
-              warnings.push(isEn ? `Age caution: Contraindicated or use with caution in young children.` : `Độ tuổi: Chống chỉ định hoặc thận trọng cho trẻ nhỏ.`);
-            }
-          }
-        }
-
-        // WebMD Demographics evaluation
-        if (medState.age && medState.age < 12) {
-          if (drugContraStr.includes('12 tuổi') || drugContraStr.includes('trẻ em') || drugContraStr.includes('sơ sinh') || drugContraStr.includes('child') || drugContraStr.includes('infant')) {
-            warnings.push(isEn ? `WebMD Screening: Children (${medState.age} Years) should not take this active ingredient.` : `Sàng lọc WebMD: Trẻ em (${medState.age} tuổi) không phù hợp với hoạt chất này.`);
-          }
-        }
-        if (medState.age && medState.age >= 65) {
-          if (drugContraStr.includes('cao tuổi') || drugContraStr.includes('người già') || drugContraStr.includes('huyết áp') || drugContraStr.includes('elderly')) {
-            warnings.push(isEn ? `WebMD Screening: Elderly (${medState.age} Years) require liver/kidney monitoring.` : `Sàng lọc WebMD: Người cao tuổi (${medState.age} tuổi) cần giám sát chuyển hóa gan/thận.`);
-          }
-        }
-        if (medState.gender === 'pregnant') {
-          if (drugContraStr.includes('thai') || drugContraStr.includes('cho con bú') || drugContraStr.includes('pregnant') || drugContraStr.includes('breastfeeding')) {
-            warnings.push(isEn ? `Pregnancy Safety (DrugBank & WebMD): Potential risk to unborn baby.` : `Hồ sơ thai kỳ (DrugBank & WebMD): Nguy cơ ảnh hưởng tới thai nhi.`);
-          }
-        }
-
-        const isSafe = warnings.length === 0;
-
-        return `
-          <div class="med-drug-card ${drug.isAiSuggested ? 'med-card-ai-suggested' : ''}" data-drug-id="${drug.drug_id}">
-            <div class="med-card-header">
-              <div class="med-card-name-row">
-                <span class="med-card-name" title="${escAttr(drug.trade_name)}">${escHtml(drug.trade_name)}</span>
-                ${drug.isAiSuggested ? `<span class="med-ai-suggested-pill">${isEn ? '✨ Suggested' : '✨ AI Gợi Ý'}</span>` : ''}
-                <span class="med-otc-pill">OTC</span>
-              </div>
-              <div class="med-card-cat">${escHtml(drug.category)}</div>
-              <div class="med-card-badges-row">
-                ${drug.drugbank_id ? `<a href="https://go.drugbank.com/drugs/${escAttr(drug.drugbank_id)}" target="_blank" class="med-source-tag med-drugbank-badge" title="Tra cứu DrugBank ID">DrugBank: ${escHtml(drug.drugbank_id)} ↗</a>` : ''}
-                <span class="med-source-tag">${escHtml(drug.source_pharmacy || 'Dược Thư QG')}</span>
-              </div>
-            </div>
-
-            <div class="med-active-ingredient">
-              <b>${isEn ? 'Active Ingredient:' : 'Hoạt chất:'}</b> ${escHtml(drug.active_ingredient)}
-            </div>
-            ${drug.mechanism_of_action ? `
-              <div style="font-size:11px;color:var(--color-graphite);margin-top:2px;line-height:1.35;">
-                <b>${isEn ? 'How It Works (DrugBank):' : 'Cơ chế (DrugBank):'}</b> ${escHtml(drug.mechanism_of_action)}
-              </div>
-            ` : ''}
-
-            <div class="med-symptoms-wrap">
-              ${(drug.common_symptoms || []).map(s => `<span class="med-symptom-tag"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>${escHtml(s)}</span>`).join('')}
-            </div>
-
-            <div class="med-safety-box ${isSafe ? 'is-safe' : 'is-contraindicated'}">
-              <div class="med-safety-title">
-                ${isSafe ? `
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    <polyline points="9 12 11 14 15 10"></polyline>
-                  </svg>
-                  <span>${isEn ? 'Safe With Your Health Profile' : 'An Toàn Với Hồ Sơ Hiện Tại'}</span>
-                ` : `
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                  </svg>
-                  <span>${isEn ? 'WARNING: WHO SHOULD NOT USE' : 'CẢNH BÁO CHỐNG CHỈ ĐỊNH:'}</span>
-                `}
-              </div>
-              <div class="med-safety-desc">
-                ${isSafe 
-                  ? escHtml(drug.safe_usage_note || (isEn ? 'Follow recommended daily dosage.' : 'Tuân thủ đúng liều lượng chỉ định.')) 
-                  : warnings.map(w => `• ${escHtml(w)}`).join('<br>')
-                }
-              </div>
-            </div>
-
-            <div class="med-card-footer">
-              <span class="med-ref-citation" title="${escAttr(drug.pharmacopoeia_ref || (isEn ? 'National Pharmacopoeia' : 'Dược Thư Quốc Gia Việt Nam'))}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-                <span>${isEn ? 'Pharmacopoeia' : 'Dược Thư QG'}</span>
-              </span>
-              <button class="med-btn-ask" onclick="medAskPreset('${isEn ? 'Consultation for medicine ' : 'Tư vấn sử dụng thuốc '}${escAttr(drug.trade_name)} (${escAttr(drug.active_ingredient)})')">
-                ${isEn ? 'Ask AI Pharmacist ↗' : 'Hỏi Dược Sĩ AI ↗'}
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      if (typeof gsap !== 'undefined') {
-        if (!animateSafetyOnly) {
-          gsap.fromTo('#med-catalog-list .med-drug-card', 
-            { opacity: 0, y: 12 }, 
-            { opacity: 1, y: 0, stagger: 0.03, duration: 0.25, ease: 'power2.out', clearProps: 'transform' }
-          );
-        } else {
-          // Subtle pulse on condition change
-          gsap.fromTo('#med-catalog-list .med-safety-box', 
-            { opacity: 0.75 }, 
-            { opacity: 1, duration: 0.2, ease: 'power1.out', clearProps: 'opacity' }
-          );
-        }
-      }
-    }
-
-    function appendMedChatMessage(role, htmlOrText, isHtml) {
-      const list = document.getElementById('med-messages-list');
-      if (!list) return;
-
-      const bubble = document.createElement('div');
-      bubble.className = `med-msg-bubble ${role === 'user' ? 'med-msg-user' : 'med-msg-bot'}`;
-      
-      if (isHtml) {
-        bubble.innerHTML = htmlOrText.replace(/•\s*/g, '<span class="chat-bullet-dot"></span>');
-      } else {
-        bubble.innerHTML = escHtml(htmlOrText)
-          .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-          .replace(/\*(.*?)\*/g, '<i>$1</i>')
-          .replace(/^(?:[•\-*]|\d+[\.\)])\s*(.+)$/gm, '<div class="med-bullet-row"><span class="chat-bullet-dot"></span><span>$1</span></div>')
-          .replace(/•\s*/g, '<span class="chat-bullet-dot"></span>')
-          .replace(/\n\n+/g, '</p><p>')
-          .replace(/\n/g, '<br class="chat-br"/>');
-      }
-
-      if (role === 'bot') {
-        const actionsBar = document.createElement('div');
-        actionsBar.className = 'msg-actions-bar';
-        actionsBar.innerHTML = `
-          <button class="btn-msg-translate" onclick="toggleTranslateMessage(this)" title="Dịch sang tiếng Anh đơn giản / Translate to Plain English">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-            <span class="btn-translate-label">Translate / Dịch</span>
-          </button>
-        `;
-        bubble.appendChild(actionsBar);
-      }
-
-      list.appendChild(bubble);
-      
-      requestAnimationFrame(() => {
-        list.scrollTop = list.scrollHeight;
-      });
-
-      if (typeof gsap !== 'undefined') {
-        gsap.fromTo(bubble,
-          { opacity: 0, y: 12, scale: 0.98 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.32, ease: 'power2.out', clearProps: 'transform' }
-        );
-        const childItems = bubble.querySelectorAll('.med-bullet-row, li, .med-suggest-drug-card');
-        if (childItems.length > 0) {
-          gsap.fromTo(childItems,
-            { opacity: 0, x: -6 },
-            { opacity: 1, x: 0, stagger: 0.03, duration: 0.22, ease: 'power1.out', delay: 0.08, clearProps: 'transform' }
-          );
-        }
-      }
-    }
-
-    function medAskPreset(query) {
-      const input = document.getElementById('med-query-input');
-      if (input) input.value = query;
-      medAsk();
-    }
-
-    let _medTypingTween = null;
-
-    function showMedTypingIndicator(customStatus = 'Đang suy nghĩ...') {
-      removeMedTypingIndicator();
-      const list = document.getElementById('med-messages-list');
-      if (!list) return;
-
-      const bubble = document.createElement('div');
-      bubble.className = 'med-msg-bubble med-msg-bot';
-      bubble.id = 'active-med-typing';
-      bubble.innerHTML = `
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
-          <div class="med-typing-dots">
-            <span class="med-typing-dot"></span>
-            <span class="med-typing-dot"></span>
-            <span class="med-typing-dot"></span>
-          </div>
-          <span style="color:var(--color-ink);opacity:0.85;font-weight:500;">${escHtml(customStatus)}</span>
-        </div>
-      `;
-      list.appendChild(bubble);
-      
-      requestAnimationFrame(() => {
-        list.scrollTop = list.scrollHeight;
-      });
-
-      if (typeof gsap !== 'undefined') {
-        gsap.from(bubble, { opacity: 0, y: 8, duration: 0.25, ease: 'power2.out' });
-        // GSAP wave animation cho 3 chấm màu xanh lá chuyển động nảy sóng
-        _medTypingTween = gsap.to(bubble.querySelectorAll('.med-typing-dot'), {
-          y: -6,
-          scale: 1.25,
-          opacity: 1,
-          boxShadow: '0 0 10px rgba(16, 185, 129, 0.95)',
-          stagger: {
-            each: 0.16,
-            repeat: -1,
-            yoyo: true,
-            ease: 'power1.inOut'
-          },
-          duration: 0.36
-        });
-      }
-    }
-
-    function removeMedTypingIndicator() {
-      if (_medTypingTween) {
-        try { _medTypingTween.kill(); } catch (e) {}
-        _medTypingTween = null;
-      }
-      const el = document.getElementById('active-med-typing');
-      if (el) el.remove();
-    }
-
-    async function medAsk() {
-      const input = document.getElementById('med-query-input');
-      const q = input ? input.value.trim() : '';
-      if (!q) return;
-      if (input) input.value = '';
-
-      appendMedChatMessage('user', q);
-      showMedTypingIndicator('Đang suy nghĩ...');
-
-      try {
-        const res = await fetch(`${API_BASE}/api/med/consult`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: q,
-            conditions: Array.from(medState.conditions),
-            age: medState.age,
-            gender: medState.gender
-          })
-        });
-
-        removeMedTypingIndicator();
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (data.status === 'blocked_rx') {
-          // Blocked prescription drug
-          const rxHtml = `
-            <div class="med-rx-blocked-box">
-              <div style="font-weight:700;font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
-                <span>CẢNH BÁO: PHÁT HIỆN THUỐC KÊ ĐƠN (Rx)</span>
-              </div>
-              <div style="margin-bottom:8px;">
-                ${escHtml(data.message).replace(/\n/g, '<br>')}
-              </div>
-              <div style="background:rgba(255,255,255,0.2);padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span>Theo Nghị định 117/2020/NĐ-CP & Luật Dược: Tự ý mua và sử dụng thuốc kê đơn / kháng sinh khi chưa có chỉ định của Bác sĩ là vi phạm pháp luật và gây nguy cơ kháng kháng sinh nghiêm trọng.</span>
-              </div>
-            </div>
-          `;
-          appendMedChatMessage('bot', rxHtml, true);
-          return;
-        }
-
-        // TỰ ĐỘNG ĐỒNG BỘ TIỂU SỬ & NHÂN KHẨU VÀO THANH BÊN TRÁI
-        if (data.extracted_profile) {
-          const ep = data.extracted_profile;
-
-          // 1. Độ tuổi: Người dùng tự do nhập hoặc để trống, không tự điều chỉnh ép buộc
-
-          // 2. Đồng bộ Giới tính
-          if (ep.gender && ep.gender !== medState.gender) {
-            medState.gender = ep.gender;
-            const genderEl = document.getElementById('med-user-gender');
-            if (genderEl) genderEl.value = ep.gender;
-
-            document.querySelectorAll('.med-gender-pill').forEach(btn => {
-              const isActive = (btn.getAttribute('data-gender') === ep.gender);
-              btn.classList.toggle('active', isActive);
-              if (isActive && typeof gsap !== 'undefined') {
-                gsap.fromTo(btn, 
-                  { scale: 1.15, backgroundColor: 'rgba(16, 185, 129, 0.45)', borderColor: '#10b981' }, 
-                  { scale: 1, backgroundColor: '', borderColor: '', duration: 1.0, ease: 'back.out(2)' }
-                );
-              }
-            });
-          }
-
-          // 3. Đồng bộ Tiền sử bệnh lý
-          if (Array.isArray(ep.conditions) && ep.conditions.length > 0) {
-            ep.conditions.forEach(c => medState.conditions.add(c));
-            document.querySelectorAll('.med-cond-item').forEach(el => {
-              const cond = el.getAttribute('data-cond');
-              if (cond && medState.conditions.has(cond)) {
-                if (!el.classList.contains('active')) {
-                  el.classList.add('active');
-                  if (typeof gsap !== 'undefined') {
-                    gsap.fromTo(el, 
-                      { scale: 1.05, backgroundColor: 'rgba(16, 185, 129, 0.28)', borderColor: '#10b981' }, 
-                      { scale: 1, backgroundColor: '', borderColor: '', duration: 1.0, ease: 'back.out(2)' }
-                    );
-                  }
-                }
-              }
-            });
-          }
-
-          const countEl = document.getElementById('med-active-cond-count');
-          if (countEl) countEl.textContent = `${medState.conditions.size} đã chọn`;
-
-          // Cập nhật lại danh mục thuốc ở giữa với cảnh báo an toàn thời gian thực
-          renderMedCatalog(true);
-        }
-
-        // TẠO GIAO DIỆN PHẢN HỒI TƯ VẤN CỦA DƯỢC SĨ LÂM SÀNG AI
-        let replyHtml = '';
-
-        // 1. Badge tự động đồng bộ hồ sơ
-        if (data.triage_summary) {
-          replyHtml += `
-            <div style="font-size:11px;padding:5px 9px;border-radius:7px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);margin-bottom:9px;display:flex;align-items:center;gap:6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span><b>Đã cập nhật hồ sơ vào thanh bên trái:</b> ${escHtml(data.triage_summary)}</span>
-            </div>
-          `;
-        }
-
-        // 2. Cảnh báo Báo động đỏ Red Flags nếu có
-        if (Array.isArray(data.red_flags) && data.red_flags.length > 0) {
-          replyHtml += `
-            <div style="padding:9px 12px;border-radius:9px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#fca5a5;font-size:11.5px;margin-bottom:10px;line-height:1.45;">
-              <div style="color:#ef4444;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                <span>CẢNH BÁO BÁO ĐỘNG ĐỎ (RED FLAG):</span>
-              </div>
-              ${data.red_flags.map(rf => `<div class="med-bullet-row" style="color:#fca5a5"><span class="chat-bullet-dot" style="background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,0.7)"></span><span>${escHtml(rf)}</span></div>`).join('')}
-            </div>
-          `;
-        }
-
-        // 3. Nội dung phân tích lâm sàng & gợi ý của Gemini
-        if (data.ai_advice) {
-          replyHtml += `
-            <div class="med-ai-advice-body" style="font-size:12.5px;line-height:1.7;color:var(--color-ink);margin-bottom:14px;">
-              ${formatBotMarkdown(data.ai_advice)}
-            </div>
-          `;
-        }
-
-        // 4. THUỐC & HOẠT CHẤT ĐƯỢC AI ĐỀ XUẤT (KÈM DRUGBANK & DƯỢC THƯ)
-        if (Array.isArray(data.suggested_drugs) && data.suggested_drugs.length > 0) {
-          replyHtml += `
-            <div style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:12px;margin:14px 0 10px 0;color:#10b981;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
-              <span>Thuốc & Hoạt Chất Do AI Tra Cứu Đề Xuất (${data.suggested_drugs.length}):</span>
-            </div>
-          `;
-          data.suggested_drugs.forEach((item, idx) => {
-            const d = item.drug_info;
-            const isSafe = item.is_safe_for_user;
-            const drugbankUrl = item.drugbank_url || `https://go.drugbank.com/drugs/${d.drugbank_id || ''}`;
-            replyHtml += `
-              <div class="med-suggest-drug-card" style="margin-bottom:12px;padding:12px 14px;border-radius:12px;background:var(--bg-surface);border:1px solid rgba(16,185,129,0.3);box-shadow:0 4px 14px rgba(0,0,0,0.15);font-size:11.5px;line-height:1.68;">
-                <div style="font-weight:700;color:var(--color-ink);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
-                  <span style="font-size:12.5px;color:#10b981;display:inline-flex;align-items:center;gap:6px;"><span class="chat-bullet-dot"></span><span>${escHtml(d.trade_name)}</span></span>
-                  ${d.drugbank_id ? `<a href="${escAttr(drugbankUrl)}" target="_blank" style="font-size:10px;padding:2px 7px;border-radius:5px;background:rgba(59,130,246,0.12);color:#3b82f6;text-decoration:none;border:1px solid rgba(59,130,246,0.3);font-weight:600">DrugBank: ${escHtml(d.drugbank_id)} ↗</a>` : ''}
-                </div>
-                <div style="font-size:11.5px;color:var(--color-graphite);margin:8px 0 10px 0;line-height:1.68;">
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Hoạt chất:</b> ${escHtml(d.active_ingredient)}</span></div>
-                  ${d.mechanism_of_action ? `<div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Cơ chế dược lý (DrugBank):</b> ${escHtml(d.mechanism_of_action)}</span></div>` : ''}
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Chỉ định:</b> ${(d.common_symptoms || []).join(', ')}</span></div>
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Liều dùng & Cách dùng:</b> ${escHtml(d.safe_usage_note)}</span></div>
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Nguồn tham chiếu:</b> ${escHtml(d.pharmacopoeia_ref || 'Dược Thư Quốc Gia Việt Nam')}</span></div>
-                </div>
-
-                ${isSafe ? `
-                  <div style="font-size:11px;color:#10b981;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:6px;padding-top:4px;border-top:1px dashed var(--color-border);">
-                    <span style="display:flex;align-items:center;gap:4px">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                      <span>An toàn với hồ sơ hiện tại</span>
-                    </span>
-                    <button class="med-btn-ask" style="padding:3px 8px;font-size:10px" onclick="medAskPreset('Tư vấn chi tiết cách dùng ${escAttr(d.trade_name)} (${escAttr(d.active_ingredient)})')">Hỏi Dược Sĩ AI ↗</button>
-                  </div>
-                ` : `
-                  <div style="font-size:11px;color:#ef4444;font-weight:600;padding-top:4px;border-top:1px dashed var(--color-border);">
-                    <div style="display:flex;align-items:center;gap:4px;margin-bottom:2px">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                      <span>CẢNH BÁO CHỐNG CHỈ ĐỊNH:</span>
-                    </div>
-                    <div>${(item.contraindication_warnings || []).join(' | ')}</div>
-                  </div>
-                `}
-              </div>
-            `;
-          });
-
-          // Tự động reload / cập nhật danh mục thuốc OTC ở giữa theo gợi ý mới nhất của AI
-          medState.catalog.forEach(c => { delete c.isAiSuggested; });
-          const newlySuggested = [];
-          data.suggested_drugs.forEach(item => {
-            const d = item.drug_info;
-            if (!d || !d.trade_name) return;
-
-            const existingIndex = medState.catalog.findIndex(c => 
-              c.trade_name.toLowerCase().trim() === d.trade_name.toLowerCase().trim()
-            );
-
-            let drugObj;
-            if (existingIndex !== -1) {
-              drugObj = medState.catalog.splice(existingIndex, 1)[0];
-              Object.assign(drugObj, {
-                active_ingredient: d.active_ingredient || drugObj.active_ingredient,
-                mechanism_of_action: d.mechanism_of_action || drugObj.mechanism_of_action,
-                drugbank_id: d.drugbank_id || drugObj.drugbank_id,
-                safe_usage_note: d.safe_usage_note || drugObj.safe_usage_note,
-                common_symptoms: d.common_symptoms || drugObj.common_symptoms
-              });
-            } else {
-              drugObj = {
-                drug_id: `AI_${Date.now()}_${Math.floor(Math.random()*1000)}`,
-                trade_name: d.trade_name,
-                source_pharmacy: 'AI Tra Cứu (Dược Thư & DrugBank)',
-                active_ingredient: d.active_ingredient || '',
-                drugbank_id: d.drugbank_id || '',
-                drugbank_url: item.drugbank_url || (d.drugbank_id ? `https://go.drugbank.com/drugs/${d.drugbank_id}` : ''),
-                mechanism_of_action: d.mechanism_of_action || '',
-                category: d.category || 'Thuốc không kê đơn (OTC)',
-                common_symptoms: d.common_symptoms || [],
-                contraindications: d.contraindications || [],
-                safe_usage_note: d.safe_usage_note || '',
-                pharmacopoeia_ref: d.pharmacopoeia_ref || 'Dược Thư Quốc Gia Việt Nam'
-              };
-            }
-            drugObj.isAiSuggested = true;
-            newlySuggested.push(drugObj);
-          });
-
-          // Đưa thuốc vừa gợi ý lên đầu danh mục
-          medState.catalog.unshift(...newlySuggested);
-
-          // Reset bộ lọc danh mục về 'all' để không làm ẩn thuốc vừa gợi ý
-          medState.selectedCategory = 'all';
-          document.querySelectorAll('.med-cat-chip').forEach(chip => {
-            chip.classList.toggle('active', chip.getAttribute('data-cat') === 'all');
-          });
-
-          renderMedCatalog(false);
-
-          // GSAP cuộn mượt danh mục thuốc lên đầu
-          const catalogList = document.getElementById('med-catalog-list');
-          if (catalogList) {
-            if (typeof gsap !== 'undefined') {
-              gsap.to(catalogList, { scrollTop: 0, duration: 0.45, ease: 'power2.out' });
-            } else {
-              catalogList.scrollTop = 0;
-            }
-          }
-        }
-
-        // 5. Thuốc khớp trong kho Dược Thư có sẵn (nếu có và liên quan)
-        if (Array.isArray(data.results) && data.results.length > 0) {
-          replyHtml += `
-            <div style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:12px;margin:10px 0 6px 0;color:var(--color-ink);">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
-              <span>Thuốc Khớp Trong Kho Có Sẵn (${data.results.length}):</span>
-            </div>
-          `;
-          data.results.forEach((item, idx) => {
-            const d = item.drug_info;
-            const isSafe = item.is_safe_for_user;
-            replyHtml += `
-              <div style="margin-bottom:10px;padding:10px 12px;border-radius:10px;background:var(--bg-surface);border:1px solid var(--color-border);font-size:11.5px;line-height:1.68;">
-                <div style="font-weight:700;color:var(--color-ink);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
-                  <span style="display:inline-flex;align-items:center;gap:6px;"><span class="chat-bullet-dot"></span><span>${escHtml(d.trade_name)} (${escHtml(d.active_ingredient)})</span></span>
-                  ${d.drugbank_id ? `<a href="https://go.drugbank.com/drugs/${escAttr(d.drugbank_id)}" target="_blank" style="font-size:10px;padding:1px 6px;border-radius:4px;background:rgba(59,130,246,0.12);color:#3b82f6;text-decoration:none;border:1px solid rgba(59,130,246,0.3)">DrugBank: ${escHtml(d.drugbank_id)} ↗</a>` : ''}
-                </div>
-                <div style="font-size:11.5px;color:var(--color-graphite);margin:6px 0 8px 0;line-height:1.68;">
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Chỉ định:</b> ${(d.common_symptoms || []).join(', ')}</span></div>
-                  <div class="med-bullet-row"><span class="chat-bullet-dot"></span><span><b>Liều dùng an toàn:</b> ${escHtml(d.safe_usage_note)}</span></div>
-                </div>
-
-                ${isSafe ? `
-                  <div style="font-size:11px;color:#10b981;font-weight:600;margin-top:3px;display:flex;align-items:center;gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    <span>Phù hợp với thể trạng của bạn.</span>
-                  </div>
-                ` : `
-                  <div style="font-size:11px;color:#ef4444;font-weight:600;margin-top:3px;display:flex;align-items:center;gap:4px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    <span>CẢNH BÁO CHỐNG CHỈ ĐỊNH: ${(item.contraindication_warnings || []).join(' | ')}</span>
-                  </div>
-                `}
-              </div>
-            `;
-          });
-        }
-
-        if (!replyHtml) {
-          replyHtml = data.message || 'Không tìm thấy thông tin phù hợp trong kho dữ liệu Dược Thư.';
-        }
-
-        appendMedChatMessage('bot', replyHtml, true);
-
-      } catch (e) {
-        removeMedTypingIndicator();
-        console.error('Med consult error:', e);
-        appendMedChatMessage('bot', `
-          <div style="color:#ef4444;display:flex;align-items:flex-start;gap:8px;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            <div>
-              <div style="font-weight:700;margin-bottom:2px;">Không thể kết nối tới máy chủ Dược học (${escHtml(e.message || 'Lỗi mạng')})</div>
-              <div style="font-size:11px;color:var(--color-graphite);">Vui lòng kiểm tra lại dịch vụ Backend tại <a href="${escAttr(API_BASE)}/health" target="_blank" style="color:#10b981;">${escHtml(API_BASE)}</a> hoặc thử gửi lại câu hỏi.</div>
-            </div>
-          </div>
-        `, true);
-      }
     }
 
     function setDocSubTab(tab) {
@@ -10163,11 +7724,11 @@
       if (input) {
         if (currentAppLang === 'en') {
           input.placeholder = tab === 'quiz' 
-            ? 'Enter quiz request (e.g., Create 15 questions, 20 multiple choice questions)...' 
+            ? 'Enter quiz request (e.g., Create 50 questions, 20 multiple choice questions)...' 
             : 'Ask about concepts, theorems, or study exercises...';
         } else {
           input.placeholder = tab === 'quiz' 
-            ? 'Nhập yêu cầu vào đây (VD: Tạo 15 câu, 20 câu tích phân, lý thuyết sóng...)...' 
+            ? 'Nhập yêu cầu vào đây (VD: Tạo 50 câu, 20 câu tích phân, lý thuyết sóng...)...' 
             : 'Hỏi về nội dung, định lý hoặc bài tập...';
         }
       }
@@ -10621,18 +8182,19 @@
       if (!q) return;
       input.value = '';
 
-      // Tự động nhận diện ý định tạo trắc nghiệm từ câu chat của người dùng (VD: "tạo 15 câu", "hỏi thêm 20 câu trắc nghiệm"...)
-      const hasCount = /(\d+)\s*(?:câu|cau|câu hỏi|questions?)/i.test(q);
-      const hasQuizWord = /(?:trắc nghiệm|quiz|đề thi)/i.test(q);
-      const hasAction = /(?:tạo|thêm|cho|làm|soạn|sinh)\s*(?:thêm\s*)?(?:\d+\s*)?(?:câu|cau|trắc nghiệm|quiz)/i.test(q);
+      // Tự động nhận diện ý định tạo trắc nghiệm từ câu chat của người dùng (VD: "tạo 50 câu", "hỏi thêm 20 câu trắc nghiệm", "làm cho tôi 50 câu hỏi"...)
+      const hasCount = /(\d+)\s*(?:câu|cau|câu hỏi|câu trắc nghiệm|questions?)/i.test(q);
+      const hasQuizWord = /(?:trắc nghiệm|quiz|đề thi|bài thi|bộ câu hỏi)/i.test(q);
+      const hasAction = /(?:tạo|thêm|cho|làm|soạn|sinh|ra|viết)\s*(?:cho tôi\s*)?(?:thêm\s*)?(?:\d+\s*)?(?:câu|cau|trắc nghiệm|quiz|đề thi|bộ câu hỏi)/i.test(q);
+      const isExplicitQuizReq = hasCount && /(?:tạo|làm|soạn|sinh|ra|cho|thêm|yêu cầu)\s*(?:cho tôi\s*)?/i.test(q);
 
-      if (currentDocSubTab === 'quiz' || hasCount || hasQuizWord || hasAction) {
+      if (currentDocSubTab === 'quiz' || (hasCount && (hasAction || hasQuizWord || isExplicitQuizReq)) || (hasQuizWord && hasAction)) {
         let count = 5;
-        const numMatch = q.match(/(\d+)\s*(?:câu|cau|câu hỏi|questions?)/i) || 
+        const numMatch = q.match(/(\d+)\s*(?:câu|cau|câu hỏi|câu trắc nghiệm|questions?)/i) || 
                          q.match(/(?:câu|cau|câu hỏi|questions?)\s*(\d+)/i) ||
                          (currentDocSubTab === 'quiz' ? q.match(/\b(\d+)\b/) : null);
         if (numMatch) {
-          count = Math.min(Math.max(parseInt(numMatch[1], 10), 1), 30);
+          count = Math.min(Math.max(parseInt(numMatch[1], 10), 1), 60);
         } else if (currentDocSubTab === 'quiz') {
           count = 5;
         }
@@ -10640,16 +8202,17 @@
         const isAppend = /(?:hỏi thêm|tạo thêm|làm thêm|thêm\s*\d+\s*câu|thêm câu)/i.test(q);
 
         let topic = q
-          .replace(/(?:tôi muốn|tôi yêu cầu(?: nó)?|hãy|cho tôi|giúp tôi|làm ơn)?\s*(?:hỏi thêm|tạo thêm|làm thêm|tạo|thêm|cho tôi|làm|soạn|sinh|ra đề)\s*/gi, '')
-          .replace(/(\d+)\s*(?:câu|cau|câu hỏi|questions?)/gi, '')
-          .replace(/trắc nghiệm|quiz|đề thi/gi, '')
-          .replace(/^(?:về|về phần|về chương|chương|phần)\s+/gi, '')
-          .replace(/(?:nhé|với|nha|được không|giúp tôi|ơi)\s*$/gi, '')
+          .replace(/(?:tôi muốn|tôi yêu cầu(?: nó)?|hãy|cho tôi|giúp tôi|làm ơn)?\s*(?:hỏi thêm|tạo thêm|làm thêm|tạo|thêm|cho tôi|làm|soạn|sinh|ra đề|ra)?\s*(?:cho tôi)?\s*/gi, ' ')
+          .replace(/(\d+)\s*(?:câu hỏi|câu trắc nghiệm|câu|cau|questions?)/gi, ' ')
+          .replace(/trắc nghiệm|quiz|đề thi|bộ câu hỏi/gi, ' ')
+          .replace(/^(?:về|về phần|về chương|chương|phần)\s+/gi, ' ')
+          .replace(/(?:nhé|với|nha|được không|giúp tôi|ơi)\s*$/gi, ' ')
           .replace(/^[,\s\.\-]+|[,\s\.\-]+$/g, '')
+          .replace(/\s+/g, ' ')
           .trim();
 
-        // Nếu topic chỉ còn các từ thừa / rỗng -> coi như yêu cầu toàn bộ tài liệu
-        if (/^(?:tôi|yêu cầu|nó|giúp|với|nhé|hỏi|câu hỏi|được không|ạ|ơi)$/i.test(topic) || topic.length < 2) {
+        // Nếu topic chỉ còn các từ thừa / rỗng hoặc chỉ là số -> coi như yêu cầu toàn bộ tài liệu
+        if (/^\d+$/.test(topic) || /^(?:tôi|yêu cầu|nó|giúp|với|nhé|hỏi|câu hỏi|được không|ạ|ơi|cho tôi)$/i.test(topic) || topic.length < 2) {
           topic = '';
         }
 
@@ -10709,7 +8272,7 @@
               <svg class="spin-slow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>
             </div>
             <h3 class="doc-quiz-placeholder-title">Đang Soạn Bộ ${count} Câu Trắc Nghiệm</h3>
-            <p class="doc-quiz-placeholder-desc">AI đang trích xuất kiến thức trọng tâm ${topicLabel} để ra đề thi kèm trang đối chiếu...</p>
+            <p class="doc-quiz-placeholder-desc">${count >= 25 ? 'AI đang quét toàn diện các trang tài liệu dài và chia lô biên soạn đủ ' + count + ' câu hỏi chất lượng kèm trang đối chiếu...' : 'AI đang trích xuất kiến thức trọng tâm ' + topicLabel + ' để ra đề thi kèm trang đối chiếu...'}</p>
           </div>
         `;
       }
@@ -10767,7 +8330,7 @@
             </div>
             <h3 class="doc-quiz-placeholder-title">Chưa Có Câu Hỏi Nào</h3>
             <p class="doc-quiz-placeholder-desc">Chưa trích xuất được câu hỏi phù hợp từ tài liệu đã chọn.</p>
-            <button class="med-btn-ask" style="margin-top:12px;padding:7px 16px;font-size:12px;cursor:pointer;" onclick="docQuiz('', 10)">
+            <button class="doc-retry-btn" style="margin-top:12px;padding:7px 16px;font-size:12px;cursor:pointer;" onclick="docQuiz('', 10)">
               🔄 Thử tạo lại 10 câu hỏi
             </button>
           </div>

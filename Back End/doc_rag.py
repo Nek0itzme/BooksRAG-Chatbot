@@ -259,69 +259,139 @@ def summarize_doc(session_id: str, target: str = "") -> str:
         return f"Lỗi khi gọi Gemini: {e}"
 
 
+def _parse_quiz_json(raw: str) -> list[dict]:
+    """Phân tích và bóc tách mảng JSON câu hỏi từ phản hồi của Gemini."""
+    if not raw:
+        return []
+    try:
+        data = json.loads(raw)
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            res = data.get("quiz") or data.get("questions") or [data]
+            return res if isinstance(res, list) else [res]
+    except Exception:
+        pass
+
+    match = re.search(r"\[\s*\{.*\}\s*\]", raw, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(0))
+        except Exception:
+            pass
+
+    cleaned = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s*```$", "", cleaned)
+    try:
+        data = json.loads(cleaned)
+        if isinstance(data, list):
+            return data
+        if isinstance(data, dict):
+            res = data.get("quiz") or data.get("questions") or [data]
+            return res if isinstance(res, list) else [res]
+    except Exception:
+        pass
+    return []
+
+
 def generate_quiz(session_id: str, topic: str = "", count: int = 5) -> str:
     """
-    Tạo bộ câu hỏi trắc nghiệm (tùy chỉnh 5, 10, 15, 20... câu) dạng JSON.
+    Tạo bộ câu hỏi trắc nghiệm (tùy chỉnh 5, 10, 20... đến 50+ câu) dạng JSON.
+    Hỗ trợ tài liệu dài: tự động quét đa trang và chia lô xử lý khi số lượng câu hỏi lớn (>= 25 câu).
     Format JSON trả về:
     [{"question": "...", "options": {"A": "...", "B": "...", "C": "...", "D": "..."},
       "answer": "B", "page_ref": 14, "explanation": "..."}]
     """
-    count = min(max(int(count or 5), 1), 30)
+    count = min(max(int(count or 5), 1), 60)
     topic_clean = topic.strip()
     query = topic_clean if len(topic_clean) > 1 else "nội dung quan trọng toàn bộ tài liệu"
-    n_results = min(15, max(8, count // 2 + 5))
+    
+    # Mở rộng số lượng chunk truy vấn phù hợp với số câu hỏi cần tạo
+    n_results = min(40, max(10, count // 2 + 10))
     chunks = _query_collection(session_id, query, n_results=n_results)
 
     # Nếu query theo topic hẹp không ra kết quả, thử truy vấn toàn tài liệu
     if not chunks and query != "nội dung quan trọng toàn bộ tài liệu":
         chunks = _query_collection(session_id, "nội dung quan trọng toàn bộ tài liệu", n_results=n_results)
 
-    # [ponytail] Fallback: Nếu ChromaDB rỗng/lỗi, đọc trực tiếp các trang từ file Markdown trên đĩa
-    if not chunks:
-        try:
-            from doc_pipeline import _MD_DIR
-            sid = _safe_sid(session_id)
-            md_dir = _MD_DIR / sid
-            if md_dir.exists():
-                for md_file in md_dir.glob("*.md"):
-                    content = md_file.read_text(encoding="utf-8")
-                    for m in _ANCHOR_RE.finditer(content):
-                        p_num = int(m.group(1))
-                        p_txt = m.group(2).strip()
-                        if p_txt:
-                            chunks.append({"text": p_txt[:1200], "filename": md_file.name, "page": p_num})
-                    if not chunks and content.strip():
-                        chunks.append({"text": content[:3500], "filename": md_file.name, "page": 1})
-        except Exception:
-            pass
+    # Đọc trực tiếp các trang từ file Markdown trên đĩa để đảm bảo phủ đều các trang của tài liệu dài
+    try:
+        from doc_pipeline import _MD_DIR
+        sid = _safe_sid(session_id)
+        md_dir = _MD_DIR / sid
+        if md_dir.exists():
+            disk_chunks = []
+            for md_file in md_dir.glob("*.md"):
+                content = md_file.read_text(encoding="utf-8")
+                for m in _ANCHOR_RE.finditer(content):
+                    p_num = int(m.group(1))
+                    p_txt = m.group(2).strip()
+                    if p_txt:
+                        disk_chunks.append({"text": p_txt[:1200], "filename": md_file.name, "page": p_num})
+                if not disk_chunks and content.strip():
+                    disk_chunks.append({"text": content[:3500], "filename": md_file.name, "page": 1})
+            
+            if not chunks:
+                chunks = disk_chunks
+            elif len(disk_chunks) > len(chunks) and count >= 20:
+                # Bổ sung các trang chưa có trong chunks để bài thi phủ toàn diện tài liệu dài
+                existing_pages = {c.get("page") for c in chunks}
+                for dc in disk_chunks:
+                    if dc.get("page") not in existing_pages:
+                        chunks.append(dc)
+                        existing_pages.add(dc.get("page"))
+    except Exception:
+        pass
 
     if not chunks:
         return json.dumps([], ensure_ascii=False)
 
-    context = "\n\n---\n\n".join(
-        f"[Trang {c['page']}] {c['text']}" for c in chunks
-    )
+    # Sắp xếp lại chunks theo số trang tăng dần để câu hỏi có trình tự logic
+    chunks = sorted(chunks, key=lambda c: (c.get("filename", ""), c.get("page", 0)))
     scope = f'chủ đề "{topic_clean}"' if topic_clean else "toàn bộ tài liệu"
 
-    prompt = (
-        f"Bạn là giáo viên ra đề thi học thuật. Hãy tạo ĐÚNG {count} câu trắc nghiệm 4 đáp án (A, B, C, D) về {scope} từ tài liệu dưới đây.\n"
-        f"Yêu cầu: Đầy đủ các cấp độ Nhận biết, Thông hiểu và Vận dụng. Đáp án sai phải có tính đánh lừa hợp lý.\n"
-        f"Đối với câu hỏi hoặc các đáp án có công thức toán học/ký hiệu: BẮT BUỘC dùng cú pháp LaTeX kẹp trong $...$ (ví dụ: $\\int x^2 dx$, $f'(x) = 2x$) và giữa chữ với công thức phải có khoảng trắng rõ ràng.\n\n"
-        f"Trả về ĐÚNG mảng JSON gồm {count} phần tử sau (không thêm bất kỳ văn bản nào ngoài JSON):\n"
-        f'[{{"question": "...", "options": {{"A": "...", "B": "...", "C": "...", "D": "..."}}, '
-        f'"answer": "B", "page_ref": 14, "explanation": "Giải thích ngắn gọn tại sao B đúng."}}]\n\n'
-        f"=== NỘI DUNG TÀI LIỆU ===\n{context}"
-    )
+    def _call_gemini_quiz(sub_chunks: list[dict], sub_count: int, part_note: str = "") -> list[dict]:
+        if not sub_chunks or sub_count <= 0:
+            return []
+        sub_context = "\n\n---\n\n".join(
+            f"[Trang {c['page']}] {c['text']}" for c in sub_chunks
+        )
+        prompt = (
+            f"Bạn là giáo viên ra đề thi học thuật xuất sắc. Hãy tạo ĐÚNG {sub_count} câu trắc nghiệm 4 đáp án (A, B, C, D) về {scope} từ tài liệu dưới đây {part_note}.\n"
+            f"Yêu cầu chuyên môn:\n"
+            f"- Đầy đủ các cấp độ: Nhận biết, Thông hiểu và Vận dụng.\n"
+            f"- 4 phương án A, B, C, D độc lập, đáp án sai phải có tính đánh lừa hợp lý dựa trên nội dung tài liệu.\n"
+            f"- BẮT BUỘC chỉ rõ số trang [page_ref] chứa kiến thức của câu hỏi.\n"
+            f"- Đối với câu hỏi hoặc các đáp án có công thức toán học/ký hiệu: BẮT BUỘC dùng cú pháp LaTeX kẹp trong $...$ (ví dụ: $\\int x^2 dx$, $f'(x) = 2x$) và giữa chữ với công thức phải có khoảng trắng rõ ràng.\n\n"
+            f"Trả về ĐÚNG mảng JSON gồm {sub_count} phần tử sau (không thêm bất kỳ văn bản, lời chào hay ghi chú nào ngoài JSON):\n"
+            f'[{{"question": "...", "options": {{"A": "...", "B": "...", "C": "...", "D": "..."}}, '
+            f'"answer": "B", "page_ref": 14, "explanation": "Giải thích ngắn gọn tại sao B đúng và đối chiếu với tài liệu."}}]\n\n'
+            f"=== NỘI DUNG TÀI LIỆU ===\n{sub_context}"
+        )
+        try:
+            raw = _call_gemini(prompt) or "[]"
+            return _parse_quiz_json(raw)
+        except Exception:
+            return []
 
-    try:
-        raw = _call_gemini(prompt) or "[]"
-        # Bóc tách JSON array kể cả khi Gemini kèm lời chào mở đầu / kết thúc
-        match = re.search(r"\[\s*\{.*\}\s*\]", raw, re.DOTALL)
-        if match:
-            raw = match.group(0)
-        else:
-            raw = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
-            raw = re.sub(r"```\s*$", "", raw.strip())
-        return raw
-    except Exception as e:
-        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    # Với số lượng câu lớn (>= 25 câu, ví dụ 50 câu), chia làm 2 đợt gọi để tránh tràn token và bao quát toàn tài liệu dài
+    if count >= 25:
+        count_1 = count // 2
+        count_2 = count - count_1
+        mid_idx = max(1, len(chunks) // 2)
+        chunks_part1 = chunks[:mid_idx] if len(chunks) > 2 else chunks
+        chunks_part2 = chunks[mid_idx:] if len(chunks) > 2 else chunks
+
+        q1 = _call_gemini_quiz(chunks_part1, count_1, "(Đợt 1: Tập trung vào kiến thức nửa đầu tài liệu)")
+        q2 = _call_gemini_quiz(chunks_part2, count_2, "(Đợt 2: Tập trung vào kiến thức nửa sau tài liệu hoặc vận dụng)")
+        
+        all_quiz = q1 + q2
+        if len(all_quiz) < count:
+            # Nếu còn thiếu một số câu, thử nạp bổ sung để đạt đủ số lượng yêu cầu
+            remain = count - len(all_quiz)
+            q_extra = _call_gemini_quiz(chunks, remain, "(Bổ sung thêm các câu hỏi vận dụng tổng hợp)")
+            all_quiz += q_extra
+    else:
+        all_quiz = _call_gemini_quiz(chunks, count)
+
+    return json.dumps(all_quiz[:count], ensure_ascii=False)

@@ -1,4 +1,4 @@
-# Environment variables (chứa API Keys bảo mật)
+# Environment variables
 .env
 *.env
 .env.*
@@ -18,9 +18,12 @@ ENV/
 
 # Databases & Vector store data
 *.db
+*.db-shm
+*.db-wal
 *.sqlite3
 database/chroma_db/
-Web Database/sessions.db
+Web Database/sessions.db*
+database/user_uploads/
 
 # IDE & Editor files
 .vscode/
@@ -33,5 +36,12 @@ Web Database/sessions.db
 Thumbs.db
 desktop.ini
 
-database/user_uploads/
-*.pdf
+# Local staging, working and auxiliary folders (do not upload duplicate mirrors)
+Github Upload Files/
+Source Codes/
+Source Codes OG/
+Updated_Source Codes/
+Bản Cập Nhật Source Codes 22.10/
+Poster PDF/
+Project MD Files/
+Test Image/
