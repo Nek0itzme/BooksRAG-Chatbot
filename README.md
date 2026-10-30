@@ -30,7 +30,10 @@ Hệ thống gồm 2 phân hệ độc lập:
 
 ### Phân hệ 1: Tư vấn sách (Book RAG)
 
-* Kho ngữ liệu thực tế: 23,188 đầu sách thu thập từ Tiki (21,411 cuốn) và Fahasa (1,500 cuốn) lưu tại `database/sample.json`. Một tập chuẩn hóa gồm 697 đầu sách thuộc 6 nhóm chủ đề được dùng cho các bài đánh giá thực nghiệm khoa học.
+* Kho dữ liệu sách và nguồn gốc:
+  * Tập hạt giống (Seed Data 277 cuốn, mã định danh `BK0001` đến `BK0277`): Được tuyển chọn từ danh mục sách giáo khoa tham khảo, tác phẩm văn học kinh điển, sách khoa học và kỹ năng sống của các nhà xuất bản uy tín tại Việt Nam (NXB Trẻ chiếm 65 cuốn, NXB Dân Trí 26 cuốn, NXB Thế Giới 23 cuốn, NXB Kim Đồng 16 cuốn, NXB Hà Nội 14 cuốn, NXB Công Thương 12 cuốn cùng các NXB Văn Học, Thanh Niên). Mỗi cuốn sách được chuẩn hóa đủ 12 trường dữ liệu (tựa đề, tác giả, nhà xuất bản, năm xuất bản, giá bán, điểm đánh giá, số lượt mua, phần tóm tắt nội dung và từ khóa phân loại). Dữ liệu đối soát trực tiếp với danh mục phát hành thực tế từ Tiki và Fahasa.
+  * Tập chuẩn hóa thực nghiệm (697 cuốn): Mở rộng từ tập hạt giống sang 6 nhóm chủ đề trọng tâm (Văn học và tiểu thuyết, Tâm lý và kỹ năng sống, Kinh tế và quản trị, Thiếu nhi và tuổi teen, Khoa học và lịch sử, Trinh thám và ly kỳ) dùng cho các bài kiểm thử định lượng theo khung đánh giá RAGAS.
+  * Kho ngữ liệu mở rộng (23,188 cuốn): Thu thập và làm sạch tự động từ Tiki (21,411 cuốn) và Fahasa (1,500 cuốn) lưu tại `database/sample.json`, phục vụ tra cứu và tư vấn trên diện rộng.
 * Tìm kiếm lai (Hybrid Search): Kết hợp tìm kiếm ngữ nghĩa qua mô hình nhúng `all-MiniLM-L6-v2` (vector 384 chiều) trong ChromaDB và tìm kiếm từ khóa BM25, sau đó hợp nhất thứ tự bằng Reciprocal Rank Fusion (RRF).
 * Lọc nón bao hàm Hyperbolic (HyPE Filter): Áp dụng hình học Poincaré Ball (`geoopt.PoincareBall`) để tính toán quan hệ bao hàm giữa câu hỏi và sách. Thuật toán cắt bỏ các sách nằm ngoài nón ngữ nghĩa trước khi đưa vào ngữ cảnh cho LLM, giúp giảm độ loãng thông tin và tiết kiệm token. Quá trình tính toán được vector hóa hoàn toàn qua PyTorch batch operations.
 * Xếp hạng đa tiêu chí: Điểm gợi ý kết hợp 75% độ tương đồng ngữ nghĩa và 25% thuộc tính sách thực tế (50% điểm sao rating, 30% lượt mua đã bán, 20% chất lượng bình luận).
@@ -82,7 +85,7 @@ Hệ thống gồm 2 phân hệ độc lập:
 │   ├── crawl.bat                   # File thực thi crawl nhanh
 │   └── start_tunnel.bat            # File khởi chạy Cloudflare Tunnel
 ├── database/                       # Kho dữ liệu sách và từ điển
-│   ├── sample.json                 # Kho sách hợp nhất 23,188 cuốn
+│   ├── sample.json                 # Kho sách 23,188 cuốn (gồm 277 cuốn hạt giống BK0001-BK0277)
 │   ├── sample_fahasa.json          # 1,500 sách từ Fahasa
 │   ├── sample_tiki.json            # 21,411 sách từ Tiki
 │   ├── teencode_lexicon.json       # 71 cụm từ lóng và 8 nhóm tâm trạng
