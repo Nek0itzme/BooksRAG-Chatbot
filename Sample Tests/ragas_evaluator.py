@@ -11,7 +11,6 @@ Các chỉ số đánh giá cốt lõi:
 5. RAGAS Score: Điểm trung bình điều hòa (Harmonic Mean) tổng hợp của 4 chỉ số trên.
 """
 
-
 import os
 import sys
 import json
@@ -32,16 +31,13 @@ BASE_DIR = Path(__file__).parent.parent
 sys.path.insert(0, str((BASE_DIR / "Back End").resolve()))
 sys.path.insert(0, str((BASE_DIR / "RAG Rules").resolve()))
 
-
 import rag_engine
-from config import ALPHA, TOP_K
-from sentence_transformers import SentenceTransformer
+from config import TOP_K
 
 try:
-    from rule_harness import InputRuleHarness, OutputRuleHarness
+    from rule_harness import InputRuleHarness
 except ImportError:
     InputRuleHarness = None
-    OutputRuleHarness = None
 
 
 class RAGASEvaluator:
@@ -418,7 +414,6 @@ class RAGASEvaluator:
         latencies_sorted = sorted(latencies)
         p95_idx = min(len(latencies_sorted) - 1, int(total * 0.95))
         p95_latency = latencies_sorted[p95_idx] if latencies_sorted else 0
-
 
         # Phân tích theo nhóm
         category_breakdown = {}
