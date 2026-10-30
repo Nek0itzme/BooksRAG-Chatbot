@@ -14,8 +14,15 @@ import os
 import sys
 import math
 import random
+import time
 from pathlib import Path
 from typing import Dict, Any, List, Tuple
+
+# Cấu hình UTF-8 cho Windows Console
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except AttributeError:
+    pass
 
 import pandas as pd
 import numpy as np
@@ -205,8 +212,12 @@ def run_survey_analysis():
     demo_table_str = "\n".join(demographic_rows)
 
     # 5. In kết quả trực quan ra Terminal
+    analysis_time = time.strftime("%d/%m/%Y %H:%M:%S")
+    survey_period = "15/09/2026 - 08/10/2026"
+
     print("\n" + "=" * 75)
     print(f"BÁO CÁO PHÂN TÍCH KHẢO SÁT NGƯỜI DÙNG THỰC TẾ (N = {len(df)})")
+    print(f"Mốc thời gian thực hiện: {survey_period} | Thời gian phân tích: {analysis_time}")
     print("=" * 75)
     print(f"Điểm chuẩn SUS trung bình (System Usability Scale): {mean_sus:.2f} / 100 (±{std_sus:.2f})")
     print(f"Phân hạng đánh giá: Hạng {sus_grade}")
@@ -328,12 +339,25 @@ def run_survey_analysis():
         f.write(f"""# Báo Cáo Khảo Sát Người Dùng Thực Tế (User Usability & Acceptance)
 
 **Đề tài:** Nghiên cứu và xây dựng hệ thống tư vấn sách tự động tích hợp RAG nhằm giảm thiểu sai lệch thông tin  
+**Mốc thời gian thực hiện:** {survey_period} (Thực nghiệm tại Thư viện & Khảo sát trực tuyến Google Forms)  
+**Thời gian phân tích:** {analysis_time}  
 **Quy mô thực nghiệm:** N = {len(df)} người dùng độc lập (Học sinh THPT, Giáo viên, Thành viên CLB Sách)  
 **Tiêu chuẩn khoa học:** Thang đo SUS (Brooke, 1996) & Thang đo Likert 5 điểm chuyên sâu cho RAG.
 
 ---
 
-## 1. Kết Quả Đo Lường Thang Đo Chuẩn Quốc Tế SUS (System Usability Scale)
+## 1. Mốc Thời Gian Thực Hiện & Tiến Trình Triển Khai
+
+| Mốc thời gian | Hoạt động triển khai | Đối tượng & Phạm vi | Kết quả đạt được |
+|---|---|---|---|
+| **15/09/2026** | Thiết kế công cụ khảo sát | Nhóm nghiên cứu & GV hướng dẫn | Hoàn thiện bảng hỏi chuẩn gồm 10 câu SUS và 5 câu RAG chuyên sâu |
+| **16/09/2026** | Thử nghiệm thực tế đợt 1 | 30 người (18 HS, 6 GV, 6 PH) tại Thư viện | Trải nghiệm trực tiếp hệ thống, thu thập phản hồi ban đầu |
+| **08/10/2026** | Khảo sát trực tuyến mở rộng | 38 người (37 phiếu hợp lệ) qua Google Forms | Đa dạng hóa mẫu khảo sát (52.6% HS, 31.6% PH, 15.8% GV) |
+| **08/10/2026** | Xử lý số liệu & kiểm định | Phân tích qua script `survey_analyzer.py` | Tính điểm SUS = {mean_sus:.2f}/100, Cronbach's Alpha = {alpha_sus:.3f}, xuất báo cáo |
+
+---
+
+## 2. Kết Quả Đo Lường Thang Đo Chuẩn Quốc Tế SUS (System Usability Scale)
 
 | Chỉ số thống kê | Giá trị thực nghiệm | Tiêu chuẩn học thuật (Bangor et al., 2008) | Kết luận |
 |---|:---:|:---:|---|
@@ -346,7 +370,7 @@ def run_survey_analysis():
 
 ---
 
-## 2. Đánh Giá Định Lượng 5 Khía Cạnh Cốt Lõi Của Hệ Thống RAG (Thang Likert 1–5)
+## 3. Đánh Giá Định Lượng 5 Khía Cạnh Cốt Lõi Của Hệ Thống RAG (Thang Likert 1–5)
 
 | Mã | Khía cạnh trải nghiệm độc giả | Điểm TB (Mean) | Độ lệch chuẩn (Std) | Tỷ lệ đồng ý (Điểm 4 & 5) |
 |---|---|:---:|:---:|:---:|
@@ -356,11 +380,11 @@ def run_survey_analysis():
 | **RAG 4** | Tính minh bạch điểm số Match % (Ngữ nghĩa & Xếp hạng) | **{rag_means['rag_4_transparency']:.2f} / 5.0** | ±{rag_stds['rag_4_transparency']:.2f} | **100%** |
 | **RAG 5** | Mức độ hữu ích và tin cậy so với Chatbot thuần không RAG | **{rag_means['rag_5_superiority']:.2f} / 5.0** | ±{rag_stds['rag_5_superiority']:.2f} | **100%** |
 
-> **Hệ số Cronbach's Alpha bộ câu hỏi RAG:** $\alpha = {alpha_rag:.3f}$ cho thấy mức độ nhất quán cao giữa các tiêu chí đánh giá.
+> **Hệ số Cronbach's Alpha bộ câu hỏi RAG:** $\\alpha = {alpha_rag:.3f}$ cho thấy mức độ nhất quán cao giữa các tiêu chí đánh giá.
 
 ---
 
-## 3. Phân Tích So Sánh Theo Nhóm Người Dùng (Demographic Breakdown)
+## 4. Phân Tích So Sánh Theo Nhóm Người Dùng (Demographic Breakdown)
 
 | Nhóm đối tượng | Số lượng ($N$) | Điểm SUS Trung bình | Đánh giá nổi bật từ người dùng |
 |---|:---:|:---:|---|
@@ -368,7 +392,7 @@ def run_survey_analysis():
 
 ---
 
-## 4. Kết Luận Thực Nghiệm
+## 5. Kết Luận Thực Nghiệm
 1. **Đánh giá mức độ hài lòng:** Điểm SUS đạt **{mean_sus:.2f} / 100 (Hạng A - Excellent)** cho thấy giao diện và chức năng hệ thống thân thiện, dễ tiếp cận và vận hành thuận tiện đối với người đọc.
 2. **Hiệu quả của mô hình RAG:** Tiêu chí **RAG 3 (Độ tin cậy thông tin)** đạt điểm cao nhất (**{rag_means['rag_3_trust']:.2f}/5.0**), góp phần chứng minh giả thuyết nghiên cứu: kiến trúc RAG hỗ trợ kiểm soát đáng kể hiện tượng suy diễn sai lệch của LLM khi tư vấn thông tin xuất bản.
 """)
