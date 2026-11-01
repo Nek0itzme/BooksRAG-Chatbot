@@ -14,13 +14,27 @@
 
 ---
 
+## Giao diện hệ thống
+
+### Phân hệ 1: Tư vấn sách thông minh (Book RAG)
+Tư vấn sách theo ngân sách và nhu cầu thực tế, tính toán độ tương đồng Match % và hiển thị giỏ sách trực quan.
+
+![Giao diện tư vấn sách BookRAG](assets/demo_preview.png)
+
+### Phân hệ 2: Đọc và tương tác tài liệu học tập (Document RAG & Study Assistant)
+Xem trước tài liệu Word (.docx) hoặc PDF song song với khung hỏi đáp AI, dẫn chứng chính xác số trang nguồn.
+
+![Giao diện đọc và tương tác tài liệu học tập](assets/doc_rag_demo.png)
+
+---
+
 ## 1. Tổng quan đề tài
 
-Khi dùng mô hình ngôn ngữ lớn (LLM) để tìm kiếm sách hoặc hỗ trợ học tập, người dùng thường gặp hiện tượng mô hình tự bịa thông tin (hallucination). Mô hình có thể gợi ý những cuốn sách không có thật, gán sai tác giả hoặc đưa ra mức giá không đúng.
+Khi sử dụng mô hình ngôn ngữ lớn (LLM) để tìm kiếm sách hoặc hỗ trợ học tập, người dùng thường gặp hiện tượng mô hình tự tạo thông tin sai lệch (hallucination), như gợi ý sách không tồn tại, ghi sai tác giả hoặc báo giá không đúng thực tế.
 
-Dự án này giải quyết vấn đề trên bằng kiến trúc Hybrid RAG kết hợp lọc hình học Hyperbolic Poincaré Ball và khung kiểm soát hai đầu (Rule Harness). Mọi gợi ý đều được đối chiếu trực tiếp với kho dữ liệu sách thực tế và kiểm duyệt theo quy định xuất bản Việt Nam.
+Hệ thống giải quyết vấn đề trên bằng kiến trúc tìm kiếm lai (Hybrid RAG) kết hợp bộ lọc hình học Poincaré Ball và khung kiểm soát hai đầu (Rule Harness). Mọi gợi ý đều được đối soát trực tiếp với dữ liệu sách thực tế và kiểm duyệt theo quy định xuất bản Việt Nam.
 
-Hệ thống gồm 2 phân hệ độc lập:
+Hệ thống gồm 2 phân hệ:
 1. Phân hệ 1: Tư vấn sách (Book RAG)
 2. Phân hệ 2: Đọc và tương tác tài liệu học tập (Document RAG & Study Assistant)
 
@@ -30,26 +44,28 @@ Hệ thống gồm 2 phân hệ độc lập:
 
 ### Phân hệ 1: Tư vấn sách (Book RAG)
 
-* Kho dữ liệu sách và nguồn gốc:
-  * Tập hạt giống (Seed Data 277 cuốn, mã định danh `BK0001` đến `BK0277`): Được tuyển chọn từ danh mục sách giáo khoa tham khảo, tác phẩm văn học kinh điển, sách khoa học và kỹ năng sống của các nhà xuất bản uy tín tại Việt Nam (NXB Trẻ chiếm 65 cuốn, NXB Dân Trí 26 cuốn, NXB Thế Giới 23 cuốn, NXB Kim Đồng 16 cuốn, NXB Hà Nội 14 cuốn, NXB Công Thương 12 cuốn cùng các NXB Văn Học, Thanh Niên). Mỗi cuốn sách được chuẩn hóa đủ 12 trường dữ liệu (tựa đề, tác giả, nhà xuất bản, năm xuất bản, giá bán, điểm đánh giá, số lượt mua, phần tóm tắt nội dung và từ khóa phân loại). Dữ liệu đối soát trực tiếp với danh mục phát hành thực tế từ Tiki và Fahasa.
-  * Tập chuẩn hóa thực nghiệm (697 cuốn): Mở rộng từ tập hạt giống sang 6 nhóm chủ đề trọng tâm (Văn học và tiểu thuyết, Tâm lý và kỹ năng sống, Kinh tế và quản trị, Thiếu nhi và tuổi teen, Khoa học và lịch sử, Trinh thám và ly kỳ) dùng cho các bài kiểm thử định lượng theo khung đánh giá RAGAS.
-  * Kho ngữ liệu mở rộng (23,188 cuốn): Thu thập và làm sạch tự động từ Tiki (21,411 cuốn) và Fahasa (1,500 cuốn) lưu tại `database/sample.json`, phục vụ tra cứu và tư vấn trên diện rộng.
-* Tìm kiếm lai (Hybrid Search): Kết hợp tìm kiếm ngữ nghĩa qua mô hình nhúng `all-MiniLM-L6-v2` (vector 384 chiều) trong ChromaDB và tìm kiếm từ khóa BM25, sau đó hợp nhất thứ tự bằng Reciprocal Rank Fusion (RRF).
-* Lọc nón bao hàm Hyperbolic (HyPE Filter): Áp dụng hình học Poincaré Ball (`geoopt.PoincareBall`) để tính toán quan hệ bao hàm giữa câu hỏi và sách. Thuật toán cắt bỏ các sách nằm ngoài nón ngữ nghĩa trước khi đưa vào ngữ cảnh cho LLM, giúp giảm độ loãng thông tin và tiết kiệm token. Quá trình tính toán được vector hóa hoàn toàn qua PyTorch batch operations.
-* Xếp hạng đa tiêu chí: Điểm gợi ý kết hợp 75% độ tương đồng ngữ nghĩa và 25% thuộc tính sách thực tế (50% điểm sao rating, 30% lượt mua đã bán, 20% chất lượng bình luận).
-* Nhận diện tiếng lóng học trò: Từ điển `database/teencode_lexicon.json` gồm 71 từ lóng, viết tắt tuổi học trò cùng 8 nhóm trạng thái cảm xúc (`mood_map`) giúp hệ thống hiểu đúng câu hỏi tự nhiên của học sinh.
+#### Dữ liệu sách và nguồn gốc
+* Tập hạt giống (277 cuốn, mã `BK0001` đến `BK0277`): Tuyển chọn từ sách giáo khoa tham khảo, văn học, khoa học và kỹ năng từ các nhà xuất bản tại Việt Nam: NXB Trẻ (65 cuốn), NXB Dân Trí (26 cuốn), NXB Thế Giới (23 cuốn), NXB Kim Đồng (16 cuốn), NXB Hà Nội (14 cuốn), NXB Công Thương (12 cuốn) cùng NXB Văn Học và NXB Thanh Niên. Mỗi cuốn sách có đủ 12 trường dữ liệu (tựa đề, tác giả, nhà xuất bản, năm xuất bản, giá bán, điểm đánh giá, số lượt mua, phần tóm tắt và từ khóa phân loại), đối soát trực tiếp với danh mục phát hành từ Tiki và Fahasa.
+* Tập chuẩn hóa thực nghiệm (697 cuốn): Mở rộng từ tập hạt giống sang 6 nhóm chủ đề (Văn học và tiểu thuyết, Tâm lý và kỹ năng sống, Kinh tế và quản trị, Thiếu nhi và tuổi teen, Khoa học và lịch sử, Trinh thám và ly kỳ) dùng cho các bài kiểm thử định lượng theo khung RAGAS.
+* Kho ngữ liệu mở rộng (23.188 cuốn): Thu thập và làm sạch tự động từ Tiki (21.411 cuốn) và Fahasa (1.500 cuốn), lưu tại `database/sample.json` phục vụ tra cứu diện rộng.
+
+#### Quy trình xử lý và thuật toán
+* Tìm kiếm lai (Hybrid Search): Kết hợp tìm kiếm ngữ nghĩa qua mô hình nhúng `all-MiniLM-L6-v2` (vector 384 chiều) trong ChromaDB với tìm kiếm từ khóa BM25, sau đó hợp nhất thứ tự bằng Reciprocal Rank Fusion (RRF).
+* Lọc nón bao hàm Hyperbolic (HyPE Filter): Dùng hình học Poincaré Ball (`geoopt.PoincareBall`) để tính toán quan hệ bao hàm giữa câu hỏi và sách. Thuật toán cắt bỏ các sách nằm ngoài nón ngữ nghĩa trước khi đưa vào ngữ cảnh cho LLM, giúp giảm độ loãng thông tin và tiết kiệm token. Quá trình tính toán chạy dưới dạng batch operations trên PyTorch.
+* Xếp hạng đa tiêu chí: Điểm gợi ý kết hợp 75% độ tương đồng ngữ nghĩa và 25% thuộc tính sách thực tế (50% điểm sao đánh giá, 30% lượt mua đã bán, 20% chất lượng bình luận).
+* Nhận diện tiếng lóng học trò: Từ điển `database/teencode_lexicon.json` gồm 71 từ lóng, viết tắt tuổi học trò cùng 8 nhóm trạng thái cảm xúc (`mood_map`) giúp hệ thống xử lý đúng câu hỏi tự nhiên của học sinh.
 * Khung kiểm soát hai đầu (Rule Harness):
-  * Tiền kiểm: Phát hiện và chặn các câu lệnh tấn công prompt injection, câu hỏi lạc đề qua tập biểu thức chính quy xử lý trong bộ nhớ (độ trễ dưới 1 ms).
+  * Tiền kiểm: Phát hiện và chặn các câu lệnh prompt injection hoặc câu hỏi lạc đề qua tập biểu thức chính quy xử lý trong bộ nhớ (độ trễ dưới 1 ms).
   * Hậu kiểm: Đối chiếu lại tên sách, tác giả, giá tiền và rà soát nội dung theo Điều 10 Luật Xuất bản Việt Nam số 19/2012/QH13.
 * Bộ nhớ đệm ngữ nghĩa: Lưu tạm trên RAM các cặp truy vấn có độ tương đồng cao, phản hồi kết quả trong khoảng 1.8 ms và giảm 35% đến 50% số lượt gọi ra API ngoài.
 
-### Phân hệ 2: Đọc và tương tác tài liệu (Document RAG & Study Assistant)
+### Phân hệ 2: Đọc và tương tác tài liệu học tập (Document RAG & Study Assistant)
 
 * Xử lý đa định dạng: Đọc trực tiếp tài liệu PDF (qua PyMuPDF) và tài liệu Microsoft Word (.docx, bóc tách cấu trúc OpenXML bằng `zipfile` và `xml.etree`).
-* Neo trang tài liệu: Tự động gắn thẻ neo trang (`<!-- PAGE_ANCHOR: X -->`) trong bản trích xuất Markdown. Khi trả lời câu hỏi, hệ thống luôn chỉ rõ số trang nguồn để học sinh dễ đối chiếu.
+* Neo trang tài liệu: Tự động gắn thẻ neo trang (`<!-- PAGE_ANCHOR: X -->`) trong bản trích xuất Markdown. Khi trả lời câu hỏi, hệ thống dẫn kèm số trang nguồn để học sinh dễ đối chiếu.
 * Trình xem trước tài liệu: Cho phép xem song song nội dung PDF hoặc Word dựng lại trên giao diện web cùng lúc với cửa sổ hội thoại.
 * Công cụ học tập:
-  * Tóm tắt tài liệu theo 3 mức độ: tóm tắt ý chính, luận điểm chi tiết, và nhận xét tổng kết.
+  * Tóm tắt tài liệu theo 3 mức độ: ý chính, luận điểm chi tiết và nhận xét tổng kết.
   * Tự động sinh đề trắc nghiệm 10 câu (Quiz Engine) bám sát nội dung bài học, có chấm điểm tương tác, giải thích đáp án và dẫn chứng trang nguồn.
 * Quản lý phiên qua SQLite (WAL Mode): Người dùng có thể chọn lại tài liệu đã tải lên từ thư viện cá nhân mà không cần tải lại file hay tính toán lại vector nhúng.
 
@@ -57,16 +73,19 @@ Hệ thống gồm 2 phân hệ độc lập:
 
 ## 3. Hạ tầng kỹ thuật và độ ổn định
 
-* Cụm khóa API xoay vòng: Hệ thống nạp tối đa 5 khóa Google Gemini từ biến môi trường, tự động đổi khóa khi gặp lỗi quá hạn mức (HTTP 429) kèm thời gian chờ theo cấp số nhân (exponential backoff).
+* Cụm khóa API xoay vòng: Hệ thống nạp tối đa 5 khóa Google Gemini từ biến môi trường, tự động chuyển khóa khi gặp lỗi vượt hạn mức (HTTP 429) kèm thời gian chờ theo cấp số nhân (exponential backoff).
 * Mô hình dự phòng: Khi mô hình chính `gemini-flash-lite-latest` gặp sự cố, hệ thống chuyển sang mô hình dự phòng `gemini-2.0-flash-lite` hoặc kích hoạt phản hồi mẫu dựa trên dữ liệu sách thực tế.
-* Lưu trữ phiên 2 tầng: Sử dụng RAM để phản hồi nhanh các thao tác trong phiên và đồng bộ vào SQLite (Write-Ahead Logging) để lưu trữ lịch sử chat, giỏ sách và danh sách tài liệu.
-* Bảo mật và kiểm soát truy cập: Giới hạn tần suất gọi API (20 lượt chat/phút/IP qua SlowAPI), cấu hình CORS không dùng cookie ngoài ý muốn, và khóa cách ly thư viện tài liệu giữa các session ID khác nhau.
+* Lưu trữ phiên hai tầng: Dùng RAM để phản hồi nhanh các thao tác trong phiên và đồng bộ vào SQLite (Write-Ahead Logging) để lưu trữ lịch sử chat, giỏ sách và danh sách tài liệu.
+* Bảo mật và kiểm soát truy cập: Giới hạn tần suất gọi API (20 lượt chat/phút/IP qua SlowAPI), cấu hình CORS chặt chẽ và cô lập thư viện tài liệu giữa các session ID khác nhau.
 
 ---
 
 ## 4. Cấu trúc thư mục
 
 ```text
+├── assets/                         # Ảnh chụp màn hình và tư liệu minh họa giao diện
+│   ├── demo_preview.png            # Giao diện tư vấn sách BookRAG
+│   └── doc_rag_demo.png            # Giao diện đọc và tương tác tài liệu học tập
 ├── Back End/                       # Máy chủ FastAPI, RAG engine, client Gemini và các module xử lý
 │   ├── config.py                   # Tham số hệ thống, trọng số xếp hạng và cấu hình model
 │   ├── crawl_all.py                # Script điều phối thu thập dữ liệu
@@ -85,9 +104,9 @@ Hệ thống gồm 2 phân hệ độc lập:
 │   ├── crawl.bat                   # File thực thi crawl nhanh
 │   └── start_tunnel.bat            # File khởi chạy Cloudflare Tunnel
 ├── database/                       # Kho dữ liệu sách và từ điển
-│   ├── sample.json                 # Kho sách 23,188 cuốn (gồm 277 cuốn hạt giống BK0001-BK0277)
-│   ├── sample_fahasa.json          # 1,500 sách từ Fahasa
-│   ├── sample_tiki.json            # 21,411 sách từ Tiki
+│   ├── sample.json                 # Kho sách 23.188 cuốn (gồm 277 cuốn hạt giống BK0001-BK0277)
+│   ├── sample_fahasa.json          # 1.500 sách từ Fahasa
+│   ├── sample_tiki.json            # 21.411 sách từ Tiki
 │   ├── teencode_lexicon.json       # 71 cụm từ lóng và 8 nhóm tâm trạng
 │   ├── chroma_db/                  # Cơ sở dữ liệu vector ChromaDB
 │   └── user_uploads/               # Thư mục chứa tài liệu học sinh tải lên theo phiên
@@ -158,7 +177,7 @@ python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 Truy cập giao diện tại: `http://localhost:8000`
 
-* Chạy qua đường hầm Internet (Cloudflare Tunnel): nhấp đúp vào `start_online_tunnel.bat` để lấy đường link công khai dạng `https://*.trycloudflare.com`.
+* Chạy qua đường hầm Internet (Cloudflare Tunnel): nhấp đúp vào `start_online_tunnel.bat` để nhận địa chỉ truy cập công khai dạng `https://*.trycloudflare.com`.
 
 4. Chạy kiểm tra toàn bộ hệ thống:
 ```bash
@@ -180,58 +199,60 @@ Thử nghiệm trên 60 kịch bản chuẩn thuộc 6 nhóm yêu cầu phổ bi
 | Faithfulness (Độ trung thực, không bịa đặt) | 0.834 | 0.940 | >= 0.90 | +10.6% | Đạt |
 | Answer Relevance (Độ phù hợp của phản hồi) | 0.885 | 0.890 | >= 0.85 | +0.5% | Đạt |
 
-Điểm trung bình điều hòa RAGAS đạt:
+Điểm trung bình điều hòa RAGAS:
 $$\text{RAGAS Score} = \frac{4}{\frac{1}{0.985} + \frac{1}{0.885} + \frac{1}{0.940} + \frac{1}{0.890}} = 0.924 / 1.000$$
 
-Khi so sánh với mô hình LLM độc lập không có RAG:
+So sánh với mô hình LLM độc lập không dùng RAG:
 * Faithfulness tăng từ 0.520 lên 0.940.
 * Recall tăng từ 0.450 lên 0.885.
 
 ### Khảo sát trải nghiệm người dùng thực tế (N = 38)
 
-Dữ liệu khảo sát thu thập trực tiếp từ Google Form (`Sample Tests/raw_google_form_survey_responses.csv`, 38 phiếu phản hồi) bao gồm 3 nhóm đối tượng: 20 học sinh THPT (52.6%), 12 phụ huynh học sinh và bạn đọc tự do (31.6%), cùng 6 giáo viên và cán bộ giáo dục (15.8%).
+Dữ liệu khảo sát thu thập từ Google Form (`Sample Tests/raw_google_form_survey_responses.csv`, 38 phiếu) gồm 3 nhóm: 20 học sinh THPT (52.6%), 12 phụ huynh học sinh và bạn đọc tự do (31.6%), cùng 6 giáo viên và cán bộ giáo dục (15.8%).
+
+![Báo cáo kết quả khảo sát người dùng SUS và RAG](Sample%20Tests/survey_results_report.png)
 
 Thang đo System Usability Scale (SUS) và bộ câu hỏi đánh giá tính năng RAG:
 
 | Chỉ số | Kết quả thực nghiệm | Tiêu chuẩn học thuật | Nhận xét |
 |---|:---:|:---:|---|
 | Điểm SUS trung bình | 88.72 / 100 | >= 68.0 | Vượt chuẩn trung bình 20.72 điểm |
-| Độ lệch chuẩn | +-10.68 | Phân tán hẹp | Đánh giá giữa các nhóm khá đồng nhất |
-| Điểm trung vị | 90.00 | Mức cao | Đa số người dùng hài lòng ở mức cao |
+| Độ lệch chuẩn | +-10.68 | Phân tán hẹp | Đánh giá giữa các nhóm tương đối đồng nhất |
+| Điểm trung vị | 90.00 | Mức cao | Đa số người dùng đánh giá tích cực |
 | Xếp loại mức độ hài lòng | Hạng A (Xuất sắc) | >= 80.3 | Đạt chuẩn Grade A (Bangor et al., 2008) |
 | Cronbach's Alpha (SUS) | 0.939 | >= 0.70 | Thang đo đạt độ tin cậy nội tại cao |
 | Cronbach's Alpha (bộ 5 câu RAG) | 0.865 | >= 0.70 | Mức độ nhất quán đánh giá cao |
 
-Phân tích điểm số theo nhóm đối tượng:
-* Giáo viên và cán bộ giáo dục (6 người): Điểm SUS trung bình đạt 92.50 / 100. Nhóm giáo viên đánh giá cao nhất tính chính xác của giá bìa niêm yết, nhà xuất bản và khả năng hỗ trợ soạn đề thi từ tài liệu học tập.
-* Phụ huynh và bạn đọc tự do (12 người): Điểm SUS trung bình đạt 89.17 / 100. Nhóm phụ huynh ghi nhận hệ thống gợi ý sách bám sát độ tuổi và ngân sách thực tế.
-* Học sinh THPT (20 người): Điểm SUS trung bình đạt 87.24 / 100. Học sinh thích tính năng tìm truyện theo cốt truyện mang máng, khả năng nhận diện tiếng lóng học trò và thi trắc nghiệm tương tác.
+Điểm số theo từng nhóm đối tượng:
+* Giáo viên và cán bộ giáo dục (6 người): Điểm SUS trung bình đạt 92.50 / 100. Nhóm giáo viên đánh giá cao tính chính xác của giá bìa, nhà xuất bản và khả năng hỗ trợ soạn câu hỏi trắc nghiệm từ tài liệu.
+* Phụ huynh và bạn đọc tự do (12 người): Điểm SUS trung bình đạt 89.17 / 100. Nhóm phụ huynh ghi nhận hệ thống gợi ý sách phù hợp lứa tuổi và khoảng giá mong muốn.
+* Học sinh THPT (20 người): Điểm SUS trung bình đạt 87.24 / 100. Học sinh quan tâm đến tính năng tìm sách khi chỉ nhớ mang máng cốt truyện, khả năng nhận diện tiếng lóng và làm bài trắc nghiệm tương tác.
 
-Điểm đánh giá 5 khía cạnh cốt lõi của RAG (thang điểm 5):
+Đánh giá 5 khía cạnh của hệ thống RAG (thang điểm 5):
 * Tìm đúng sách khi chỉ nhớ mang máng cốt truyện: 4.59 / 5.0 (100% người dùng đánh giá điểm 4 và 5).
-* Tính hữu ích khi gợi ý tác phẩm cùng tác giả: 4.49 / 5.0 (100% đồng ý).
-* Độ chính xác về giá bán và hạn chế suy diễn sai: 4.78 / 5.0 (tiêu chí đạt điểm cao nhất).
-* Tính minh bạch của điểm số tương đồng Match %: 4.68 / 5.0.
+* Gợi ý tác phẩm cùng tác giả: 4.49 / 5.0 (100% đồng ý).
+* Độ chính xác về giá bán và hạn chế suy diễn sai: 4.78 / 5.0 (tiêu chí có điểm số cao nhất).
+* Hiển thị điểm số tương đồng Match % rõ ràng: 4.68 / 5.0.
 * Độ tin cậy tổng thể so với chatbot thông thường: 4.78 / 5.0.
 
-Phân bố phản hồi nổi bật từ tệp khảo sát thực tế:
-* Về độ tin cậy của mô hình RAG: 28.9% người tham gia (11/38) ấn tượng nhất với tính chuẩn xác vượt trội so với các chatbot thông thường; 26.3% (10/38) tin tưởng hoàn toàn vào dữ liệu giá bìa và thông tin tác giả, xác nhận không thấy hiện tượng bịa sách; 21.1% (8/38) đánh giá cao việc minh bạch điểm số Match %; 13.2% (5/38) ghi nhận khả năng truy tìm sách theo cốt truyện và 10.5% (4/38) thích gợi ý cùng tác giả.
-* Về trải nghiệm tương tác: 21.1% (8/38) đánh giá tính năng hội thoại, giỏ sách và hiển thị điểm tương đồng tích hợp rất gắn kết; 18.4% (7/38) nhận thấy giao diện dễ làm quen nhanh chóng và 18.4% (7/38) mong muốn sử dụng hệ thống thường xuyên trong việc đọc sách học đường.
+Thống kê phản hồi từ tệp khảo sát:
+* Về độ tin cậy của mô hình RAG: 28.9% người tham gia (11/38) đánh giá cao độ chính xác so với chatbot thông thường; 26.3% (10/38) ghi nhận thông tin giá bìa và tác giả trùng khớp thực tế, không gặp tình trạng bịa sách; 21.1% (8/38) ủng hộ việc hiển thị điểm số Match %; 13.2% (5/38) ghi nhận khả năng tìm sách theo cốt truyện và 10.5% (4/38) quan tâm đến gợi ý cùng tác giả.
+* Về trải nghiệm tương tác: 21.1% (8/38) nhận xét các tính năng trò chuyện, giỏ sách và hiển thị độ tương đồng phối hợp liền mạch; 18.4% (7/38) thấy giao diện dễ làm quen và 18.4% (7/38) muốn tiếp tục sử dụng hệ thống để tìm sách.
 
 ### Đo lường hiệu năng xử lý (Stress-test)
 
 | Tầng xử lý | Thời gian đo được | Cơ chế tối ưu |
 |---|:---:|---|
-| Kiểm tra quy tắc an toàn (Rule Harness) | 0.4 đến 1.2 ms | Regex O(1) in-memory, chặn lệnh xấu trước khi gửi đi |
-| Truy xuất bộ nhớ đệm (Semantic Cache Hit) | 1.8 ms | Phản hồi ngay trên RAM, không mất chi phí API |
+| Kiểm tra quy tắc an toàn (Rule Harness) | 0.4 đến 1.2 ms | Regex O(1) in-memory, chặn lệnh xấu trước khi xử lý |
+| Truy xuất bộ nhớ đệm (Semantic Cache Hit) | 1.8 ms | Phản hồi từ RAM, không phát sinh chi phí gọi API |
 | Tìm kiếm lai (ChromaDB + BM25 + RRF) | 42.5 đến 180 ms | Lập chỉ mục vector 384 chiều kết hợp xếp hạng nhanh |
-| Phản hồi từ Google Gemini | 1.2 đến 2.2 s | Cụm 5 API key xoay vòng và tự động retry |
+| Phản hồi từ Google Gemini | 1.2 đến 2.2 s | Cụm 5 khóa API xoay vòng kèm cơ chế tự động thử lại |
 
 ---
 
 ## 7. Đạo đức nghiên cứu và tuân thủ pháp lý
 
-Dự án tuân thủ Điều 10 Luật Xuất bản Việt Nam số 19/2012/QH13. Mọi phản hồi từ hệ thống đều được kiểm tra trước khi trả về cho người dùng để loại bỏ các nội dung vi phạm pháp luật, bảo vệ an toàn thông tin cho học sinh trong môi trường học đường.
+Hệ thống tuân thủ Điều 10 Luật Xuất bản Việt Nam số 19/2012/QH13. Mọi phản hồi từ hệ thống đều được kiểm tra trước khi gửi tới người dùng nhằm loại bỏ các nội dung vi phạm pháp luật và bảo vệ an toàn thông tin trong môi trường giáo dục.
 
 ---
 
